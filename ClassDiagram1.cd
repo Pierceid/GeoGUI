@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GeoGUI.Classes.GPS" BaseTypeListCollapsed="true">
+    <Position X="1.25" Y="6.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAACAAgAAAAAAAAAAAAAAAAABgAAAAYAA=</HashCode>
+      <FileName>Classes\GPS.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Item">
+    <Position X="1.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAEAAAAAAAAAAEEAAAAAAAAAAAgA=</HashCode>
+      <FileName>Classes\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Classes.KDTree&lt;T, U&gt;">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAEECAAQBAggAEEAAAAAAAAYCAJAABACAA=</HashCode>
+      <FileName>Classes\KDTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Classes.Nehnutelnost">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAoAAAAKAAAAAAEQAAAAEAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Nehnutelnost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Classes.Node&lt;T, U&gt;">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAkAABAIAAAQABAAAEAQAABBAAAAAQAAAA=</HashCode>
+      <FileName>Classes\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Classes.Parcela">
+    <Position X="2.5" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAAAAAAEQAAAAEAAAAEEAAABAAAAAAAAA=</HashCode>
+      <FileName>Classes\Parcela.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Form1">
+    <Position X="9.5" Y="0.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>cDEAIAEkASAgKFCxUECABABCoMw7QBSmESQAQAAGUcA=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Program">
+    <Position X="10" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GeoGUI.Classes.IKey&lt;U&gt;">
+    <Position X="3.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Classes\IKey.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
