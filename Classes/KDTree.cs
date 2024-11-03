@@ -115,6 +115,7 @@ namespace GeoGUI.Classes {
                     Console.WriteLine("UpdateNode() >>> Data entry removed and reinserted with new keys.");
                     nodeToUpdate.NodeData.Remove(oldData);
                     InsertNode(ref newData, newKeys);
+                    this.dataSize--;
                 } else {
                     Console.WriteLine("UpdateNode() >>> Node removed and reinserted with new keys.");
                     DeleteAndReplaceNode(nodeToUpdate);

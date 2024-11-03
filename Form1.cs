@@ -125,7 +125,9 @@ namespace GeoGUI {
         }
 
         private void DataGridViewCellContentClick(object sender, DataGridViewCellEventArgs e) {
-            if (e.RowIndex >= 0) {
+            if (this.resultList.Count == 0) return;
+
+            if (e.RowIndex >= 0 && e.RowIndex < this.resultList.Count) {
                 if (e.ColumnIndex == 0) {
                     this.chosenItem = this.resultList[e.RowIndex];
                     EditItem(false);
@@ -160,11 +162,11 @@ namespace GeoGUI {
                 } else {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps1));
                 }
-
-                UpdateResultsTableAndCounter();
             } catch (NullReferenceException) {
                 if (noMessageBox || !validCoordinates1) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
+            } finally {
+                UpdateResultsTableAndCounter();
             }
 
             try {
@@ -175,11 +177,11 @@ namespace GeoGUI {
                 } else {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps2));
                 }
-
-                UpdateResultsTableAndCounter();
             } catch (NullReferenceException) {
                 if (noMessageBox || !validCoordinates2) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
+            } finally {
+                UpdateResultsTableAndCounter();
             }
         }
 
@@ -253,6 +255,8 @@ namespace GeoGUI {
         }
 
         private void EditItem(bool confirm) {
+            if (this.chosenItem == null) return;
+
             if (!confirm) {
                 if (this.chosenItem is Parcela p) {
                     this.textBox1.Text = p.Pozicia.X.ToString();
@@ -322,6 +326,8 @@ namespace GeoGUI {
         }
 
         private void RemoveItem() {
+            if (this.chosenItem == null) return;
+
             if (this.chosenItem is Parcela p) {
                 this.textBox1.Text = p.Pozicia.X.ToString();
                 this.textBox2.Text = p.Pozicia.Y.ToString();
