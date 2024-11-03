@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button12 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -45,6 +46,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,7 +64,7 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -72,7 +75,6 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.button13 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -182,6 +184,16 @@
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Functions";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(106, 229);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(88, 30);
+            this.button12.TabIndex = 12;
+            this.button12.Text = "Save data";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button11
             // 
@@ -297,6 +309,8 @@
             // 
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Edit,
+            this.Remove,
             this.Type,
             this.Position,
             this.Number,
@@ -307,41 +321,58 @@
             this.dataGridView.RowTemplate.Height = 24;
             this.dataGridView.Size = new System.Drawing.Size(938, 217);
             this.dataGridView.TabIndex = 6;
+            this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
             this.dataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellContentClick);
+            // 
+            // Edit
+            // 
+            this.Edit.DividerWidth = 1;
+            this.Edit.HeaderText = "Edit";
+            this.Edit.MinimumWidth = 70;
+            this.Edit.Name = "Edit";
+            this.Edit.Width = 70;
+            // 
+            // Remove
+            // 
+            this.Remove.DividerWidth = 1;
+            this.Remove.HeaderText = "Remove";
+            this.Remove.MinimumWidth = 70;
+            this.Remove.Name = "Remove";
+            this.Remove.Width = 70;
             // 
             // Type
             // 
             this.Type.DividerWidth = 1;
             this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 120;
+            this.Type.MinimumWidth = 100;
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
-            this.Type.Width = 160;
+            this.Type.Width = 120;
             // 
             // Position
             // 
             this.Position.DividerWidth = 1;
             this.Position.HeaderText = "Position";
-            this.Position.MinimumWidth = 120;
+            this.Position.MinimumWidth = 100;
             this.Position.Name = "Position";
             this.Position.ReadOnly = true;
-            this.Position.Width = 160;
+            this.Position.Width = 120;
             // 
             // Number
             // 
             this.Number.DividerWidth = 1;
             this.Number.HeaderText = "Number";
-            this.Number.MinimumWidth = 120;
+            this.Number.MinimumWidth = 100;
             this.Number.Name = "Number";
             this.Number.ReadOnly = true;
-            this.Number.Width = 160;
+            this.Number.Width = 120;
             // 
             // Description
             // 
             this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Description.DividerWidth = 1;
             this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 120;
+            this.Description.MinimumWidth = 100;
             this.Description.Name = "Description";
             this.Description.ReadOnly = true;
             // 
@@ -461,15 +492,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Generator";
             // 
-            // button12
+            // button13
             // 
-            this.button12.Location = new System.Drawing.Point(106, 229);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(88, 30);
-            this.button12.TabIndex = 12;
-            this.button12.Text = "Save data";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.ButtonClick);
+            this.button13.Location = new System.Drawing.Point(18, 224);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(154, 30);
+            this.button13.TabIndex = 13;
+            this.button13.Text = "Generate data";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.ButtonClick);
             // 
             // textBox7
             // 
@@ -563,16 +594,6 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(18, 224);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(154, 30);
-            this.button13.TabIndex = 13;
-            this.button13.Text = "Generate data";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.ButtonClick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -644,13 +665,15 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Position;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Number;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Edit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Remove;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Position;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Number;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Description;
     }
 }

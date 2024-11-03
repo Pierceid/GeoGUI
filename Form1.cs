@@ -15,6 +15,7 @@ namespace GeoGUI {
         private List<Item> resultList = new List<Item>();
         private Random random = new Random();
         private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.csv";
+        private Item chosenItem = null;
 
         public Form1() {
             InitializeComponent();
@@ -27,14 +28,17 @@ namespace GeoGUI {
             switch (sender) {
                 case Button button when button == button1:
                     this.comboBox2.SelectedIndex = 0;
+                    SearchItems(false);
                     break;
 
                 case Button button when button == button2:
                     this.comboBox2.SelectedIndex = 1;
+                    SearchItems(false);
                     break;
 
                 case Button button when button == button3:
                     this.comboBox2.SelectedIndex = 2;
+                    SearchItems(false);
                     break;
 
                 case Button button when button == button4:
@@ -48,19 +52,19 @@ namespace GeoGUI {
                     break;
 
                 case Button button when button == button6:
-
+                    EditItem(true);
                     break;
 
                 case Button button when button == button7:
-
+                    EditItem(true);
                     break;
 
                 case Button button when button == button8:
-
+                    RemoveItem();
                     break;
 
                 case Button button when button == button9:
-
+                    RemoveItem();
                     break;
 
                 case Button button when button == button10:
@@ -79,13 +83,18 @@ namespace GeoGUI {
                     GenerateNodes();
                     break;
 
+                case Button button when button.Name == "editButton":
+
+                    break;
+
+                case Button button when button.Name == "removeButton":
+
+                    break;
+
                 default:
 
                     break;
             }
-
-            SearchForNodes();
-            UpdateResultsTableAndCounter();
         }
 
         private void ComboBoxSelectionChanged(object sender, EventArgs e) {
@@ -94,7 +103,7 @@ namespace GeoGUI {
                     break;
 
                 case ComboBox comboBox when comboBox == comboBox2:
-                    SearchForNodes();
+                    SearchItems(true);
                     UpdateResultsTableAndCounter();
                     break;
 
@@ -103,35 +112,74 @@ namespace GeoGUI {
             }
         }
 
-        private void DataGridViewCellContentClick(object sender, DataGridViewCellEventArgs e) {
-
-        }
-
-        private void SearchForNodes() {
-            this.resultList.Clear();
-
-            if (!string.IsNullOrEmpty(this.textBox1.Text) && !string.IsNullOrEmpty(this.textBox2.Text)) {
-                GPS gps = ParseGPS(this.textBox1.Text, this.textBox2.Text);
-
-                if (this.comboBox2.SelectedIndex == 0) {
-                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps));
-                } else if (this.comboBox2.SelectedIndex == 1) {
-                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps));
-                } else {
-                    this.resultList.AddRange(this.itemTree.FindNodes(gps));
+        private void DataGridViewCellClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex >= 0) {
+                if (e.ColumnIndex == 0) {
+                    this.chosenItem = this.resultList[e.RowIndex];
+                    EditItem(false);
+                } else if (e.ColumnIndex == 1) {
+                    this.chosenItem = this.resultList[e.RowIndex];
+                    RemoveItem();
                 }
             }
+        }
 
-            if (!string.IsNullOrEmpty(this.textBox3.Text) && !string.IsNullOrEmpty(this.textBox4.Text)) {
-                GPS gps = ParseGPS(this.textBox3.Text, this.textBox4.Text);
-
-                if (this.comboBox2.SelectedIndex == 0) {
-                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps));
-                } else if (this.comboBox2.SelectedIndex == 1) {
-                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps));
-                } else {
-                    this.resultList.AddRange(this.itemTree.FindNodes(gps));
+        private void DataGridViewCellContentClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex >= 0) {
+                if (e.ColumnIndex == 0) {
+                    this.chosenItem = this.resultList[e.RowIndex];
+                    EditItem(false);
+                } else if (e.ColumnIndex == 1) {
+                    this.chosenItem = this.resultList[e.RowIndex];
+                    RemoveItem();
                 }
+            }
+        }
+
+        private void SearchItems(bool noMessageBox) {
+            this.resultList.Clear();
+
+            GPS gps1 = null, gps2 = null;
+
+            bool validCoordinates1 = !string.IsNullOrEmpty(this.textBox1.Text) && !string.IsNullOrEmpty(this.textBox2.Text);
+            bool validCoordinates2 = !string.IsNullOrEmpty(this.textBox3.Text) && !string.IsNullOrEmpty(this.textBox4.Text);
+
+            if (validCoordinates1) {
+                gps1 = ParseGPS(this.textBox1.Text, this.textBox2.Text);
+            }
+
+            if (validCoordinates2) {
+                gps2 = ParseGPS(this.textBox3.Text, this.textBox4.Text);
+            }
+
+            try {
+                if (this.comboBox2.SelectedIndex == 0) {
+                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps1));
+                } else if (this.comboBox2.SelectedIndex == 1) {
+                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps1));
+                } else {
+                    this.resultList.AddRange(this.itemTree.FindNodes(gps1));
+                }
+
+                UpdateResultsTableAndCounter();
+            } catch (NullReferenceException) {
+                if (noMessageBox || !validCoordinates1) return;
+                MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
+            }
+
+            try {
+                if (this.comboBox2.SelectedIndex == 0) {
+                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps2));
+                } else if (this.comboBox2.SelectedIndex == 1) {
+                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps2));
+                } else {
+                    this.resultList.AddRange(this.itemTree.FindNodes(gps2));
+                }
+
+                UpdateResultsTableAndCounter();
+            } catch (NullReferenceException) {
+                if (noMessageBox || !validCoordinates2) return;
+                MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
             }
         }
 
@@ -171,12 +219,7 @@ namespace GeoGUI {
                 var item1 = parcela1 as Item;
                 var item2 = parcela2 as Item;
 
-                result = MessageBox.Show(
-                    "Are you sure you want to add this Parcela?",
-                    "Confirm Add Parcela",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
+                result = MessageBox.Show("Are you sure you want to add this item?", "Confirm Add Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes) {
                     this.parcelaTree.InsertNode(ref parcela1, position1);
@@ -193,12 +236,7 @@ namespace GeoGUI {
                 var item1 = nehnutelnost1 as Item;
                 var item2 = nehnutelnost2 as Item;
 
-                result = MessageBox.Show(
-                    "Are you sure you want to add this Nehnutelnost?",
-                    "Confirm Add Nehnutelnost",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
+                result = MessageBox.Show("Are you sure you want to add this item?", "Confirm Add Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes) {
                     this.nehnutelnostTree.InsertNode(ref nehnutelnost1, position1);
@@ -210,12 +248,125 @@ namespace GeoGUI {
                     this.idList.Add(nehnutelnost2.Id);
                 }
             }
+
+            UpdateResultsTableAndCounter();
+        }
+
+        private void EditItem(bool confirm) {
+            if (!confirm) {
+                if (this.chosenItem is Parcela p) {
+                    this.textBox1.Text = p.Pozicia.X.ToString();
+                    this.textBox2.Text = p.Pozicia.Y.ToString();
+                    this.comboBox1.SelectedIndex = 0;
+                    this.textBox5.Text = p.CisParcely.ToString();
+                    this.textBox6.Text = p.Popis;
+                } else if (this.chosenItem is Nehnutelnost n) {
+                    this.textBox1.Text = n.Pozicia.X.ToString();
+                    this.textBox2.Text = n.Pozicia.Y.ToString();
+                    this.comboBox1.SelectedIndex = 1;
+                    this.textBox5.Text = n.SupCislo.ToString();
+                    this.textBox6.Text = n.Popis;
+                }
+
+                this.textBox3.Text = "";
+                this.textBox4.Text = "";
+                this.textBox3.Enabled = false;
+                this.textBox4.Enabled = false;
+                this.comboBox1.Enabled = false;
+            } else {
+                GPS position;
+                int number;
+                string description;
+                DialogResult result;
+
+                if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
+                    ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                position = ParseGPS(this.textBox1.Text, this.textBox2.Text);
+
+                if (string.IsNullOrEmpty(this.textBox5.Text)) {
+                    ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                int.TryParse(this.textBox5.Text, out number);
+
+                if (string.IsNullOrEmpty(this.textBox6.Text)) {
+                    ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                description = this.textBox6.Text;
+
+                result = MessageBox.Show("Are you sure you want to update this item?", "Confirm Update Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes) {
+                    if (this.chosenItem is Parcela p) {
+                        var parcela = new Parcela(number, description, position);
+                        var item = parcela as Item;
+
+                        this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
+                        this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
+                    } else if (this.chosenItem is Nehnutelnost n) {
+                        var nehnutelnost = new Nehnutelnost(number, description, position);
+                        var item = nehnutelnost as Item;
+
+                        this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
+                        this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
+                    }
+                }
+
+                this.textBox3.Enabled = true;
+                this.textBox4.Enabled = true;
+                this.comboBox1.Enabled = false;
+            }
+        }
+
+        private void RemoveItem() {
+            if (this.chosenItem is Parcela p) {
+                this.textBox1.Text = p.Pozicia.X.ToString();
+                this.textBox2.Text = p.Pozicia.Y.ToString();
+                this.comboBox1.SelectedIndex = 0;
+                this.textBox5.Text = p.CisParcely.ToString();
+                this.textBox6.Text = p.Popis;
+            } else if (this.chosenItem is Nehnutelnost n) {
+                this.textBox1.Text = n.Pozicia.X.ToString();
+                this.textBox2.Text = n.Pozicia.Y.ToString();
+                this.comboBox1.SelectedIndex = 1;
+                this.textBox5.Text = n.SupCislo.ToString();
+                this.textBox6.Text = n.Popis;
+            }
+
+            this.textBox3.Text = "";
+            this.textBox4.Text = "";
+            this.textBox3.Enabled = false;
+            this.textBox4.Enabled = false;
+            this.comboBox1.Enabled = false;
+
+            DialogResult result = MessageBox.Show("Are you sure you want to remove this item?", "Confirm Remove Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes) {
+                if (this.chosenItem is Parcela parcela) {
+                    this.parcelaTree.DeleteNode(ref parcela, parcela.Pozicia);
+                    this.itemTree.DeleteNode(ref this.chosenItem, parcela.Pozicia);
+                } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
+                    this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
+                    this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
+                }
+
+                UpdateResultsTableAndCounter();
+            }
+
+            this.textBox3.Enabled = true;
+            this.textBox4.Enabled = true;
+            this.comboBox1.Enabled = true;
         }
 
         private void ClearStructures() {
             this.parcelaTree.Clear();
             this.nehnutelnostTree.Clear();
             this.itemTree.Clear();
+
+            UpdateResultsTableAndCounter();
         }
 
         private void SaveToFile() {
@@ -307,6 +458,8 @@ namespace GeoGUI {
                 }
             }
 
+            UpdateResultsTableAndCounter();
+
             MessageBox.Show($"K-D tree loaded from: {FILE_PATH}");
         }
 
@@ -343,11 +496,11 @@ namespace GeoGUI {
                 description = GenerateRandomString(10);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 100, 0);
+                y = Math.Round(this.random.NextDouble() * 50, 0);
                 position1 = new GPS(x, y);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 100, 0);
+                y = Math.Round(this.random.NextDouble() * 50, 0);
                 position2 = new GPS(x, y);
 
                 var parcela1 = new Parcela(number, description, position1);
@@ -371,11 +524,11 @@ namespace GeoGUI {
                 description = GenerateRandomString(10);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 100, 0);
+                y = Math.Round(this.random.NextDouble() * 50, 0);
                 position1 = new GPS(x, y);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 100, 0);
+                y = Math.Round(this.random.NextDouble() * 50, 0);
                 position2 = new GPS(x, y);
 
                 if (this.random.NextDouble() < intersectionProb) {
@@ -397,6 +550,8 @@ namespace GeoGUI {
                 this.idList.Add(nehnutelnost1.Id);
                 this.idList.Add(nehnutelnost2.Id);
             }
+
+            UpdateResultsTableAndCounter();
         }
 
         private void UpdateResultsTableAndCounter() {
@@ -407,6 +562,8 @@ namespace GeoGUI {
                 this.dataGridView.Columns.Add("Position", "Position");
                 this.dataGridView.Columns.Add("Number", "Number");
                 this.dataGridView.Columns.Add("Description", "Description");
+                this.dataGridView.Columns.Add("Edit", "Edit");
+                this.dataGridView.Columns.Add("Remove", "Remove");
             }
 
             int count = 0;
@@ -414,20 +571,20 @@ namespace GeoGUI {
             foreach (Item item in this.resultList) {
                 if (this.comboBox2.SelectedIndex == 0) {
                     if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
                         count++;
                     }
                 } else if (this.comboBox2.SelectedIndex == 1) {
                     if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
                         count++;
                     }
                 } else {
                     if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
                         count++;
                     } else if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
                         count++;
                     }
                 }

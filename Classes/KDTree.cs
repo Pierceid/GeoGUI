@@ -81,9 +81,46 @@ namespace GeoGUI.Classes {
                 level++;
             }
 
-            if (result.Count == 0) Console.WriteLine("FindNodes() >>> Node not found!");
+            if (result.Count == 0) {
+                Console.WriteLine("FindNodes() >>> Node not found!");
+                throw new NullReferenceException();
+            }
 
             return result;
+        }
+
+        public void UpdateNode(ref T oldData, U oldKeys, ref T newData, U newKeys) {
+            if (this.root == null) return;
+
+            Node<T, U> nodeToUpdate = this.FindNode(oldKeys, this.root);
+
+            if (nodeToUpdate == null) return;
+
+            bool multipleDataEntries = nodeToUpdate.NodeData.Count > 1;
+
+            bool keysChanged = !oldKeys.Equals(newKeys);
+
+            if (!keysChanged) {
+                // Case 1: Keys unchanged
+                Console.WriteLine("UpdateNode() >>> Data entry updated in-place!");
+                for (int i = 0; i < nodeToUpdate.NodeData.Count; i++) {
+                    if (nodeToUpdate.NodeData[i].EqualsByID(oldData)) {
+                        nodeToUpdate.NodeData[i] = newData;
+                        return;
+                    }
+                }
+            } else {
+                // Case 2: Keys changed
+                if (multipleDataEntries) {
+                    Console.WriteLine("UpdateNode() >>> Data entry removed and reinserted with new keys.");
+                    nodeToUpdate.NodeData.Remove(oldData);
+                    InsertNode(ref newData, newKeys);
+                } else {
+                    Console.WriteLine("UpdateNode() >>> Node removed and reinserted with new keys.");
+                    DeleteAndReplaceNode(nodeToUpdate);
+                    InsertNode(ref newData, newKeys);
+                }
+            }
         }
 
         public void DeleteNode(ref T data, U keys) {
@@ -95,13 +132,13 @@ namespace GeoGUI.Classes {
 
             if (nodeToDelete.NodeData.Count > 1) {
                 this.dataSize--;
+                Console.WriteLine("DeleteNode() >>> Data entry removed!");
                 foreach (T nodeData in nodeToDelete.NodeData) {
                     if (nodeData.EqualsByID(data)) {
                         nodeToDelete.NodeData.Remove(data);
                         break;
                     }
                 }
-                Console.WriteLine("DeleteNode() >>> Data entry removed!");
                 return;
             }
 
@@ -133,11 +170,10 @@ namespace GeoGUI.Classes {
                         current.NodeData = replacement.NodeData;
 
                         nodesToReplace.Push(replacement);
+                        ReinsertNodes(current);
                     }
                 }
             }
-
-            ReinsertNodes(node);
 
             this.treeSize--;
             this.dataSize--;
@@ -164,7 +200,6 @@ namespace GeoGUI.Classes {
                 if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
             }
 
-            Console.WriteLine("Duplicates: " + duplicates.Count);
             foreach (var duplicate in duplicates) {
                 DeleteAndReplaceNode(duplicate);
                 this.treeSize--;
@@ -245,8 +280,7 @@ namespace GeoGUI.Classes {
             }
 
             Console.WriteLine("FindNode() >>> Node not found!");
-
-            return null;
+            throw new NullReferenceException();
         }
 
         public void Clear() {
@@ -292,7 +326,7 @@ namespace GeoGUI.Classes {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nTree Size: " + this.treeSize + "\nData Size: " + this.DataSize);
             Console.WriteLine("--------------------------------------------------------");
-            Console.WriteLine("\nTree Size: " + a + "\nData Size: " + c + "\nDuplicates: " + b);
+            Console.WriteLine("Tree Size: " + a + "\nData Size: " + c + "\nDuplicates: " + b);
             Console.ResetColor();
         }
 
