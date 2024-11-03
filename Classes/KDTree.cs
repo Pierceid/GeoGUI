@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GeoGUI.Classes {
     internal class KDTree<T, U> where T : Item where U : IKey<U> {
@@ -181,10 +180,9 @@ namespace GeoGUI.Classes {
                     current.NodeData = replacement.NodeData;
 
                     nodesToProcess.Push(replacement);
+                    ReinsertNodes(current);
                 }
             }
-
-            ReinsertNodes(node);
 
             this.treeSize--;
             this.dataSize--;
@@ -207,9 +205,12 @@ namespace GeoGUI.Classes {
 
                 if (comparison == 0) duplicates.Add(current);
 
-                if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-
-                if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
+                if (current.Level != node.Level) {
+                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
+                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
+                } else {
+                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
+                }
             }
 
             return duplicates;
@@ -220,10 +221,12 @@ namespace GeoGUI.Classes {
 
             foreach (var duplicate in duplicates) {
                 this.treeSize--;
-                this.dataSize--;
-                T data = duplicate.NodeData.First();
-                DeleteNode(ref data, duplicate.KeysData);
-                InsertNode(ref data, duplicate.KeysData);
+                this.dataSize -= duplicate.NodeData.Count;
+
+                foreach (var nodeData in duplicate.NodeData) {
+                    T data = nodeData;
+                    InsertNode(ref data, duplicate.KeysData);
+                }
             }
         }
 
@@ -264,7 +267,7 @@ namespace GeoGUI.Classes {
 
                 int comparison = current.KeysData.Compare(maxNode.KeysData, current.Level);
 
-                if (comparison > 0) maxNode = current;
+                if (comparison >= 0) maxNode = current;
 
                 if (current.Level != node.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
