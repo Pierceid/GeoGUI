@@ -72,6 +72,7 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.button13 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -163,6 +164,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button12);
             this.groupBox3.Controls.Add(this.button11);
             this.groupBox3.Controls.Add(this.button10);
             this.groupBox3.Controls.Add(this.button5);
@@ -183,21 +185,21 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(106, 229);
+            this.button11.Location = new System.Drawing.Point(6, 229);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(90, 30);
             this.button11.TabIndex = 11;
-            this.button11.Text = "Save data";
+            this.button11.Text = "Load data";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(6, 229);
+            this.button10.Location = new System.Drawing.Point(104, 183);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(90, 30);
             this.button10.TabIndex = 10;
-            this.button10.Text = "Load data";
+            this.button10.Text = "Task 10";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.ButtonClick);
             // 
@@ -445,7 +447,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button12);
+            this.groupBox4.Controls.Add(this.button13);
             this.groupBox4.Controls.Add(this.textBox7);
             this.groupBox4.Controls.Add(this.textBox9);
             this.groupBox4.Controls.Add(this.label8);
@@ -461,11 +463,11 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(18, 229);
+            this.button12.Location = new System.Drawing.Point(106, 229);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(154, 30);
+            this.button12.Size = new System.Drawing.Size(88, 30);
             this.button12.TabIndex = 12;
-            this.button12.Text = "Generate";
+            this.button12.Text = "Save data";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.ButtonClick);
             // 
@@ -561,6 +563,16 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(18, 224);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(154, 30);
+            this.button13.TabIndex = 13;
+            this.button13.Text = "Generate data";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.ButtonClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -639,5 +651,6 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button13;
     }
 }

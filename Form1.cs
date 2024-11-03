@@ -20,24 +20,21 @@ namespace GeoGUI {
             InitializeComponent();
 
             this.comboBox1.SelectedIndex = 0;
-            this.comboBox2.SelectedIndex = 0;
+            this.comboBox2.SelectedIndex = 2;
         }
 
         private void ButtonClick(object sender, EventArgs e) {
             switch (sender) {
                 case Button button when button == button1:
                     this.comboBox2.SelectedIndex = 0;
-                    SearchForNodes();
                     break;
 
                 case Button button when button == button2:
                     this.comboBox2.SelectedIndex = 1;
-                    SearchForNodes();
                     break;
 
                 case Button button when button == button3:
                     this.comboBox2.SelectedIndex = 2;
-                    SearchForNodes();
                     break;
 
                 case Button button when button == button4:
@@ -67,14 +64,18 @@ namespace GeoGUI {
                     break;
 
                 case Button button when button == button10:
-                    LoadFromFile();
+                    ClearStructures();
                     break;
 
                 case Button button when button == button11:
-                    SaveToFile();
+                    LoadFromFile();
                     break;
 
                 case Button button when button == button12:
+                    SaveToFile();
+                    break;
+
+                case Button button when button == button13:
                     GenerateNodes();
                     break;
 
@@ -83,6 +84,7 @@ namespace GeoGUI {
                     break;
             }
 
+            SearchForNodes();
             UpdateResultsTableAndCounter();
         }
 
@@ -139,29 +141,29 @@ namespace GeoGUI {
             string description;
             DialogResult result;
 
-            if (!string.IsNullOrEmpty(this.textBox1.Text) && !string.IsNullOrEmpty(this.textBox2.Text)) {
-                position1 = ParseGPS(this.textBox1.Text, this.textBox2.Text);
-            } else {
+            if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
+                ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            position1 = ParseGPS(this.textBox1.Text, this.textBox2.Text);
 
-            if (!string.IsNullOrEmpty(this.textBox3.Text) && !string.IsNullOrEmpty(this.textBox4.Text)) {
-                position2 = ParseGPS(this.textBox3.Text, this.textBox4.Text);
-            } else {
+            if (string.IsNullOrEmpty(this.textBox3.Text) || string.IsNullOrEmpty(this.textBox4.Text)) {
+                ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            position2 = ParseGPS(this.textBox3.Text, this.textBox4.Text);
 
-            if (!string.IsNullOrEmpty(this.textBox5.Text)) {
-                int.TryParse(this.textBox5.Text, out number);
-            } else {
+            if (string.IsNullOrEmpty(this.textBox5.Text)) {
+                ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            int.TryParse(this.textBox5.Text, out number);
 
-            if (!string.IsNullOrEmpty(this.textBox6.Text)) {
-                description = this.textBox6.Text;
-            } else {
+            if (string.IsNullOrEmpty(this.textBox6.Text)) {
+                ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            description = this.textBox6.Text;
 
             if (this.comboBox1.SelectedIndex == 0) {
                 var parcela1 = new Parcela(number, description, position1);
@@ -208,8 +210,12 @@ namespace GeoGUI {
                     this.idList.Add(nehnutelnost2.Id);
                 }
             }
+        }
 
-            SearchForNodes();
+        private void ClearStructures() {
+            this.parcelaTree.Clear();
+            this.nehnutelnostTree.Clear();
+            this.itemTree.Clear();
         }
 
         private void SaveToFile() {
@@ -221,7 +227,7 @@ namespace GeoGUI {
             if (File.Exists(FILE_PATH)) File.Delete(FILE_PATH);
 
             using (StreamWriter writer = new StreamWriter(FILE_PATH)) {
-                writer.WriteLine("Type;KeysData;NodeData >>>");
+                writer.WriteLine("KeysData;NodeData >>>");
 
                 Queue<Node<Item, GPS>> queue = new Queue<Node<Item, GPS>>();
                 queue.Enqueue(this.itemTree.Root);
@@ -229,16 +235,10 @@ namespace GeoGUI {
                 while (queue.Count > 0) {
                     Node<Item, GPS> current = queue.Dequeue();
 
-                    string type = "";
-                    if (current.NodeData.First() is Parcela p) {
-                        type = "Parcela";
-                    } else if (current.NodeData.First() is Nehnutelnost n) {
-                        type = "Nehnutelnost";
-                    }
                     string keysData = current.KeysData.GetKeys();
                     string nodeData = string.Join(";", current.NodeData.ConvertAll(data => data.GetInfo()));
 
-                    writer.WriteLine($"'{type};'{keysData};'{nodeData}");
+                    writer.WriteLine($"'{keysData};'{nodeData}");
 
                     if (current.LeftSon != null) queue.Enqueue(current.LeftSon);
 
@@ -255,13 +255,11 @@ namespace GeoGUI {
                 return;
             }
 
-            this.parcelaTree.Clear();
-            this.nehnutelnostTree.Clear();
-            this.itemTree.Clear();
+            ClearStructures();
 
             using (StreamReader reader = new StreamReader(FILE_PATH)) {
                 string header = reader.ReadLine();
-                if (header == null || !header.StartsWith("Type;KeysData;NodeData >>>")) {
+                if (header == null || !header.StartsWith("KeysData;NodeData >>>")) {
                     MessageBox.Show("Invalid file format.");
                     return;
                 }
@@ -269,31 +267,39 @@ namespace GeoGUI {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
                     string[] parts = line.Replace("'", "").Split(';');
-                    if (parts.Length < 3) {
+                    if (parts.Length < 2) {
                         MessageBox.Show("Invalid data format in file.");
                         return;
                     }
 
-                    string type = parts[0];
-                    string[] coordinates = parts[1].Split(',');
-                    GPS keysData = ParseGPS(coordinates[0].Replace('.', ','), coordinates[1].Replace('.', ','));
-                    for (int i = 2; i < parts.Length; i++) {
+                    string[] coordinates = parts[0].Split(',');
+                    GPS keysData;
+                    if (coordinates[0] == "GPS") {
+                        keysData = ParseGPS(coordinates[1].Replace('.', ','), coordinates[2].Replace('.', ','));
+                    } else {
+                        return;
+                    }
+
+                    for (int i = 1; i < parts.Length; i++) {
                         List<string> dataEntry = parts[i].Split(',').ToList();
+                        string type = dataEntry[0];
+                        string id = dataEntry[1];
+                        int number = -1;
+                        int.TryParse(dataEntry[2], out number);
+                        string description = dataEntry[3];
 
                         if (type == "Parcela") {
-                            List<Parcela> nodeData = new List<Parcela>();
-                            var parcela = new Parcela(int.Parse(dataEntry[1]), dataEntry[2], keysData);
-                            parcela.Id = dataEntry[0].ToString();
+                            var parcela = new Parcela(number, description, keysData);
+                            parcela.Id = id;
                             var item = parcela as Item;
-                            nodeData.Add(parcela);
+
                             this.parcelaTree.InsertNode(ref parcela, keysData);
                             this.itemTree.InsertNode(ref item, keysData);
                         } else if (type == "Nehnutelnost") {
-                            List<Nehnutelnost> nodeData = new List<Nehnutelnost>();
-                            var nehnutelnost = new Nehnutelnost(int.Parse(dataEntry[1]), dataEntry[2], keysData);
-                            nehnutelnost.Id = dataEntry[0].ToString();
+                            var nehnutelnost = new Nehnutelnost(number, description, keysData);
+                            nehnutelnost.Id = id;
                             var item = nehnutelnost as Item;
-                            nodeData.Add(nehnutelnost);
+
                             this.nehnutelnostTree.InsertNode(ref nehnutelnost, keysData);
                             this.itemTree.InsertNode(ref item, keysData);
                         }
@@ -320,7 +326,10 @@ namespace GeoGUI {
                 double.TryParse(this.textBox9.Text, out intersectionProb);
             }
 
-            if (parcelaCount == 0 && nehnutelnostCount == 0) return;
+            if (parcelaCount == 0 && nehnutelnostCount == 0) {
+                ShowMessageBox("Insufficient data provided. Both counts are at 0.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             List<GPS> gpsList = new List<GPS>();
 
@@ -443,6 +452,10 @@ namespace GeoGUI {
         private string GenerateRandomString(int length) {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[this.random.Next(s.Length)]).ToArray());
+        }
+
+        private void ShowMessageBox(string title, string message, MessageBoxButtons buttons, MessageBoxIcon icon) {
+            MessageBox.Show(title, message, buttons, icon);
         }
     }
 }

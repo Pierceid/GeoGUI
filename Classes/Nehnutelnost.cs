@@ -13,11 +13,11 @@ namespace GeoGUI.Classes {
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Nehnutelnost: {this.supCislo} - {this.popis} - [{this.pozicia.X}°, {this.pozicia.Y}°]");
+            Console.WriteLine($"Nehnutelnost: {this.supCislo} - {this.popis} - [{this.pozicia.X}°; {this.pozicia.Y}°]");
         }
 
         public override string GetInfo() {
-            return $"{this.Id},{this.supCislo},{this.popis},{this.pozicia.X.ToString().Replace(',', '.')},{this.pozicia.Y.ToString().Replace(',', '.')}";
+            return $"Nehnutelnost,{this.Id},{this.supCislo},{this.popis}";
         }
 
         public int SupCislo { get => supCislo; set => supCislo = value; }

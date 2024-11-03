@@ -27,7 +27,7 @@
         }
 
         public string GetKeys() {
-            return $"{this.x.ToString().Replace(',', '.')},{this.y.ToString().Replace(',', '.')}";
+            return $"GPS,{this.x.ToString().Replace(',', '.')},{this.y.ToString().Replace(',', '.')}";
         }
 
         public double X { get => x; set => x = value; }

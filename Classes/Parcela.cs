@@ -13,11 +13,11 @@ namespace GeoGUI.Classes {
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Parcela: {this.cisParcely} - {this.popis} - [{this.pozicia.X.ToString().Replace(',', '.')}°, {this.pozicia.Y.ToString().Replace(',', '.')}°]");
+            Console.WriteLine($"Parcela: {this.cisParcely} - {this.popis} - [{this.pozicia.X}°; {this.pozicia.Y}°]");
         }
 
         public override string GetInfo() {
-            return $"{this.Id},{this.cisParcely},{this.popis},{this.pozicia.X.ToString().Replace(',', '.')},{this.pozicia.Y.ToString().Replace(',', '.')}";
+            return $"Parcela,{this.Id},{this.cisParcely},{this.popis}";
         }
 
         public int CisParcely { get => cisParcely; set => cisParcely = value; }

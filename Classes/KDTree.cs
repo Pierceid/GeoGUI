@@ -249,7 +249,11 @@ namespace GeoGUI.Classes {
             return null;
         }
 
-        public void Clear() => root = null;
+        public void Clear() {
+            this.root = null;
+            this.treeSize = 0;
+            this.dataSize = 0;
+        }
 
         public void PrintInOrder() {
             if (this.root == null) return;
