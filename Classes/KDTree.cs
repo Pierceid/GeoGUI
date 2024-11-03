@@ -118,7 +118,7 @@ namespace GeoGUI.Classes {
                     this.dataSize--;
                 } else {
                     Console.WriteLine("UpdateNode() >>> Node removed and reinserted with new keys.");
-                    DeleteAndReplaceNode(nodeToUpdate);
+                    DeleteNode(ref oldData, oldKeys);
                     InsertNode(ref newData, newKeys);
                 }
             }
@@ -147,11 +147,13 @@ namespace GeoGUI.Classes {
         }
 
         private void DeleteAndReplaceNode(Node<T, U> node) {
-            Stack<Node<T, U>> nodesToReplace = new Stack<Node<T, U>>();
-            nodesToReplace.Push(node);
+            if (node == null) return;
 
-            while (nodesToReplace.Count > 0) {
-                Node<T, U> current = nodesToReplace.Pop();
+            Stack<Node<T, U>> nodesToProcess = new Stack<Node<T, U>>();
+            nodesToProcess.Push(node);
+
+            while (nodesToProcess.Count > 0) {
+                Node<T, U> current = nodesToProcess.Pop();
 
                 if (current.LeftSon == null && current.RightSon == null) {
                     if (current.Parent != null) {
@@ -163,18 +165,26 @@ namespace GeoGUI.Classes {
                     } else {
                         this.root = null;
                     }
-                } else {
-                    Node<T, U> replacement = FindReplacementNode(current);
+                    continue;
+                }
 
-                    if (replacement != null) {
-                        current.KeysData = replacement.KeysData;
-                        current.NodeData = replacement.NodeData;
+                Node<T, U> replacement = null;
 
-                        nodesToReplace.Push(replacement);
-                        ReinsertNodes(current);
-                    }
+                if (current.LeftSon != null) {
+                    replacement = FindMaxNode(current.LeftSon);
+                } else if (current.RightSon != null) {
+                    replacement = FindMinNode(current.RightSon);
+                }
+
+                if (replacement != null) {
+                    current.KeysData = replacement.KeysData;
+                    current.NodeData = replacement.NodeData;
+
+                    nodesToProcess.Push(replacement);
                 }
             }
+
+            ReinsertNodes(node);
 
             this.treeSize--;
             this.dataSize--;
@@ -182,12 +192,13 @@ namespace GeoGUI.Classes {
             Console.WriteLine("DeleteAndReplaceNode() >>> Node replaced and removed.");
         }
 
-        private void ReinsertNodes(Node<T, U> node) {
-            if (node == null || node.RightSon == null) return;
+        private List<Node<T, U>> FindDuplicateNodes(Node<T, U> node) {
+            List<Node<T, U>> duplicates = new List<Node<T, U>>();
+
+            if (node == null || node.RightSon == null) return duplicates;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
             nodesToVisit.Push(node.RightSon);
-            List<Node<T, U>> duplicates = new List<Node<T, U>>();
 
             while (nodesToVisit.Count > 0) {
                 Node<T, U> current = nodesToVisit.Pop();
@@ -201,17 +212,19 @@ namespace GeoGUI.Classes {
                 if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
             }
 
+            return duplicates;
+        }
+
+        private void ReinsertNodes(Node<T, U> node) {
+            List<Node<T, U>> duplicates = FindDuplicateNodes(node);
+
             foreach (var duplicate in duplicates) {
-                DeleteAndReplaceNode(duplicate);
                 this.treeSize--;
                 this.dataSize--;
                 T data = duplicate.NodeData.First();
+                DeleteNode(ref data, duplicate.KeysData);
                 InsertNode(ref data, duplicate.KeysData);
             }
-        }
-
-        private Node<T, U> FindReplacementNode(Node<T, U> node) {
-            return (node.LeftSon != null) ? FindMaxNode(node) : (node.RightSon != null) ? FindMinNode(node) : null;
         }
 
         private Node<T, U> FindMinNode(Node<T, U> node) {

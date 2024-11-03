@@ -44,6 +44,7 @@ namespace GeoGUI {
                 case Button button when button == button4:
                     this.comboBox1.SelectedIndex = 0;
                     AddItem();
+                    SearchItems(true);
                     break;
 
                 case Button button when button == button5:
@@ -83,18 +84,13 @@ namespace GeoGUI {
                     GenerateNodes();
                     break;
 
-                case Button button when button.Name == "editButton":
-
-                    break;
-
-                case Button button when button.Name == "removeButton":
-
-                    break;
-
                 default:
 
                     break;
             }
+
+            SearchItems(true);
+            UpdateResultsTableAndCounter();
         }
 
         private void ComboBoxSelectionChanged(object sender, EventArgs e) {
@@ -120,6 +116,10 @@ namespace GeoGUI {
                 } else if (e.ColumnIndex == 1) {
                     this.chosenItem = this.resultList[e.RowIndex];
                     RemoveItem();
+                } else {
+                    this.textBox3.Enabled = true;
+                    this.textBox4.Enabled = true;
+                    this.comboBox1.Enabled = true;
                 }
             }
         }
@@ -134,6 +134,10 @@ namespace GeoGUI {
                 } else if (e.ColumnIndex == 1) {
                     this.chosenItem = this.resultList[e.RowIndex];
                     RemoveItem();
+                } else {
+                    this.textBox3.Enabled = true;
+                    this.textBox4.Enabled = true;
+                    this.comboBox1.Enabled = true;
                 }
             }
         }
@@ -163,11 +167,11 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps1));
                 }
             } catch (NullReferenceException) {
+                this.resultList.Clear();
+                UpdateResultsTableAndCounter();
                 if (noMessageBox || !validCoordinates1) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
-            } finally {
-                UpdateResultsTableAndCounter();
-            }
+            } 
 
             try {
                 if (this.comboBox2.SelectedIndex == 0) {
@@ -178,11 +182,11 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps2));
                 }
             } catch (NullReferenceException) {
+                this.resultList.Clear();
+                UpdateResultsTableAndCounter();
                 if (noMessageBox || !validCoordinates2) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
-            } finally {
-                UpdateResultsTableAndCounter();
-            }
+            } 
         }
 
         private void AddItem() {
@@ -250,8 +254,6 @@ namespace GeoGUI {
                     this.idList.Add(nehnutelnost2.Id);
                 }
             }
-
-            UpdateResultsTableAndCounter();
         }
 
         private void EditItem(bool confirm) {
@@ -304,24 +306,28 @@ namespace GeoGUI {
                 result = MessageBox.Show("Are you sure you want to update this item?", "Confirm Update Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes) {
-                    if (this.chosenItem is Parcela p) {
-                        var parcela = new Parcela(number, description, position);
-                        var item = parcela as Item;
+                    try {
+                        if (this.chosenItem is Parcela p) {
+                            var parcela = new Parcela(number, description, position);
+                            var item = parcela as Item;
 
-                        this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
-                        this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
-                    } else if (this.chosenItem is Nehnutelnost n) {
-                        var nehnutelnost = new Nehnutelnost(number, description, position);
-                        var item = nehnutelnost as Item;
+                            this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
+                            this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
+                        } else if (this.chosenItem is Nehnutelnost n) {
+                            var nehnutelnost = new Nehnutelnost(number, description, position);
+                            var item = nehnutelnost as Item;
 
-                        this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
-                        this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
-                    }
+                            this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
+                            this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
+                        }
+                    } catch (NullReferenceException) {
+                        MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    } 
                 }
 
                 this.textBox3.Enabled = true;
                 this.textBox4.Enabled = true;
-                this.comboBox1.Enabled = false;
+                this.comboBox1.Enabled = true;
             }
         }
 
@@ -351,16 +357,21 @@ namespace GeoGUI {
             DialogResult result = MessageBox.Show("Are you sure you want to remove this item?", "Confirm Remove Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes) {
-                if (this.chosenItem is Parcela parcela) {
-                    this.parcelaTree.DeleteNode(ref parcela, parcela.Pozicia);
-                    this.itemTree.DeleteNode(ref this.chosenItem, parcela.Pozicia);
-                } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
-                    this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
-                    this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
+                try {
+                    if (this.chosenItem is Parcela parcela) {
+                        this.parcelaTree.DeleteNode(ref parcela, parcela.Pozicia);
+                        this.itemTree.DeleteNode(ref this.chosenItem, parcela.Pozicia);
+                    } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
+                        this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
+                        this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
+                    }
+                } catch (NullReferenceException) {
+                    MessageBox.Show("Something went wrong when removing this item.", "Failed Remove Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                UpdateResultsTableAndCounter();
             }
+
+            SearchItems(true);
+            UpdateResultsTableAndCounter();
 
             this.textBox3.Enabled = true;
             this.textBox4.Enabled = true;
@@ -371,7 +382,11 @@ namespace GeoGUI {
             this.parcelaTree.Clear();
             this.nehnutelnostTree.Clear();
             this.itemTree.Clear();
+            this.idList = new List<string>();
+            this.resultList = new List<Item>();
+            this.chosenItem = null;
 
+            SearchItems(true);
             UpdateResultsTableAndCounter();
         }
 
@@ -464,8 +479,6 @@ namespace GeoGUI {
                 }
             }
 
-            UpdateResultsTableAndCounter();
-
             MessageBox.Show($"K-D tree loaded from: {FILE_PATH}");
         }
 
@@ -556,8 +569,6 @@ namespace GeoGUI {
                 this.idList.Add(nehnutelnost1.Id);
                 this.idList.Add(nehnutelnost2.Id);
             }
-
-            UpdateResultsTableAndCounter();
         }
 
         private void UpdateResultsTableAndCounter() {
