@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoGUI.Classes {
     internal class KDTree<T, U> where T : Item where U : IKey<U> {
@@ -146,11 +147,17 @@ namespace GeoGUI.Classes {
         private void DeleteAndReplaceNode(Node<T, U> node) {
             if (node == null) return;
 
+            HashSet<Node<T, U>> visitedNodes = new HashSet<Node<T, U>>();
+            List<Node<T, U>> duplicateNodes = new List<Node<T, U>>();
             Stack<Node<T, U>> nodesToProcess = new Stack<Node<T, U>>();
             nodesToProcess.Push(node);
 
             while (nodesToProcess.Count > 0) {
                 Node<T, U> current = nodesToProcess.Pop();
+
+                if (visitedNodes.Contains(current)) continue;
+
+                visitedNodes.Add(current);
 
                 if (current.LeftSon == null && current.RightSon == null) {
                     if (current.Parent != null) {
@@ -168,17 +175,28 @@ namespace GeoGUI.Classes {
                 Node<T, U> replacement = null;
 
                 if (current.LeftSon != null) {
-                    replacement = FindMaxNode(current.LeftSon);
+                    replacement = FindMaxNode(current, duplicateNodes);
                 } else if (current.RightSon != null) {
-                    replacement = FindMinNode(current.RightSon);
+                    replacement = FindMinNode(current, duplicateNodes);
                 }
 
-                if (replacement != null) {
+                if (replacement != null && !visitedNodes.Contains(replacement)) {
                     current.KeysData = replacement.KeysData;
                     current.NodeData = replacement.NodeData;
 
                     nodesToProcess.Push(replacement);
-                    ReinsertNodes(current);
+                    duplicateNodes.AddRange(FindDuplicateNodes(current));
+                }
+            }
+
+            foreach (var duplicate in duplicateNodes) {
+                this.treeSize--;
+                this.dataSize -= duplicate.NodeData.Count;
+
+                foreach (var nodeData in duplicate.NodeData) {
+                    T data = nodeData;
+                    DeleteNode(ref data, duplicate.KeysData);
+                    InsertNode(ref data, duplicate.KeysData);
                 }
             }
 
@@ -189,9 +207,9 @@ namespace GeoGUI.Classes {
         }
 
         private List<Node<T, U>> FindDuplicateNodes(Node<T, U> node) {
-            List<Node<T, U>> duplicates = new List<Node<T, U>>();
+            List<Node<T, U>> duplicateNodes = new List<Node<T, U>>();
 
-            if (node == null || node.RightSon == null) return duplicates;
+            if (node == null || node.RightSon == null) return duplicateNodes;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
             nodesToVisit.Push(node.RightSon);
@@ -201,7 +219,7 @@ namespace GeoGUI.Classes {
 
                 int comparison = current.KeysData.Compare(node.KeysData, node.Level);
 
-                if (comparison == 0) duplicates.Add(current);
+                if (comparison == 0) duplicateNodes.Add(current);
 
                 if (current.Level != node.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
@@ -211,24 +229,10 @@ namespace GeoGUI.Classes {
                 }
             }
 
-            return duplicates;
+            return duplicateNodes;
         }
 
-        private void ReinsertNodes(Node<T, U> node) {
-            List<Node<T, U>> duplicates = FindDuplicateNodes(node);
-
-            foreach (var duplicate in duplicates) {
-                this.treeSize--;
-                this.dataSize -= duplicate.NodeData.Count;
-
-                foreach (var nodeData in duplicate.NodeData) {
-                    T data = nodeData;
-                    InsertNode(ref data, duplicate.KeysData);
-                }
-            }
-        }
-
-        private Node<T, U> FindMinNode(Node<T, U> node) {
+        private Node<T, U> FindMinNode(Node<T, U> node, List<Node<T, U>> illegalNodes) {
             if (node == null || node.RightSon == null) return null;
 
             Node<T, U> minNode = node.RightSon;
@@ -239,21 +243,22 @@ namespace GeoGUI.Classes {
                 Node<T, U> current = nodesToVisit.Pop();
 
                 int comparison = current.KeysData.Compare(minNode.KeysData, node.Level);
+                bool validNode = !illegalNodes.Any(x => x.KeysData.Equals(current.KeysData));
 
-                if (comparison <= 0) minNode = current;
+                if (comparison <= 0 && validNode) minNode = current;
 
                 if (current.Level != node.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
                     if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
                 } else {
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
+                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
                 }
             }
 
             return minNode;
         }
 
-        private Node<T, U> FindMaxNode(Node<T, U> node) {
+        private Node<T, U> FindMaxNode(Node<T, U> node, List<Node<T, U>> illegalNodes) {
             if (node == null || node.LeftSon == null) return null;
 
             Node<T, U> maxNode = node.LeftSon;
@@ -264,8 +269,9 @@ namespace GeoGUI.Classes {
                 Node<T, U> current = nodesToVisit.Pop();
 
                 int comparison = current.KeysData.Compare(maxNode.KeysData, current.Level);
+                bool validNode = !illegalNodes.Any(x => x.KeysData.Equals(current.KeysData));
 
-                if (comparison >= 0) maxNode = current;
+                if (comparison >= 0 && validNode) maxNode = current;
 
                 if (current.Level != node.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
@@ -276,7 +282,7 @@ namespace GeoGUI.Classes {
             }
 
             return maxNode;
-        }
+        }    
 
         private Node<T, U> FindNode(U keys, Node<T, U> parent) {
             Node<T, U> nodeToFind = new Node<T, U>(keys);
