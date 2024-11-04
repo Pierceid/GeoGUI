@@ -22,8 +22,6 @@ namespace GeoGUI.Classes {
             Node<T, U> nodeToInsert = new Node<T, U>(keys);
             nodeToInsert.NodeData.Add(data);
 
-            data.PrintInfo();
-
             if (this.root == null) {
                 this.treeSize++;
                 this.root = nodeToInsert;

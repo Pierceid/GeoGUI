@@ -14,7 +14,7 @@ namespace GeoGUI {
         private List<string> idList = new List<string>();
         private List<Item> resultList = new List<Item>();
         private Random random = new Random();
-        private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.csv";
+        private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
         private Item chosenItem = null;
 
         public Form1() {
@@ -167,8 +167,6 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps1));
                 }
             } catch (NullReferenceException) {
-                this.resultList.Clear();
-                UpdateResultsTableAndCounter();
                 if (noMessageBox || !validCoordinates1) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
             } 
@@ -182,8 +180,6 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps2));
                 }
             } catch (NullReferenceException) {
-                this.resultList.Clear();
-                UpdateResultsTableAndCounter();
                 if (noMessageBox || !validCoordinates2) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
             } 
@@ -274,8 +270,6 @@ namespace GeoGUI {
                     this.textBox6.Text = n.Popis;
                 }
 
-                this.textBox3.Text = "";
-                this.textBox4.Text = "";
                 this.textBox3.Enabled = false;
                 this.textBox4.Enabled = false;
                 this.comboBox1.Enabled = false;
@@ -348,8 +342,6 @@ namespace GeoGUI {
                 this.textBox6.Text = n.Popis;
             }
 
-            this.textBox3.Text = "";
-            this.textBox4.Text = "";
             this.textBox3.Enabled = false;
             this.textBox4.Enabled = false;
             this.comboBox1.Enabled = false;
