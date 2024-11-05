@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace GeoGUI.Classes {
-    internal class Node<T, U> where T : Item where U : IKey<U> {
+    public class Node<T, U> where T : Item where U : IKey<U> {
 
         private Node<T, U> parent;
         private Node<T, U> leftSon;

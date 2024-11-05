@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GeoGUI.Classes {
-    internal class KDTree<T, U> where T : Item where U : IKey<U> {
+    public class KDTree<T, U> where T : Item where U : IKey<U> {
         private Node<T, U> root;
         private int treeSize;
         private int dataSize;
@@ -16,6 +15,7 @@ namespace GeoGUI.Classes {
 
         public void InsertNode(ref T data, U keys) {
             this.dataSize++;
+
             Node<T, U> current = this.root;
             Node<T, U> parent = null;
             int level = 0;
@@ -64,23 +64,32 @@ namespace GeoGUI.Classes {
         public List<T> FindNodes(U keys) {
             Node<T, U> nodeToFind = new Node<T, U>(keys);
             List<T> result = new List<T>();
-            Node<T, U> current = this.root;
-            int level = 0;
 
-            while (current != null) {
+            if (this.root == null) return result;
+
+            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
+            nodesToVisit.Push(this.root);
+
+            while (nodesToVisit.Count > 0) {
+                Node<T, U> current = nodesToVisit.Pop();
+
                 if (nodeToFind.KeysData.Equals(current.KeysData)) {
-                    result.AddRange(current.NodeData);
                     Console.WriteLine("FindNodes() >>> Node found!");
+                    result.AddRange(current.NodeData);
                     break;
                 }
 
-                int comparison = nodeToFind.KeysData.Compare(current.KeysData, level);
-                current = (comparison <= 0) ? current.LeftSon : current.RightSon;
-                level++;
+                int comparison = nodeToFind.KeysData.Compare(current.KeysData, current.Level);
+
+                if (comparison <= 0 && current.LeftSon != null) {
+                    nodesToVisit.Push(current.LeftSon);
+                } else if (current.RightSon != null) {
+                    nodesToVisit.Push(current.RightSon);
+                }
             }
 
             if (result.Count == 0) {
-                Console.WriteLine("FindNodes() >>> Node not found!");
+                Console.WriteLine("FindNodes() >>> Nodes not found!");
                 throw new NullReferenceException();
             }
 
@@ -144,21 +153,41 @@ namespace GeoGUI.Classes {
             DeleteAndReplaceNode(nodeToDelete);
         }
 
-        private void DeleteAndReplaceNode(Node<T, U> node) {
-            if (node == null) return;
+        public void DeleteNodeReverse(ref T data, U keys, Node<T, U> startNode) {
+            if (startNode == null) return;
 
-            HashSet<Node<T, U>> visitedNodes = new HashSet<Node<T, U>>();
+            Node<T, U> nodeToDelete = this.FindNodeReverse(keys, startNode);
+
+            if (nodeToDelete == null) return;
+
+            if (nodeToDelete.NodeData.Count > 1) {
+                this.dataSize--;
+                Console.WriteLine("DeleteNode() >>> Data entry removed!");
+                foreach (T nodeData in nodeToDelete.NodeData) {
+                    if (nodeData.EqualsByID(data)) {
+                        nodeToDelete.NodeData.Remove(data);
+                        break;
+                    }
+                }
+                return;
+            }
+
+            DeleteAndReplaceNode(nodeToDelete);
+        }
+
+        private void DeleteAndReplaceNode(Node<T, U> parent) {
+            if (parent == null) return;
+
             List<Node<T, U>> duplicateNodes = new List<Node<T, U>>();
+            List<Node<T, U>> visitedNodes = new List<Node<T, U>>();
             Stack<Node<T, U>> nodesToProcess = new Stack<Node<T, U>>();
-            nodesToProcess.Push(node);
+
+            nodesToProcess.Push(parent);
 
             while (nodesToProcess.Count > 0) {
                 Node<T, U> current = nodesToProcess.Pop();
 
-                if (visitedNodes.Contains(current)) continue;
-
-                visitedNodes.Add(current);
-
+                // If the current node is a leaf, remove it
                 if (current.LeftSon == null && current.RightSon == null) {
                     if (current.Parent != null) {
                         if (current.Parent.LeftSon == current) {
@@ -166,62 +195,72 @@ namespace GeoGUI.Classes {
                         } else {
                             current.Parent.RightSon = null;
                         }
+                        Console.WriteLine("DeleteAndReplaceNode() >>> Leaf node removed.");
                     } else {
                         this.root = null;
+                        Console.WriteLine("DeleteAndReplaceNode() >>> Root node removed.");
                     }
-                    continue;
+                    this.treeSize--;
+                    this.dataSize--;
+                    return;
                 }
 
+                // Find replacement for the current node
                 Node<T, U> replacement = null;
 
                 if (current.LeftSon != null) {
-                    replacement = FindMaxNode(current, duplicateNodes);
+                    replacement = FindMaxNode(current);
                 } else if (current.RightSon != null) {
-                    replacement = FindMinNode(current, duplicateNodes);
+                    replacement = FindMinNode(current);
                 }
 
-                if (replacement != null && !visitedNodes.Contains(replacement)) {
+                if (replacement != null) {
                     current.KeysData = replacement.KeysData;
-                    current.NodeData = replacement.NodeData;
+                    current.NodeData = new List<T>(replacement.NodeData);
 
                     nodesToProcess.Push(replacement);
-                    duplicateNodes.AddRange(FindDuplicateNodes(current));
+                    if (!visitedNodes.Contains(current)) visitedNodes.Add(current);
                 }
             }
 
-            foreach (var duplicate in duplicateNodes) {
-                this.treeSize--;
-                this.dataSize -= duplicate.NodeData.Count;
+            // Reinsert duplicates for each visited node
+            foreach (var visited in visitedNodes) {
+                duplicateNodes = FindDuplicateNodes(visited);
+                foreach (var duplicate in duplicateNodes) {
+                    nodesToProcess.Push(duplicate);
+                }
+            }
 
-                foreach (var nodeData in duplicate.NodeData) {
+            while (nodesToProcess.Count > 0) {
+                Node<T, U> duplicate = nodesToProcess.Pop();
+                List<T> duplicateNodeData = new List<T>(duplicate.NodeData);
+
+                foreach (var nodeData in duplicateNodeData) {
                     T data = nodeData;
-                    DeleteNode(ref data, duplicate.KeysData);
+                    DeleteNodeReverse(ref data, duplicate.KeysData, duplicate);
                     InsertNode(ref data, duplicate.KeysData);
                 }
+
+                Console.WriteLine("DeleteAndReplaceNode() >>> Duplicate node reinserted.");
             }
-
-            this.treeSize--;
-            this.dataSize--;
-
-            Console.WriteLine("DeleteAndReplaceNode() >>> Node replaced and removed.");
         }
 
-        private List<Node<T, U>> FindDuplicateNodes(Node<T, U> node) {
+        private List<Node<T, U>> FindDuplicateNodes(Node<T, U> parent) {
             List<Node<T, U>> duplicateNodes = new List<Node<T, U>>();
 
-            if (node == null || node.RightSon == null) return duplicateNodes;
+            if (parent == null || parent.RightSon == null) return duplicateNodes;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(node.RightSon);
+            nodesToVisit.Push(parent.RightSon);
 
             while (nodesToVisit.Count > 0) {
                 Node<T, U> current = nodesToVisit.Pop();
 
-                int comparison = current.KeysData.Compare(node.KeysData, node.Level);
+                int comparison = current.KeysData.Compare(parent.KeysData, parent.Level);
 
                 if (comparison == 0) duplicateNodes.Add(current);
 
-                if (current.Level != node.Level) {
+                if (current.Level != parent.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
                     if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
                 } else {
@@ -232,22 +271,21 @@ namespace GeoGUI.Classes {
             return duplicateNodes;
         }
 
-        private Node<T, U> FindMinNode(Node<T, U> node, List<Node<T, U>> illegalNodes) {
-            if (node == null || node.RightSon == null) return null;
+        private Node<T, U> FindMinNode(Node<T, U> parent) {
+            if (parent == null || parent.RightSon == null) return null;
 
-            Node<T, U> minNode = node.RightSon;
+            Node<T, U> minNode = parent.RightSon;
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
             nodesToVisit.Push(minNode);
 
             while (nodesToVisit.Count > 0) {
                 Node<T, U> current = nodesToVisit.Pop();
 
-                int comparison = current.KeysData.Compare(minNode.KeysData, node.Level);
-                bool validNode = !illegalNodes.Any(x => x.KeysData.Equals(current.KeysData));
+                int comparison = current.KeysData.Compare(minNode.KeysData, parent.Level);
 
-                if (comparison <= 0 && validNode) minNode = current;
+                if (comparison <= 0) minNode = current;
 
-                if (current.Level != node.Level) {
+                if (current.Level != parent.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
                     if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
                 } else {
@@ -258,46 +296,83 @@ namespace GeoGUI.Classes {
             return minNode;
         }
 
-        private Node<T, U> FindMaxNode(Node<T, U> node, List<Node<T, U>> illegalNodes) {
-            if (node == null || node.LeftSon == null) return null;
+        private Node<T, U> FindMaxNode(Node<T, U> parent) {
+            if (parent == null || parent.LeftSon == null) return null;
 
-            Node<T, U> maxNode = node.LeftSon;
+            Node<T, U> maxNode = parent.LeftSon;
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
             nodesToVisit.Push(maxNode);
 
             while (nodesToVisit.Count > 0) {
                 Node<T, U> current = nodesToVisit.Pop();
 
-                int comparison = current.KeysData.Compare(maxNode.KeysData, current.Level);
-                bool validNode = !illegalNodes.Any(x => x.KeysData.Equals(current.KeysData));
+                int comparison = current.KeysData.Compare(maxNode.KeysData, parent.Level);
 
-                if (comparison >= 0 && validNode) maxNode = current;
+                if (comparison >= 0) maxNode = current;
 
-                if (current.Level != node.Level) {
+                if (current.Level != parent.Level) {
                     if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
                     if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
                 } else {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
+                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
                 }
             }
 
             return maxNode;
-        }    
+        }
 
-        private Node<T, U> FindNode(U keys, Node<T, U> parent) {
+        private Node<T, U> FindNode(U keys, Node<T, U> startNode) {
+            if (startNode == null) return null;
+
             Node<T, U> nodeToFind = new Node<T, U>(keys);
-            Node<T, U> current = parent;
-            int level = 0;
 
-            while (current != null) {
+            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
+            nodesToVisit.Push(startNode);
+
+            while (nodesToVisit.Count > 0) {
+                Node<T, U> current = nodesToVisit.Pop();
+
                 if (nodeToFind.KeysData.Equals(current.KeysData)) {
                     Console.WriteLine("FindNode() >>> Node found!");
                     return current;
                 }
 
-                int comparison = nodeToFind.KeysData.Compare(current.KeysData, level);
-                current = (comparison <= 0) ? current.LeftSon : current.RightSon;
-                level++;
+                int comparison = nodeToFind.KeysData.Compare(current.KeysData, current.Level);
+
+                if (comparison <= 0 && current.LeftSon != null) {
+                    nodesToVisit.Push(current.LeftSon);
+                } else if (current.RightSon != null) {
+                    nodesToVisit.Push(current.RightSon);
+                }
+            }
+
+            Console.WriteLine("FindNode() >>> Node not found!");
+            throw new NullReferenceException();
+        }
+
+        private Node<T, U> FindNodeReverse(U keys, Node<T, U> startNode) {
+            if (startNode == null) return null;
+
+            Node<T, U> nodeToFind = new Node<T, U>(keys);
+
+            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
+            nodesToVisit.Push(startNode);
+
+            while (nodesToVisit.Count > 0) {
+                Node<T, U> current = nodesToVisit.Pop();
+
+                if (nodeToFind.KeysData.Equals(current.KeysData)) {
+                    Console.WriteLine("FindNode() >>> Node found!");
+                    return current;
+                }
+
+                int comparison = nodeToFind.KeysData.Compare(current.KeysData, current.Level);
+
+                if (comparison >= 0) {
+                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
+                } else {
+                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
+                }
             }
 
             Console.WriteLine("FindNode() >>> Node not found!");
@@ -349,6 +424,30 @@ namespace GeoGUI.Classes {
             Console.WriteLine("--------------------------------------------------------");
             Console.WriteLine("Tree Size: " + a + "\nData Size: " + c + "\nDuplicates: " + b);
             Console.ResetColor();
+        }
+
+        public List<Node<T, U>> GetAllNodes() {
+            List<Node<T, U>> result = new List<Node<T, U>>();
+
+            if (this.root == null) return result;
+
+            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
+            Node<T, U> current = this.root;
+
+            while (nodesToVisit.Count > 0 || current != null) {
+                while (current != null) {
+                    nodesToVisit.Push(current);
+                    current = current.LeftSon;
+                }
+
+                current = nodesToVisit.Pop();
+
+                result.Add(current);
+
+                current = current.RightSon;
+            }
+
+            return result;
         }
 
         public Node<T, U> Root { get => root; set => root = value; }

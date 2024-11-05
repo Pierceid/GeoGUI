@@ -1,5 +1,5 @@
 ﻿namespace GeoGUI.Classes {
-    internal class GPS : IKey<GPS> {
+    public class GPS : IKey<GPS> {
         private double x;
         private double y;
 

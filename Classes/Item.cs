@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace GeoGUI.Classes {
-    internal abstract class Item {
+    public abstract class Item {
         private string id = Guid.NewGuid().ToString();
 
         public bool EqualsByID(Item other) => this.id == other.id;

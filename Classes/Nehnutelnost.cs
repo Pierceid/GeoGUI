@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace GeoGUI.Classes {
-    internal class Nehnutelnost : Item {
+    public class Nehnutelnost : Item {
         private int supCislo;
         private string popis;
         private GPS pozicia;
