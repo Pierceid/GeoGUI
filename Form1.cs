@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace GeoGUI {
     public partial class Form1 : Form {
-        private KDTree<Parcela, GPS> parcelaTree = new KDTree<Parcela, GPS>();
-        private KDTree<Nehnutelnost, GPS> nehnutelnostTree = new KDTree<Nehnutelnost, GPS>();
-        private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>();
+        private KDTree<Parcela, GPS> parcelaTree = new KDTree<Parcela, GPS>(2);
+        private KDTree<Nehnutelnost, GPS> nehnutelnostTree = new KDTree<Nehnutelnost, GPS>(2);
+        private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>(2);
         private List<string> idList = new List<string>();
         private List<Item> resultList = new List<Item>();
         private Random random = new Random();
@@ -29,22 +29,24 @@ namespace GeoGUI {
                 case Button button when button == button1:
                     this.comboBox2.SelectedIndex = 0;
                     SearchItems(false);
-                    break;
+                    UpdateResultsTableAndCounter();
+                    return;
 
                 case Button button when button == button2:
                     this.comboBox2.SelectedIndex = 1;
                     SearchItems(false);
-                    break;
+                    UpdateResultsTableAndCounter();
+                    return;
 
                 case Button button when button == button3:
                     this.comboBox2.SelectedIndex = 2;
                     SearchItems(false);
-                    break;
+                    UpdateResultsTableAndCounter();
+                    return;
 
                 case Button button when button == button4:
                     this.comboBox1.SelectedIndex = 0;
                     AddItem();
-                    SearchItems(true);
                     break;
 
                 case Button button when button == button5:
@@ -169,7 +171,9 @@ namespace GeoGUI {
             } catch (NullReferenceException) {
                 if (noMessageBox || !validCoordinates1) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
-            } 
+            }
+
+            if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
 
             try {
                 if (this.comboBox2.SelectedIndex == 0) {
@@ -182,7 +186,7 @@ namespace GeoGUI {
             } catch (NullReferenceException) {
                 if (noMessageBox || !validCoordinates2) return;
                 MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
-            } 
+            }
         }
 
         private void AddItem() {
@@ -316,7 +320,7 @@ namespace GeoGUI {
                         }
                     } catch (NullReferenceException) {
                         MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    } 
+                    }
                 }
 
                 this.textBox3.Enabled = true;
@@ -502,7 +506,7 @@ namespace GeoGUI {
             double x, y;
             GPS position1, position2;
 
-            for (int i = 0; i < parcelaCount; i++) {
+            for (int i = 0; i < parcelaCount / 2; i++) {
                 number = this.random.Next();
                 description = GenerateRandomString(10);
 
@@ -530,7 +534,7 @@ namespace GeoGUI {
                 gpsList.Add(position2);
             }
 
-            for (int j = 0; j < nehnutelnostCount; j++) {
+            for (int j = 0; j < nehnutelnostCount / 2; j++) {
                 number = this.random.Next();
                 description = GenerateRandomString(10);
 
