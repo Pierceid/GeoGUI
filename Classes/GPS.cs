@@ -14,7 +14,7 @@
 
         public int Compare(GPS other, int level) {
             if (level % 4 == 0) {
-                return this.CompareStrings(this.Sirka, other.Sirka);
+                return this.CompareStrings(this.sirka, other.Sirka);
             } else if (level % 4 == 1) {
                 return this.ComparePositions(this.x, other.X);
             } else if (level % 4 == 2) {
