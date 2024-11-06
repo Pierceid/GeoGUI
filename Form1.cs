@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace GeoGUI {
     public partial class Form1 : Form {
-        private KDTree<Parcela, GPS> parcelaTree = new KDTree<Parcela, GPS>(2);
-        private KDTree<Nehnutelnost, GPS> nehnutelnostTree = new KDTree<Nehnutelnost, GPS>(2);
-        private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>(2);
+        private KDTree<Parcela, GPS> parcelaTree = new KDTree<Parcela, GPS>(4);
+        private KDTree<Nehnutelnost, GPS> nehnutelnostTree = new KDTree<Nehnutelnost, GPS>(4);
+        private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>(4);
         private List<string> idList = new List<string>();
         private List<Item> resultList = new List<Item>();
         private Random random = new Random();
@@ -22,6 +22,10 @@ namespace GeoGUI {
 
             this.comboBox1.SelectedIndex = 0;
             this.comboBox2.SelectedIndex = 2;
+            this.comboBox3.SelectedIndex = 0;
+            this.comboBox4.SelectedIndex = 0;
+            this.comboBox5.SelectedIndex = 0;
+            this.comboBox6.SelectedIndex = 0;
         }
 
         private void ButtonClick(object sender, EventArgs e) {
@@ -153,11 +157,11 @@ namespace GeoGUI {
             bool validCoordinates2 = !string.IsNullOrEmpty(this.textBox3.Text) && !string.IsNullOrEmpty(this.textBox4.Text);
 
             if (validCoordinates1) {
-                gps1 = ParseGPS(this.textBox1.Text, this.textBox2.Text);
+                gps1 = ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
             }
 
             if (validCoordinates2) {
-                gps2 = ParseGPS(this.textBox3.Text, this.textBox4.Text);
+                gps2 = ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
             }
 
             try {
@@ -199,13 +203,13 @@ namespace GeoGUI {
                 ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            position1 = ParseGPS(this.textBox1.Text, this.textBox2.Text);
+            position1 = ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
 
             if (string.IsNullOrEmpty(this.textBox3.Text) || string.IsNullOrEmpty(this.textBox4.Text)) {
                 ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            position2 = ParseGPS(this.textBox3.Text, this.textBox4.Text);
+            position2 = ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
 
             if (string.IsNullOrEmpty(this.textBox5.Text)) {
                 ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -264,12 +268,16 @@ namespace GeoGUI {
                     this.textBox1.Text = p.Pozicia.X.ToString();
                     this.textBox2.Text = p.Pozicia.Y.ToString();
                     this.comboBox1.SelectedIndex = 0;
+                    this.comboBox3.SelectedIndex = p.Pozicia.Sirka == "W" ? 0 : 1;
+                    this.comboBox4.SelectedIndex = p.Pozicia.Dlzka == "N" ? 0 : 1;
                     this.textBox5.Text = p.CisParcely.ToString();
                     this.textBox6.Text = p.Popis;
                 } else if (this.chosenItem is Nehnutelnost n) {
                     this.textBox1.Text = n.Pozicia.X.ToString();
                     this.textBox2.Text = n.Pozicia.Y.ToString();
                     this.comboBox1.SelectedIndex = 1;
+                    this.comboBox3.SelectedIndex = n.Pozicia.Sirka == "W" ? 0 : 1;
+                    this.comboBox4.SelectedIndex = n.Pozicia.Dlzka == "N" ? 0 : 1;
                     this.textBox5.Text = n.SupCislo.ToString();
                     this.textBox6.Text = n.Popis;
                 }
@@ -287,7 +295,7 @@ namespace GeoGUI {
                     ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                position = ParseGPS(this.textBox1.Text, this.textBox2.Text);
+                position = ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
 
                 if (string.IsNullOrEmpty(this.textBox5.Text)) {
                     ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -336,12 +344,16 @@ namespace GeoGUI {
                 this.textBox1.Text = p.Pozicia.X.ToString();
                 this.textBox2.Text = p.Pozicia.Y.ToString();
                 this.comboBox1.SelectedIndex = 0;
+                this.comboBox3.SelectedIndex = p.Pozicia.Sirka == "W" ? 0 : 1;
+                this.comboBox4.SelectedIndex = p.Pozicia.Dlzka == "N" ? 0 : 1;
                 this.textBox5.Text = p.CisParcely.ToString();
                 this.textBox6.Text = p.Popis;
             } else if (this.chosenItem is Nehnutelnost n) {
                 this.textBox1.Text = n.Pozicia.X.ToString();
                 this.textBox2.Text = n.Pozicia.Y.ToString();
                 this.comboBox1.SelectedIndex = 1;
+                this.comboBox3.SelectedIndex = n.Pozicia.Sirka == "W" ? 0 : 1;
+                this.comboBox4.SelectedIndex = n.Pozicia.Dlzka == "N" ? 0 : 1;
                 this.textBox5.Text = n.SupCislo.ToString();
                 this.textBox6.Text = n.Popis;
             }
@@ -443,7 +455,7 @@ namespace GeoGUI {
                     string[] coordinates = parts[0].Split(',');
                     GPS keysData;
                     if (coordinates[0] == "GPS") {
-                        keysData = ParseGPS(coordinates[1].Replace('.', ','), coordinates[2].Replace('.', ','));
+                        keysData = ParseGPS(coordinates[1].Replace('.', ','), coordinates[3].Replace('.', ','), coordinates[2], coordinates[4]);
                     } else {
                         return;
                     }
@@ -504,6 +516,7 @@ namespace GeoGUI {
             int number;
             string description;
             double x, y;
+            string sirka, dlzka;
             GPS position1, position2;
 
             for (int i = 0; i < parcelaCount / 2; i++) {
@@ -512,11 +525,15 @@ namespace GeoGUI {
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
                 y = Math.Round(this.random.NextDouble() * 50, 0);
-                position1 = new GPS(x, y);
+                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
+                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
+                position1 = new GPS(sirka, x, dlzka, y);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
                 y = Math.Round(this.random.NextDouble() * 50, 0);
-                position2 = new GPS(x, y);
+                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
+                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
+                position2 = new GPS(sirka, x, dlzka, y);
 
                 var parcela1 = new Parcela(number, description, position1);
                 var parcela2 = new Parcela(number, description, position2);
@@ -540,11 +557,15 @@ namespace GeoGUI {
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
                 y = Math.Round(this.random.NextDouble() * 50, 0);
-                position1 = new GPS(x, y);
+                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
+                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
+                position1 = new GPS(sirka, x, dlzka, y);
 
                 x = Math.Round(this.random.NextDouble() * 50, 0);
                 y = Math.Round(this.random.NextDouble() * 50, 0);
-                position2 = new GPS(x, y);
+                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
+                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
+                position2 = new GPS(sirka, x, dlzka, y);
 
                 if (this.random.NextDouble() < intersectionProb) {
                     position1 = gpsList[this.random.Next(gpsList.Count)];
@@ -584,20 +605,20 @@ namespace GeoGUI {
             foreach (Item item in this.resultList) {
                 if (this.comboBox2.SelectedIndex == 0) {
                     if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}° {p.Pozicia.Sirka}, {p.Pozicia.Y}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
                         count++;
                     }
                 } else if (this.comboBox2.SelectedIndex == 1) {
                     if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Sirka}, {n.Pozicia.Y}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
                         count++;
                     }
                 } else {
                     if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}°, {p.Pozicia.Y}°", p.CisParcely, p.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}° {p.Pozicia.Sirka}, {p.Pozicia.Y}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
                         count++;
                     } else if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Y}°", n.SupCislo, n.Popis);
+                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Sirka}, {n.Pozicia.Y}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
                         count++;
                     }
                 }
@@ -612,11 +633,11 @@ namespace GeoGUI {
             }
         }
 
-        private GPS ParseGPS(string latitude, string longitude) {
+        private GPS ParseGPS(string latitude, string longitude, string sirka, string dlzka) {
             double x = Double.MaxValue, y = Double.MaxValue;
             double.TryParse(latitude, out x);
             double.TryParse(longitude, out y);
-            return new GPS(x, y);
+            return new GPS(sirka, x, dlzka, y);
         }
 
         private string GenerateRandomString(int length) {
