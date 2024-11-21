@@ -1,4 +1,5 @@
 ﻿using GeoGUI.Classes;
+using GeoGUI.Classes.Factory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,9 +14,13 @@ namespace GeoGUI {
         private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>(4);
         private List<string> idList = new List<string>();
         private List<Item> resultList = new List<Item>();
-        private SubjectList subjectList = new SubjectList();
         private Random random = new Random();
         private Item chosenItem = null;
+
+        private IFactory parcelaFactory = new ParcelaFactory();
+        private IFactory nehnutelnostFactory = new NehnutelnostFactory();
+        private SubjectList subjectList = new SubjectList();
+
 
         private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
 
@@ -517,81 +522,52 @@ namespace GeoGUI {
                 return;
             }
 
+            GenerateItems<Parcela>(parcelaCount, intersectionProb, this.parcelaTree, this.parcelaFactory);
+            GenerateItems<Nehnutelnost>(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
+        }
+
+        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory factory) where T : Item {
             List<GPS> gpsList = new List<GPS>();
 
-            int number;
-            string description;
-            double x, y;
-            string sirka, dlzka;
-            GPS position1, position2;
+            for (int i = 0; i < count / 2; i++) {
+                int number = this.random.Next();
+                string description = GenerateRandomString(10);
 
-            for (int i = 0; i < parcelaCount / 2; i++) {
-                number = this.random.Next();
-                description = GenerateRandomString(10);
+                GPS position1 = GenerateRandomGPS();
+                GPS position2 = GenerateRandomGPS();
 
-                x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 50, 0);
-                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
-                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
-                position1 = new GPS(sirka, x, dlzka, y);
-
-                x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 50, 0);
-                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
-                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
-                position2 = new GPS(sirka, x, dlzka, y);
-
-                var parcela1 = new Parcela(number, description, position1);
-                var parcela2 = new Parcela(number, description, position2);
-                var item1 = parcela1 as Item;
-                var item2 = parcela2 as Item;
-
-                this.parcelaTree.InsertNode(ref parcela1, position1);
-                this.parcelaTree.InsertNode(ref parcela2, position2);
-                this.itemTree.InsertNode(ref item1, position1);
-                this.itemTree.InsertNode(ref item2, position2);
-
-                this.idList.Add(parcela1.Id);
-                this.idList.Add(parcela2.Id);
-                gpsList.Add(position1);
-                gpsList.Add(position2);
-            }
-
-            for (int j = 0; j < nehnutelnostCount / 2; j++) {
-                number = this.random.Next();
-                description = GenerateRandomString(10);
-
-                x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 50, 0);
-                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
-                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
-                position1 = new GPS(sirka, x, dlzka, y);
-
-                x = Math.Round(this.random.NextDouble() * 50, 0);
-                y = Math.Round(this.random.NextDouble() * 50, 0);
-                sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
-                dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
-                position2 = new GPS(sirka, x, dlzka, y);
-
-                if (this.random.NextDouble() < intersectionProb) {
+                if (this.random.NextDouble() < intersectionProb && gpsList.Count > 1) {
                     position1 = gpsList[this.random.Next(gpsList.Count)];
                     List<GPS> filteredList = gpsList.Where(gps => gps != position1).ToList();
                     position2 = filteredList[this.random.Next(filteredList.Count)];
                 }
 
-                var nehnutelnost1 = new Nehnutelnost(number, description, position1);
-                var nehnutelnost2 = new Nehnutelnost(number, description, position2);
-                var item1 = nehnutelnost1 as Item;
-                var item2 = nehnutelnost2 as Item;
+                var item1 = factory.CreateItem(number, description, position1);
+                var item2 = factory.CreateItem(number, description, position2);
 
-                this.nehnutelnostTree.InsertNode(ref nehnutelnost1, position1);
-                this.nehnutelnostTree.InsertNode(ref nehnutelnost2, position2);
                 this.itemTree.InsertNode(ref item1, position1);
                 this.itemTree.InsertNode(ref item2, position2);
 
-                this.idList.Add(nehnutelnost1.Id);
-                this.idList.Add(nehnutelnost2.Id);
+                T item3 = item1 as T;
+                T item4 = item2 as T;
+
+                tree.InsertNode(ref item3, position1);
+                tree.InsertNode(ref item4, position2);
+
+                this.idList.Add(item1.Id);
+                this.idList.Add(item2.Id);
+
+                gpsList.Add(position1);
+                gpsList.Add(position2);
             }
+        }
+
+        private GPS GenerateRandomGPS() {
+            double x = Math.Round(this.random.NextDouble() * 50, 0);
+            double y = Math.Round(this.random.NextDouble() * 50, 0);
+            string sirka = this.random.NextDouble() < 0.5 ? "W" : "E";
+            string dlzka = this.random.NextDouble() < 0.5 ? "N" : "S";
+            return new GPS(sirka, x, dlzka, y);
         }
 
         private void UpdateResultsTableAndCounter() {
