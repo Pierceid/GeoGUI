@@ -6,7 +6,7 @@
         private double y;
 
         public GPS(string sirka, double x, string dlzka, double y) {
-            this.Sirka = sirka;
+            this.sirka = sirka;
             this.x = x;
             this.dlzka = dlzka;
             this.y = y;
@@ -14,18 +14,18 @@
 
         public int Compare(GPS other, int level) {
             if (level % 4 == 0) {
-                return this.CompareStrings(this.Sirka, other.Sirka);
+                return this.CompareStrings(this.sirka, other.Sirka);
             } else if (level % 4 == 1) {
                 return this.ComparePositions(this.x, other.X);
             } else if (level % 4 == 2) {
-                return this.CompareStrings(this.dlzka, other.dlzka);
+                return this.CompareStrings(this.dlzka, other.Dlzka);
             } else {
                 return this.ComparePositions(this.y, other.Y);
             }
         }
 
         public bool Equals(GPS other) {
-            return this.x == other.X && this.y == other.Y && this.sirka == other.sirka && this.dlzka == other.dlzka;
+            return this.x == other.X && this.y == other.Y && this.sirka == other.Sirka && this.dlzka == other.Dlzka;
         }
 
         private int ComparePositions(double value1, double value2) {
