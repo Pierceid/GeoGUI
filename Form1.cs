@@ -13,9 +13,11 @@ namespace GeoGUI {
         private KDTree<Item, GPS> itemTree = new KDTree<Item, GPS>(4);
         private List<string> idList = new List<string>();
         private List<Item> resultList = new List<Item>();
+        private SubjectList subjectList = new SubjectList();
         private Random random = new Random();
-        private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
         private Item chosenItem = null;
+
+        private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
 
         public Form1() {
             InitializeComponent();
@@ -26,6 +28,12 @@ namespace GeoGUI {
             this.comboBox4.SelectedIndex = 0;
             this.comboBox5.SelectedIndex = 0;
             this.comboBox6.SelectedIndex = 0;
+
+            var dataGridViewObserver = new DataGridViewObserver(this.dataGridView, this.subjectList, this.comboBox2);
+            var counterLabelObserver = new CounterLabelObserver(this.label11, this.subjectList, this.comboBox2, this.parcelaTree, this.nehnutelnostTree, this.itemTree);
+
+            this.subjectList.Attach(dataGridViewObserver);
+            this.subjectList.Attach(counterLabelObserver);
         }
 
         private void ButtonClick(object sender, EventArgs e) {
@@ -173,8 +181,7 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps1));
                 }
             } catch (NullReferenceException) {
-                if (noMessageBox || !validCoordinates1) return;
-                MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
+                if (!noMessageBox && validCoordinates1) MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
             }
 
             if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
@@ -188,8 +195,7 @@ namespace GeoGUI {
                     this.resultList.AddRange(this.itemTree.FindNodes(gps2));
                 }
             } catch (NullReferenceException) {
-                if (noMessageBox || !validCoordinates2) return;
-                MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
+                if (!noMessageBox && validCoordinates2) MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
             }
         }
 
@@ -390,11 +396,11 @@ namespace GeoGUI {
             this.parcelaTree.Clear();
             this.nehnutelnostTree.Clear();
             this.itemTree.Clear();
-            this.idList = new List<string>();
-            this.resultList = new List<Item>();
+            this.idList.Clear();
+            this.resultList.Clear();
+            this.subjectList.ResultList.Clear();
             this.chosenItem = null;
 
-            SearchItems(true);
             UpdateResultsTableAndCounter();
         }
 
@@ -589,48 +595,7 @@ namespace GeoGUI {
         }
 
         private void UpdateResultsTableAndCounter() {
-            this.dataGridView.Rows.Clear();
-
-            if (this.dataGridView.Columns.Count == 0) {
-                this.dataGridView.Columns.Add("Type", "Type");
-                this.dataGridView.Columns.Add("Position", "Position");
-                this.dataGridView.Columns.Add("Number", "Number");
-                this.dataGridView.Columns.Add("Description", "Description");
-                this.dataGridView.Columns.Add("Edit", "Edit");
-                this.dataGridView.Columns.Add("Remove", "Remove");
-            }
-
-            int count = 0;
-
-            foreach (Item item in this.resultList) {
-                if (this.comboBox2.SelectedIndex == 0) {
-                    if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}° {p.Pozicia.Sirka}, {p.Pozicia.Y}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
-                        count++;
-                    }
-                } else if (this.comboBox2.SelectedIndex == 1) {
-                    if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Sirka}, {n.Pozicia.Y}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
-                        count++;
-                    }
-                } else {
-                    if (item is Parcela p) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Parcela", $"{p.Pozicia.X}° {p.Pozicia.Sirka}, {p.Pozicia.Y}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
-                        count++;
-                    } else if (item is Nehnutelnost n) {
-                        this.dataGridView.Rows.Add("<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}°, {n.Pozicia.Sirka}, {n.Pozicia.Y}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
-                        count++;
-                    }
-                }
-            }
-
-            if (this.comboBox2.SelectedIndex == 0) {
-                this.label11.Text = $"Counter: {count} / {this.parcelaTree.DataSize}";
-            } else if (this.comboBox2.SelectedIndex == 1) {
-                this.label11.Text = $"Counter: {count} / {this.nehnutelnostTree.DataSize}";
-            } else {
-                this.label11.Text = $"Counter: {count} / {this.itemTree.DataSize}";
-            }
+            this.subjectList.SetResultList(this.resultList);
         }
 
         private GPS ParseGPS(string latitude, string longitude, string sirka, string dlzka) {

@@ -47,13 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CounterLabelObserver.cs" />
+    <Compile Include="Classes\DataGridViewObserver.cs" />
     <Compile Include="Classes\GPS.cs" />
     <Compile Include="Classes\IKey.cs" />
+    <Compile Include="Classes\IObserver.cs" />
+    <Compile Include="Classes\ISubject.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\KDTree.cs" />
     <Compile Include="Classes\Nehnutelnost.cs" />
     <Compile Include="Classes\Node.cs" />
     <Compile Include="Classes\Parcela.cs" />
+    <Compile Include="Classes\SubjectList.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
