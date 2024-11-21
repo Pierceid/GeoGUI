@@ -19,6 +19,7 @@ namespace GeoGUI.Classes {
         public override string GetInfo() {
             return $"Parcela,{this.Id},{this.cisParcely},{this.popis}";
         }
+
         public override Item Clone() {
             return new Parcela(this.cisParcely, this.popis, this.pozicia);
         }

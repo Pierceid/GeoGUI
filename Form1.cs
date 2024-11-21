@@ -1,5 +1,6 @@
 ﻿using GeoGUI.Classes;
 using GeoGUI.Classes.Factory;
+using GeoGUI.Classes.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,7 +21,6 @@ namespace GeoGUI {
         private IFactory<Parcela> parcelaFactory = new ParcelaFactory();
         private IFactory<Nehnutelnost> nehnutelnostFactory = new NehnutelnostFactory();
         private SubjectList subjectList = new SubjectList();
-
 
         private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
 
@@ -224,44 +224,49 @@ namespace GeoGUI {
         private void SearchItems(bool noMessageBox) {
             this.resultList.Clear();
 
-            GPS gps1 = null, gps2 = null;
+            GPS gps1 = ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
+            GPS gps2 = ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
 
-            bool validCoordinates1 = !string.IsNullOrEmpty(this.textBox1.Text) && !string.IsNullOrEmpty(this.textBox2.Text);
-            bool validCoordinates2 = !string.IsNullOrEmpty(this.textBox3.Text) && !string.IsNullOrEmpty(this.textBox4.Text);
-
-            if (validCoordinates1) {
-                gps1 = ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
-            }
-
-            if (validCoordinates2) {
-                gps2 = ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
-            }
-
-            try {
-                if (this.comboBox2.SelectedIndex == 0) {
-                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps1));
-                } else if (this.comboBox2.SelectedIndex == 1) {
-                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps1));
-                } else {
-                    this.resultList.AddRange(this.itemTree.FindNodes(gps1));
-                }
-            } catch (NullReferenceException) {
-                if (!noMessageBox && validCoordinates1) MessageBox.Show($"No matching nodes with keys: [{gps1.GetKeys()}].");
-            }
+            PerformSearch(gps1, gps1 != null, noMessageBox);
 
             if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
 
+            PerformSearch(gps2, gps2 != null, noMessageBox);
+        }
+
+        private void PerformSearch(GPS gps, bool gpsValid, bool noMessageBox) {
+            if (gps == null) return;
+
             try {
-                if (this.comboBox2.SelectedIndex == 0) {
-                    this.resultList.AddRange(this.parcelaTree.FindNodes(gps2));
-                } else if (this.comboBox2.SelectedIndex == 1) {
-                    this.resultList.AddRange(this.nehnutelnostTree.FindNodes(gps2));
-                } else {
-                    this.resultList.AddRange(this.itemTree.FindNodes(gps2));
+                switch (this.comboBox2.SelectedIndex) {
+                    case 0:
+                        AddResultsToList(new SearchStrategy<Parcela>(), this.parcelaTree, gps);
+                        break;
+
+                    case 1:
+                        AddResultsToList(new SearchStrategy<Nehnutelnost>(), this.nehnutelnostTree, gps);
+                        break;
+
+                    default:
+                        try {
+                            AddResultsToList(new SearchStrategy<Parcela>(), this.parcelaTree, gps);
+                        } catch (NullReferenceException) {
+                            if (!noMessageBox && gpsValid) {
+                                MessageBox.Show($"No matching nodes with keys: [{gps.GetKeys()}].");
+                            }
+                        }
+                        AddResultsToList(new SearchStrategy<Nehnutelnost>(), this.nehnutelnostTree, gps);
+                        break;
                 }
             } catch (NullReferenceException) {
-                if (!noMessageBox && validCoordinates2) MessageBox.Show($"No matching nodes with keys: [{gps2.GetKeys()}].");
+                if (!noMessageBox && gpsValid) {
+                    MessageBox.Show($"No matching nodes with keys: [{gps.GetKeys()}].");
+                }
             }
+        }
+
+        private void AddResultsToList<T>(IStrategy<T> strategy, KDTree<T, GPS> tree, GPS gps) where T : Item {
+            this.resultList.AddRange(strategy.Search(tree, gps));
         }
 
         private void AddItem() {

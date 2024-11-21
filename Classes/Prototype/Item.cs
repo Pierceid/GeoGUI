@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GeoGUI.Classes.Prototype;
+using System;
 
 namespace GeoGUI.Classes {
-    public abstract class Item {
+    public abstract class Item : IPrototype {
         private string id = Guid.NewGuid().ToString();
 
         public bool EqualsByID(Item other) => this.id == other.id;
@@ -11,6 +12,8 @@ namespace GeoGUI.Classes {
         public abstract string GetInfo();
 
         public abstract Item Clone();
+
+        IPrototype IPrototype.Clone() => this.Clone();
 
         public string Id { get => id; set => id = value; }
     }
