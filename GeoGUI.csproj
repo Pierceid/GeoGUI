@@ -52,16 +52,16 @@
     <Compile Include="Classes\Factory\ParcelaFactory.cs" />
     <Compile Include="Classes\GPS.cs" />
     <Compile Include="Classes\IKey.cs" />
-    <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\KDTree.cs" />
-    <Compile Include="Classes\Nehnutelnost.cs" />
     <Compile Include="Classes\Node.cs" />
     <Compile Include="Classes\Observer\CounterLabelObserver.cs" />
     <Compile Include="Classes\Observer\DataGridViewObserver.cs" />
     <Compile Include="Classes\Observer\IObserver.cs" />
     <Compile Include="Classes\Observer\ISubject.cs" />
     <Compile Include="Classes\Observer\SubjectList.cs" />
-    <Compile Include="Classes\Parcela.cs" />
+    <Compile Include="Classes\Prototype\Item.cs" />
+    <Compile Include="Classes\Prototype\Nehnutelnost.cs" />
+    <Compile Include="Classes\Prototype\Parcela.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

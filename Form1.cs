@@ -76,15 +76,15 @@ namespace GeoGUI {
                     break;
 
                 case Button button when button == button7:
-                    EditItem(true);
+                    RemoveItem();
                     break;
 
                 case Button button when button == button8:
-                    RemoveItem();
+
                     break;
 
                 case Button button when button == button9:
-                    RemoveItem();
+                    DuplicateItem();
                     break;
 
                 case Button button when button == button10:
@@ -112,6 +112,61 @@ namespace GeoGUI {
             UpdateResultsTableAndCounter();
         }
 
+        private void DuplicateItem() {
+            if (this.chosenItem == null) return;
+
+            if (this.chosenItem is Parcela p) {
+                this.textBox1.Text = p.Pozicia.X.ToString();
+                this.textBox2.Text = p.Pozicia.Y.ToString();
+                this.comboBox1.SelectedIndex = 0;
+                this.comboBox3.SelectedIndex = p.Pozicia.Sirka == "W" ? 0 : 1;
+                this.comboBox4.SelectedIndex = p.Pozicia.Dlzka == "N" ? 0 : 1;
+                this.textBox5.Text = p.CisParcely.ToString();
+                this.textBox6.Text = p.Popis;
+            } else if (this.chosenItem is Nehnutelnost n) {
+                this.textBox1.Text = n.Pozicia.X.ToString();
+                this.textBox2.Text = n.Pozicia.Y.ToString();
+                this.comboBox1.SelectedIndex = 1;
+                this.comboBox3.SelectedIndex = n.Pozicia.Sirka == "W" ? 0 : 1;
+                this.comboBox4.SelectedIndex = n.Pozicia.Dlzka == "N" ? 0 : 1;
+                this.textBox5.Text = n.SupCislo.ToString();
+                this.textBox6.Text = n.Popis;
+            }
+
+            this.textBox3.Enabled = false;
+            this.textBox4.Enabled = false;
+            this.comboBox1.Enabled = false;
+
+            DialogResult result = MessageBox.Show("Are you sure you want to duplicate this item?", "Confirm Duplicate Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes) {
+                try {
+                    Item itemClone = this.chosenItem.Clone();
+
+                    if (this.chosenItem is Parcela parcela) {
+                        Parcela parcelaClone = itemClone as Parcela;
+
+                        this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
+                        this.itemTree.InsertNode(ref itemClone, parcelaClone.Pozicia);
+                    } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
+                        Nehnutelnost nehnutelnostClone = itemClone as Nehnutelnost;
+
+                        this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
+                        this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
+                    }
+                } catch (NullReferenceException) {
+                    MessageBox.Show("Something went wrong when duplicating this item.", "Failed Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            SearchItems(true);
+            UpdateResultsTableAndCounter();
+
+            this.textBox3.Enabled = true;
+            this.textBox4.Enabled = true;
+            this.comboBox1.Enabled = true;
+        }
+
         private void ComboBoxSelectionChanged(object sender, EventArgs e) {
             switch (sender) {
                 case ComboBox comboBox when comboBox == comboBox1:
@@ -128,11 +183,16 @@ namespace GeoGUI {
         }
 
         private void DataGridViewCellClick(object sender, DataGridViewCellEventArgs e) {
+            if (this.resultList.Count == 0) return;
+
             if (e.RowIndex >= 0) {
                 if (e.ColumnIndex == 0) {
                     this.chosenItem = this.resultList[e.RowIndex];
-                    EditItem(false);
+                    DuplicateItem();
                 } else if (e.ColumnIndex == 1) {
+                    this.chosenItem = this.resultList[e.RowIndex];
+                    EditItem(false);
+                } else if (e.ColumnIndex == 2) {
                     this.chosenItem = this.resultList[e.RowIndex];
                     RemoveItem();
                 } else {

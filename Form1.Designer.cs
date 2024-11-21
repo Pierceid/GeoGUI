@@ -24,6 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -46,12 +50,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -75,10 +73,13 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.Duplicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -107,6 +108,54 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Coordinates";
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.DisplayMember = "0";
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Items.AddRange(new object[] {
+            "N",
+            "S"});
+            this.comboBox6.Location = new System.Drawing.Point(359, 116);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(70, 24);
+            this.comboBox6.TabIndex = 19;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.DisplayMember = "0";
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "W",
+            "E"});
+            this.comboBox5.Location = new System.Drawing.Point(145, 116);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(70, 24);
+            this.comboBox5.TabIndex = 18;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.DisplayMember = "0";
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "N",
+            "S"});
+            this.comboBox4.Location = new System.Drawing.Point(359, 54);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(70, 24);
+            this.comboBox4.TabIndex = 17;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.DisplayMember = "0";
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "W",
+            "E"});
+            this.comboBox3.Location = new System.Drawing.Point(145, 54);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(70, 24);
+            this.comboBox3.TabIndex = 16;
             // 
             // textBox3
             // 
@@ -315,73 +364,25 @@
             // 
             // dataGridView
             // 
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Duplicate,
             this.Edit,
             this.Remove,
             this.Type,
             this.Position,
             this.Number,
             this.Description});
-            this.dataGridView.Location = new System.Drawing.Point(12, 309);
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridView.Location = new System.Drawing.Point(0, 321);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(1069, 217);
+            this.dataGridView.Size = new System.Drawing.Size(1093, 272);
             this.dataGridView.TabIndex = 6;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
-            // 
-            // Edit
-            // 
-            this.Edit.DividerWidth = 1;
-            this.Edit.HeaderText = "Edit";
-            this.Edit.MinimumWidth = 70;
-            this.Edit.Name = "Edit";
-            this.Edit.Width = 70;
-            // 
-            // Remove
-            // 
-            this.Remove.DividerWidth = 1;
-            this.Remove.HeaderText = "Remove";
-            this.Remove.MinimumWidth = 70;
-            this.Remove.Name = "Remove";
-            this.Remove.Width = 70;
-            // 
-            // Type
-            // 
-            this.Type.DividerWidth = 1;
-            this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 100;
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            this.Type.Width = 120;
-            // 
-            // Position
-            // 
-            this.Position.DividerWidth = 1;
-            this.Position.HeaderText = "Position";
-            this.Position.MinimumWidth = 100;
-            this.Position.Name = "Position";
-            this.Position.ReadOnly = true;
-            this.Position.Width = 120;
-            // 
-            // Number
-            // 
-            this.Number.DividerWidth = 1;
-            this.Number.HeaderText = "Number";
-            this.Number.MinimumWidth = 100;
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            this.Number.Width = 120;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.DividerWidth = 1;
-            this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 100;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -601,59 +602,65 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
-            // comboBox3
+            // Duplicate
             // 
-            this.comboBox3.DisplayMember = "0";
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "W",
-            "E"});
-            this.comboBox3.Location = new System.Drawing.Point(145, 54);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(70, 24);
-            this.comboBox3.TabIndex = 16;
+            this.Duplicate.DividerWidth = 1;
+            this.Duplicate.HeaderText = "Duplicate";
+            this.Duplicate.MinimumWidth = 70;
+            this.Duplicate.Name = "Duplicate";
             // 
-            // comboBox4
+            // Edit
             // 
-            this.comboBox4.DisplayMember = "0";
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "N",
-            "S"});
-            this.comboBox4.Location = new System.Drawing.Point(359, 54);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(70, 24);
-            this.comboBox4.TabIndex = 17;
+            this.Edit.DividerWidth = 1;
+            this.Edit.HeaderText = "Edit";
+            this.Edit.MinimumWidth = 70;
+            this.Edit.Name = "Edit";
             // 
-            // comboBox5
+            // Remove
             // 
-            this.comboBox5.DisplayMember = "0";
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Items.AddRange(new object[] {
-            "W",
-            "E"});
-            this.comboBox5.Location = new System.Drawing.Point(145, 116);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(70, 24);
-            this.comboBox5.TabIndex = 18;
+            this.Remove.DividerWidth = 1;
+            this.Remove.HeaderText = "Remove";
+            this.Remove.MinimumWidth = 70;
+            this.Remove.Name = "Remove";
             // 
-            // comboBox6
+            // Type
             // 
-            this.comboBox6.DisplayMember = "0";
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Items.AddRange(new object[] {
-            "N",
-            "S"});
-            this.comboBox6.Location = new System.Drawing.Point(359, 116);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(70, 24);
-            this.comboBox6.TabIndex = 19;
+            this.Type.DividerWidth = 1;
+            this.Type.HeaderText = "Type";
+            this.Type.MinimumWidth = 100;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Position
+            // 
+            this.Position.DividerWidth = 1;
+            this.Position.HeaderText = "Position";
+            this.Position.MinimumWidth = 100;
+            this.Position.Name = "Position";
+            this.Position.ReadOnly = true;
+            // 
+            // Number
+            // 
+            this.Number.DividerWidth = 1;
+            this.Number.HeaderText = "Number";
+            this.Number.MinimumWidth = 100;
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.DividerWidth = 1;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 100;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 537);
+            this.ClientSize = new System.Drawing.Size(1093, 593);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
@@ -724,15 +731,16 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Duplicate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Edit;
         private System.Windows.Forms.DataGridViewTextBoxColumn Remove;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Position;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
-        private System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
     }
 }

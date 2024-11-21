@@ -10,6 +10,8 @@ namespace GeoGUI.Classes {
 
         public abstract string GetInfo();
 
+        public abstract Item Clone();
+
         public string Id { get => id; set => id = value; }
     }
 }

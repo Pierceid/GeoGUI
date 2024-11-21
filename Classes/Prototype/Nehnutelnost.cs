@@ -20,6 +20,10 @@ namespace GeoGUI.Classes {
             return $"Nehnutelnost,{this.Id},{this.supCislo},{this.popis}";
         }
 
+        public override Item Clone() {
+            return new Nehnutelnost(this.supCislo, this.popis, this.pozicia);
+        }
+
         public int SupCislo { get => supCislo; set => supCislo = value; }
 
         public string Popis { get => popis; set => popis = value; }
