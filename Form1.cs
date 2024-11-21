@@ -17,8 +17,8 @@ namespace GeoGUI {
         private Random random = new Random();
         private Item chosenItem = null;
 
-        private IFactory parcelaFactory = new ParcelaFactory();
-        private IFactory nehnutelnostFactory = new NehnutelnostFactory();
+        private IFactory<Parcela> parcelaFactory = new ParcelaFactory();
+        private IFactory<Nehnutelnost> nehnutelnostFactory = new NehnutelnostFactory();
         private SubjectList subjectList = new SubjectList();
 
 
@@ -526,7 +526,7 @@ namespace GeoGUI {
             GenerateItems<Nehnutelnost>(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
         }
 
-        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory factory) where T : Item {
+        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory<T> factory) where T : Item {
             List<GPS> gpsList = new List<GPS>();
 
             for (int i = 0; i < count / 2; i++) {
@@ -542,8 +542,8 @@ namespace GeoGUI {
                     position2 = filteredList[this.random.Next(filteredList.Count)];
                 }
 
-                var item1 = factory.CreateItem(number, description, position1);
-                var item2 = factory.CreateItem(number, description, position2);
+                Item item1 = factory.CreateItem(number, description, position1);
+                Item item2 = factory.CreateItem(number, description, position2);
 
                 this.itemTree.InsertNode(ref item1, position1);
                 this.itemTree.InsertNode(ref item2, position2);
