@@ -47,10 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Crate\GPS.cs" />
     <Compile Include="Classes\Factory\IFactory.cs" />
     <Compile Include="Classes\Factory\NehnutelnostFactory.cs" />
     <Compile Include="Classes\Factory\ParcelaFactory.cs" />
-    <Compile Include="Classes\GPS.cs" />
     <Compile Include="Classes\IKey.cs" />
     <Compile Include="Classes\KDTree.cs" />
     <Compile Include="Classes\Node.cs" />

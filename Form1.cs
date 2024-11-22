@@ -18,8 +18,8 @@ namespace GeoGUI {
         private Random random = new Random();
         private Item chosenItem = null;
 
-        private IFactory<Parcela> parcelaFactory = new ParcelaFactory();
-        private IFactory<Nehnutelnost> nehnutelnostFactory = new NehnutelnostFactory();
+        private IFactory parcelaFactory = new ParcelaFactory();
+        private IFactory nehnutelnostFactory = new NehnutelnostFactory();
         private SubjectList subjectList = new SubjectList();
 
         private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
@@ -141,16 +141,12 @@ namespace GeoGUI {
 
             if (result == DialogResult.Yes) {
                 try {
-                    Item itemClone = this.chosenItem.Clone();
+                    var itemClone = this.chosenItem.Clone();
 
-                    if (this.chosenItem is Parcela parcela) {
-                        Parcela parcelaClone = itemClone as Parcela;
-
+                    if (itemClone is Parcela parcelaClone) {
                         this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
                         this.itemTree.InsertNode(ref itemClone, parcelaClone.Pozicia);
-                    } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
-                        Nehnutelnost nehnutelnostClone = itemClone as Nehnutelnost;
-
+                    } else if (itemClone is Nehnutelnost nehnutelnostClone) {
                         this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
                         this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
                     }
@@ -591,7 +587,7 @@ namespace GeoGUI {
             GenerateItems<Nehnutelnost>(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
         }
 
-        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory<T> factory) where T : Item {
+        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory factory) where T : Item {
             List<GPS> gpsList = new List<GPS>();
 
             for (int i = 0; i < count / 2; i++) {
@@ -607,14 +603,13 @@ namespace GeoGUI {
                     position2 = filteredList[this.random.Next(filteredList.Count)];
                 }
 
-                Item item1 = factory.CreateItem(number, description, position1);
-                Item item2 = factory.CreateItem(number, description, position2);
+                var item1 = factory.CreatePrototype(number, description, position1) as Item;
+                var item2 = factory.CreatePrototype(number, description, position2) as Item;
+                var item3 = item1 as T;
+                var item4 = item2 as T;
 
                 this.itemTree.InsertNode(ref item1, position1);
                 this.itemTree.InsertNode(ref item2, position2);
-
-                T item3 = item1 as T;
-                T item4 = item2 as T;
 
                 tree.InsertNode(ref item3, position1);
                 tree.InsertNode(ref item4, position2);
