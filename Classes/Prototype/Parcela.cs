@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoGUI.Classes.Utils;
+using System;
 
 namespace GeoGUI.Classes {
     public class Parcela : Item {
@@ -13,7 +14,7 @@ namespace GeoGUI.Classes {
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Parcela: {this.cisParcely} - {this.popis} - [{this.pozicia.X}°; {this.pozicia.Y}°]");
+            Console.WriteLine($"Parcela: {this.cisParcely} - {this.popis} - [{Util.FormatDoubleForExport(this.pozicia.X)}°; {Util.FormatDoubleForExport(this.pozicia.Y)}°]");
         }
 
         public override string GetInfo() {

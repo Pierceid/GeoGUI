@@ -1,9 +1,15 @@
 ﻿namespace GeoGUI.Classes {
     using System.Collections.Generic;
 
-    public class SubjectList : ISubject {
+    public class Subject : ISubject {
         private List<IObserver> observers = new List<IObserver>();
+        public Item ChosenItem { get; private set; } = null;
         public List<Item> ResultList { get; private set; } = new List<Item>();
+
+        public void SetChosenItem(Item item) {
+            this.ChosenItem = item;
+            Notify();
+        }
 
         public void SetResultList(List<Item> resultList) {
             this.ResultList = resultList;
@@ -19,7 +25,7 @@
         }
 
         public void Notify() {
-            foreach (var observer in observers) {
+            foreach (var observer in this.observers) {
                 observer.Update();
             }
         }

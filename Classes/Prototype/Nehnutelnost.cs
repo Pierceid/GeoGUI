@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoGUI.Classes.Utils;
+using System;
 
 namespace GeoGUI.Classes {
     public class Nehnutelnost : Item {
@@ -13,7 +14,7 @@ namespace GeoGUI.Classes {
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Nehnutelnost: {this.supCislo} - {this.popis} - [{this.pozicia.X}°; {this.pozicia.Y}°]");
+            Console.WriteLine($"Nehnutelnost: {this.supCislo} - {this.popis} - [{Util.FormatDoubleForExport(this.pozicia.X)}°; {Util.FormatDoubleForExport(this.pozicia.Y)}°]");
         }
 
         public override string GetInfo() {

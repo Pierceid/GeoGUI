@@ -1,4 +1,6 @@
-﻿namespace GeoGUI.Classes {
+﻿using GeoGUI.Classes.Utils;
+
+namespace GeoGUI.Classes {
     public class GPS : IKey<GPS> {
         private string sirka;
         private double x;
@@ -41,7 +43,7 @@
         }
 
         public string GetKeys() {
-            return $"GPS,{this.x.ToString().Replace(',', '.')},{this.sirka},{this.y.ToString().Replace(',', '.')},{this.dlzka}";
+            return $"GPS,{Util.FormatDoubleForExport(this.x)},{this.sirka},{Util.FormatDoubleForExport(this.y)},{this.dlzka}";
         }
 
         public double X { get => x; set => x = value; }

@@ -1,14 +1,15 @@
-﻿using System.Windows.Forms;
+﻿using GeoGUI.Classes.Utils;
+using System.Windows.Forms;
 
 namespace GeoGUI.Classes {
     public class DataGridViewObserver : IObserver {
+        private Subject subject;
         private DataGridView dataGridView;
-        private SubjectList subject;
         private ComboBox comboBox;
 
-        public DataGridViewObserver(DataGridView dataGridView, SubjectList subject, ComboBox comboBox) {
-            this.dataGridView = dataGridView;
+        public DataGridViewObserver(Subject subject, DataGridView dataGridView,ComboBox comboBox) {
             this.subject = subject;
+            this.dataGridView = dataGridView;
             this.comboBox = comboBox;
         }
 
@@ -27,14 +28,14 @@ namespace GeoGUI.Classes {
 
             foreach (Item item in this.subject.ResultList) {
                 if (this.comboBox.SelectedIndex == 0 && item is Parcela p) {
-                    this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Parcela", $"{p.Pozicia.X}° {p.Pozicia.Sirka}, {p.Pozicia.Y}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
+                    this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Parcela", $"{Util.FormatDoubleForExport(p.Pozicia.X)}° {p.Pozicia.Sirka}, {Util.FormatDoubleForExport(p.Pozicia.Y)}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
                 } else if (this.comboBox.SelectedIndex == 1 && item is Nehnutelnost n) {
-                    this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Nehnutelnost", $"{n.Pozicia.X}° {n.Pozicia.Sirka}, {n.Pozicia.Y}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
+                    this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Nehnutelnost", $"{Util.FormatDoubleForExport(n.Pozicia.X)}° {n.Pozicia.Sirka}, {Util.FormatDoubleForExport(n.Pozicia.Y)}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
                 } else if (this.comboBox.SelectedIndex == 2) {
                     if (item is Parcela parcela) {
-                        this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Parcela", $"{parcela.Pozicia.X}° {parcela.Pozicia.Sirka}, {parcela.Pozicia.Y}° {parcela.Pozicia.Dlzka}", parcela.CisParcely, parcela.Popis);
+                        this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Parcela", $"{Util.FormatDoubleForExport(parcela.Pozicia.X)}° {parcela.Pozicia.Sirka}, {Util.FormatDoubleForExport(parcela.Pozicia.Y)}° {parcela.Pozicia.Dlzka}", parcela.CisParcely, parcela.Popis);
                     } else if (item is Nehnutelnost nehnutelnost) {
-                        this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Nehnutelnost", $"{nehnutelnost.Pozicia.X}° {nehnutelnost.Pozicia.Sirka}, {nehnutelnost.Pozicia.Y}° {nehnutelnost.Pozicia.Dlzka}", nehnutelnost.SupCislo, nehnutelnost.Popis);
+                        this.dataGridView.Rows.Add("<d>", "<e>", "<r>", "Nehnutelnost", $"{Util.FormatDoubleForExport(nehnutelnost.Pozicia.X)}° {nehnutelnost.Pozicia.Sirka}, {Util.FormatDoubleForExport(nehnutelnost.Pozicia.Y)}° {nehnutelnost.Pozicia.Dlzka}", nehnutelnost.SupCislo, nehnutelnost.Popis);
                     }
                 }
             }

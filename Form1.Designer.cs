@@ -37,7 +37,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button12 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -50,6 +49,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Duplicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -62,7 +68,6 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button13 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -73,13 +78,6 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.Duplicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -223,8 +221,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button12);
-            this.groupBox3.Controls.Add(this.button11);
             this.groupBox3.Controls.Add(this.button10);
             this.groupBox3.Controls.Add(this.button5);
             this.groupBox3.Controls.Add(this.button9);
@@ -237,78 +233,68 @@
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Location = new System.Drawing.Point(669, 24);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(204, 268);
+            this.groupBox3.Size = new System.Drawing.Size(204, 277);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Functions";
             // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(106, 229);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(88, 30);
-            this.button12.TabIndex = 12;
-            this.button12.Text = "Save data";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.ButtonClick);
-            // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(6, 229);
+            this.button11.Location = new System.Drawing.Point(18, 218);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(90, 30);
+            this.button11.Size = new System.Drawing.Size(154, 36);
             this.button11.TabIndex = 11;
-            this.button11.Text = "Load data";
+            this.button11.Text = "Generate data";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(104, 183);
+            this.button10.Location = new System.Drawing.Point(106, 232);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(90, 30);
+            this.button10.Size = new System.Drawing.Size(90, 36);
             this.button10.TabIndex = 10;
-            this.button10.Text = "Task 10";
+            this.button10.Text = "Save data";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(4, 183);
+            this.button5.Location = new System.Drawing.Point(6, 232);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(90, 30);
+            this.button5.Size = new System.Drawing.Size(90, 36);
             this.button5.TabIndex = 4;
-            this.button5.Text = "Task 5";
+            this.button5.Text = "Update";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(104, 144);
+            this.button9.Location = new System.Drawing.Point(106, 183);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(90, 30);
+            this.button9.Size = new System.Drawing.Size(90, 36);
             this.button9.TabIndex = 9;
-            this.button9.Text = "Task 9";
+            this.button9.Text = "Load data";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(106, 105);
+            this.button8.Location = new System.Drawing.Point(106, 130);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(90, 30);
+            this.button8.Size = new System.Drawing.Size(90, 36);
             this.button8.TabIndex = 8;
-            this.button8.Text = "Task 8";
+            this.button8.Text = "Clear";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(106, 66);
+            this.button7.Location = new System.Drawing.Point(106, 78);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(90, 30);
+            this.button7.Size = new System.Drawing.Size(90, 36);
             this.button7.TabIndex = 7;
-            this.button7.Text = "Task 7";
+            this.button7.Text = "Duplicate";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.ButtonClick);
             // 
@@ -316,39 +302,39 @@
             // 
             this.button6.Location = new System.Drawing.Point(106, 27);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(90, 30);
+            this.button6.Size = new System.Drawing.Size(90, 36);
             this.button6.TabIndex = 6;
-            this.button6.Text = "Task 6";
+            this.button6.Text = "Delete";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(4, 144);
+            this.button4.Location = new System.Drawing.Point(6, 182);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 30);
+            this.button4.Size = new System.Drawing.Size(90, 36);
             this.button4.TabIndex = 3;
-            this.button4.Text = "Task 4";
+            this.button4.Text = "Insert";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 105);
+            this.button3.Location = new System.Drawing.Point(6, 130);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(90, 30);
+            this.button3.Size = new System.Drawing.Size(90, 36);
             this.button3.TabIndex = 2;
-            this.button3.Text = "Task 3";
+            this.button3.Text = "Find 3";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 66);
+            this.button2.Location = new System.Drawing.Point(6, 78);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 30);
+            this.button2.Size = new System.Drawing.Size(90, 36);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Task 2";
+            this.button2.Text = "Find 2";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.ButtonClick);
             // 
@@ -356,9 +342,9 @@
             // 
             this.button1.Location = new System.Drawing.Point(6, 27);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 30);
+            this.button1.Size = new System.Drawing.Size(90, 36);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Task 1";
+            this.button1.Text = "Find 1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.ButtonClick);
             // 
@@ -376,13 +362,67 @@
             this.Number,
             this.Description});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView.Location = new System.Drawing.Point(0, 321);
+            this.dataGridView.Location = new System.Drawing.Point(0, 322);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(1093, 272);
+            this.dataGridView.Size = new System.Drawing.Size(1093, 353);
             this.dataGridView.TabIndex = 6;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
+            // 
+            // Duplicate
+            // 
+            this.Duplicate.DividerWidth = 1;
+            this.Duplicate.HeaderText = "Duplicate";
+            this.Duplicate.MinimumWidth = 70;
+            this.Duplicate.Name = "Duplicate";
+            // 
+            // Edit
+            // 
+            this.Edit.DividerWidth = 1;
+            this.Edit.HeaderText = "Edit";
+            this.Edit.MinimumWidth = 70;
+            this.Edit.Name = "Edit";
+            // 
+            // Remove
+            // 
+            this.Remove.DividerWidth = 1;
+            this.Remove.HeaderText = "Remove";
+            this.Remove.MinimumWidth = 70;
+            this.Remove.Name = "Remove";
+            // 
+            // Type
+            // 
+            this.Type.DividerWidth = 1;
+            this.Type.HeaderText = "Type";
+            this.Type.MinimumWidth = 100;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Position
+            // 
+            this.Position.DividerWidth = 1;
+            this.Position.HeaderText = "Position";
+            this.Position.MinimumWidth = 100;
+            this.Position.Name = "Position";
+            this.Position.ReadOnly = true;
+            // 
+            // Number
+            // 
+            this.Number.DividerWidth = 1;
+            this.Number.HeaderText = "Number";
+            this.Number.MinimumWidth = 100;
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.DividerWidth = 1;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 100;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -398,7 +438,7 @@
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox2.Location = new System.Drawing.Point(454, 24);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(189, 268);
+            this.groupBox2.Size = new System.Drawing.Size(189, 277);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Additional info";
@@ -415,7 +455,7 @@
             this.textBox6.Location = new System.Drawing.Point(18, 175);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(154, 84);
+            this.textBox6.Size = new System.Drawing.Size(154, 93);
             this.textBox6.TabIndex = 11;
             // 
             // textBox12
@@ -486,7 +526,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button13);
+            this.groupBox4.Controls.Add(this.button11);
             this.groupBox4.Controls.Add(this.textBox7);
             this.groupBox4.Controls.Add(this.textBox9);
             this.groupBox4.Controls.Add(this.label8);
@@ -495,20 +535,10 @@
             this.groupBox4.Controls.Add(this.textBox8);
             this.groupBox4.Location = new System.Drawing.Point(892, 24);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(189, 268);
+            this.groupBox4.Size = new System.Drawing.Size(189, 277);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Generator";
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(18, 224);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(154, 30);
-            this.button13.TabIndex = 13;
-            this.button13.Text = "Generate data";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.ButtonClick);
             // 
             // textBox7
             // 
@@ -561,7 +591,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(16, 70);
+            this.label11.Location = new System.Drawing.Point(16, 74);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(82, 16);
             this.label11.TabIndex = 14;
@@ -588,7 +618,7 @@
             this.groupBox5.Controls.Add(this.comboBox2);
             this.groupBox5.Location = new System.Drawing.Point(12, 192);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(280, 100);
+            this.groupBox5.Size = new System.Drawing.Size(280, 109);
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Filter";
@@ -602,65 +632,11 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
-            // Duplicate
-            // 
-            this.Duplicate.DividerWidth = 1;
-            this.Duplicate.HeaderText = "Duplicate";
-            this.Duplicate.MinimumWidth = 70;
-            this.Duplicate.Name = "Duplicate";
-            // 
-            // Edit
-            // 
-            this.Edit.DividerWidth = 1;
-            this.Edit.HeaderText = "Edit";
-            this.Edit.MinimumWidth = 70;
-            this.Edit.Name = "Edit";
-            // 
-            // Remove
-            // 
-            this.Remove.DividerWidth = 1;
-            this.Remove.HeaderText = "Remove";
-            this.Remove.MinimumWidth = 70;
-            this.Remove.Name = "Remove";
-            // 
-            // Type
-            // 
-            this.Type.DividerWidth = 1;
-            this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 100;
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Position
-            // 
-            this.Position.DividerWidth = 1;
-            this.Position.HeaderText = "Position";
-            this.Position.MinimumWidth = 100;
-            this.Position.Name = "Position";
-            this.Position.ReadOnly = true;
-            // 
-            // Number
-            // 
-            this.Number.DividerWidth = 1;
-            this.Number.HeaderText = "Number";
-            this.Number.MinimumWidth = 100;
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.DividerWidth = 1;
-            this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 100;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 593);
+            this.ClientSize = new System.Drawing.Size(1093, 675);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
@@ -721,7 +697,6 @@
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button12;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.TextBox textBox11;
@@ -730,7 +705,6 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button button13;
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.ComboBox comboBox4;

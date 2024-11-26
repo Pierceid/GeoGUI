@@ -3,16 +3,16 @@
 namespace GeoGUI.Classes {
 
     public class CounterLabelObserver : IObserver {
+        private Subject subject;
         private Label label;
-        private SubjectList subject;
         private ComboBox comboBox;
         private KDTree<Parcela, GPS> parcelaTree;
         private KDTree<Nehnutelnost, GPS> nehnutelnostTree;
         private KDTree<Item, GPS> itemTree;
 
-        public CounterLabelObserver(Label label, SubjectList subject, ComboBox comboBox, KDTree<Parcela, GPS> parcelaTree, KDTree<Nehnutelnost, GPS> nehnutelnostTree, KDTree<Item, GPS> itemTree) {
-            this.label = label;
+        public CounterLabelObserver(Subject subject, Label label, ComboBox comboBox, KDTree<Parcela, GPS> parcelaTree, KDTree<Nehnutelnost, GPS> nehnutelnostTree, KDTree<Item, GPS> itemTree) {
             this.subject = subject;
+            this.label = label;
             this.comboBox = comboBox;
             this.parcelaTree = parcelaTree;
             this.nehnutelnostTree = nehnutelnostTree;
