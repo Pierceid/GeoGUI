@@ -33,9 +33,5 @@ namespace GeoGUI.Classes.Utils {
             double.TryParse(longitude, out y);
             return new GPS(sirka, x, dlzka, y);
         }
-
-        public static void ShowMessageBox(string title, string message, MessageBoxButtons buttons, MessageBoxIcon icon) {
-            MessageBox.Show(title, message, buttons, icon);
-        }
     }
 }

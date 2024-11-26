@@ -197,14 +197,14 @@ namespace GeoGUI {
             GPS gps1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
             GPS gps2 = Util.ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
 
-            PerformSearch(gps1, gps1 != null, noMessageBox);
+            PerformSearch(gps1, gps1 != null);
 
             if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
 
-            PerformSearch(gps2, gps2 != null, noMessageBox);
+            PerformSearch(gps2, gps2 != null);
         }
 
-        private void PerformSearch(GPS gps, bool gpsValid, bool noMessageBox) {
+        private void PerformSearch(GPS gps, bool gpsValid) {
             if (gps == null) return;
 
             try {
@@ -220,19 +220,12 @@ namespace GeoGUI {
                     default:
                         try {
                             AddResultsToList(new SearchStrategy<Parcela>(), this.parcelaTree, gps);
-                        } catch (NullReferenceException) {
-                            if (!noMessageBox && gpsValid) {
-                                MessageBox.Show($"No matching nodes with keys: [{gps.GetKeys()}].");
-                            }
-                        }
+                        } catch (NullReferenceException) { }
+
                         AddResultsToList(new SearchStrategy<Nehnutelnost>(), this.nehnutelnostTree, gps);
                         break;
                 }
-            } catch (NullReferenceException) {
-                if (!noMessageBox && gpsValid) {
-                    MessageBox.Show($"No matching nodes with keys: [{gps.GetKeys()}].");
-                }
-            }
+            } catch (NullReferenceException) { }
         }
 
         private void AddResultsToList<T>(IStrategy<T> strategy, KDTree<T, GPS> tree, GPS gps) where T : Item {
@@ -246,25 +239,25 @@ namespace GeoGUI {
             DialogResult result;
 
             if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
-                Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             position1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
 
             if (string.IsNullOrEmpty(this.textBox3.Text) || string.IsNullOrEmpty(this.textBox4.Text)) {
-                Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             position2 = Util.ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
 
             if (string.IsNullOrEmpty(this.textBox5.Text)) {
-                Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             int.TryParse(this.textBox5.Text, out number);
 
             if (string.IsNullOrEmpty(this.textBox6.Text)) {
-                Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             description = this.textBox6.Text;
@@ -320,19 +313,19 @@ namespace GeoGUI {
                 DialogResult result;
 
                 if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
-                    Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 position = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
 
                 if (string.IsNullOrEmpty(this.textBox5.Text)) {
-                    Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 int.TryParse(this.textBox5.Text, out number);
 
                 if (string.IsNullOrEmpty(this.textBox6.Text)) {
-                    Util.ShowMessageBox("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 description = this.textBox6.Text;
@@ -514,7 +507,7 @@ namespace GeoGUI {
             }
 
             if (parcelaCount == 0 && nehnutelnostCount == 0) {
-                Util.ShowMessageBox("Insufficient data provided. Both counts are at 0.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Insufficient data provided. Both counts are at 0.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
