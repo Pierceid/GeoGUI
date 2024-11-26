@@ -52,19 +52,19 @@ namespace GeoGUI {
             switch (sender) {
                 case Button button when button == button1:
                     this.comboBox2.SelectedIndex = 0;
-                    SearchItems(false);
+                    SearchItems();
                     UpdateTableAndCounter();
                     return;
 
                 case Button button when button == button2:
                     this.comboBox2.SelectedIndex = 1;
-                    SearchItems(false);
+                    SearchItems();
                     UpdateTableAndCounter();
                     return;
 
                 case Button button when button == button3:
                     this.comboBox2.SelectedIndex = 2;
-                    SearchItems(false);
+                    SearchItems();
                     UpdateTableAndCounter();
                     return;
 
@@ -104,7 +104,7 @@ namespace GeoGUI {
                     break;
             }
 
-            SearchItems(true);
+            SearchItems();
             UpdateTableAndCounter();
         }
 
@@ -133,7 +133,7 @@ namespace GeoGUI {
                 }
             }
 
-            SearchItems(true);
+            SearchItems();
             UpdateTableAndCounter();
             SetEnabled(true, objects);
         }
@@ -144,7 +144,7 @@ namespace GeoGUI {
                     break;
 
                 case ComboBox comboBox when comboBox == comboBox2:
-                    SearchItems(true);
+                    SearchItems();
                     UpdateTableAndCounter();
                     break;
 
@@ -171,27 +171,7 @@ namespace GeoGUI {
             }
         }
 
-        private void DataGridViewCellContentClick(object sender, DataGridViewCellEventArgs e) {
-            if (this.resultList.Count == 0) return;
-
-            if (e.RowIndex >= 0 && e.RowIndex < this.resultList.Count) {
-                this.chosenItem = this.resultList[e.RowIndex];
-
-                UpdateFormFields();
-
-                if (e.ColumnIndex == 0) {
-                    EditItem(false);
-                } else if (e.ColumnIndex == 1) {
-                    RemoveItem();
-                } else {
-                    this.textBox3.Enabled = true;
-                    this.textBox4.Enabled = true;
-                    this.comboBox1.Enabled = true;
-                }
-            }
-        }
-
-        private void SearchItems(bool noMessageBox) {
+        private void SearchItems() {
             this.resultList.Clear();
 
             GPS gps1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
@@ -226,10 +206,6 @@ namespace GeoGUI {
                         break;
                 }
             } catch (NullReferenceException) { }
-        }
-
-        private void AddResultsToList<T>(IStrategy<T> strategy, KDTree<T, GPS> tree, GPS gps) where T : Item {
-            this.resultList.AddRange(strategy.Search(tree, gps));
         }
 
         private void AddItem() {
@@ -379,7 +355,7 @@ namespace GeoGUI {
                 }
             }
 
-            SearchItems(true);
+            SearchItems();
             UpdateTableAndCounter();
             SetEnabled(true, objects);
         }
@@ -548,6 +524,10 @@ namespace GeoGUI {
                 gpsList.Add(position1);
                 gpsList.Add(position2);
             }
+        }
+
+        private void AddResultsToList<T>(IStrategy<T> strategy, KDTree<T, GPS> tree, GPS gps) where T : Item {
+            this.resultList.AddRange(strategy.Search(tree, gps));
         }
 
         private void UpdateFormFields() {

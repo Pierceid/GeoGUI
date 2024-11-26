@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace GeoGUI.Classes.Utils {
     public static class Util {
