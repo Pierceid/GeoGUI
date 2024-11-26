@@ -24,7 +24,7 @@ namespace GeoGUI {
         private IFactory nehnutelnostFactory = new NehnutelnostFactory();
         private Subject subject = new Subject();
 
-        private const string FILE_PATH = @"C:\Users\ipast\source\repos\GeoGUI\Files\exported.txt";
+        private string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
 
         public Form1() {
             InitializeComponent();
@@ -52,21 +52,15 @@ namespace GeoGUI {
             switch (sender) {
                 case Button button when button == button1:
                     this.comboBox2.SelectedIndex = 0;
-                    SearchItems();
-                    UpdateTableAndCounter();
-                    return;
+                    break;
 
                 case Button button when button == button2:
                     this.comboBox2.SelectedIndex = 1;
-                    SearchItems();
-                    UpdateTableAndCounter();
-                    return;
+                    break;
 
                 case Button button when button == button3:
                     this.comboBox2.SelectedIndex = 2;
-                    SearchItems();
-                    UpdateTableAndCounter();
-                    return;
+                    break;
 
                 case Button button when button == button4:
                     AddItem();
@@ -105,6 +99,7 @@ namespace GeoGUI {
             }
 
             SearchItems();
+            UpdateFormFields();
             UpdateTableAndCounter();
         }
 
@@ -119,7 +114,7 @@ namespace GeoGUI {
 
             if (result == DialogResult.Yes) {
                 try {
-                    var itemClone = this.chosenItem.Clone();
+                    var itemClone = this.chosenItem.Clone() as Item;
 
                     if (itemClone is Parcela parcelaClone) {
                         this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
@@ -190,19 +185,15 @@ namespace GeoGUI {
             try {
                 switch (this.comboBox2.SelectedIndex) {
                     case 0:
-                        AddResultsToList(new SearchStrategy<Parcela>(), this.parcelaTree, gps);
+                        AddResultsToList(new SearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
                         break;
 
                     case 1:
-                        AddResultsToList(new SearchStrategy<Nehnutelnost>(), this.nehnutelnostTree, gps);
+                        AddResultsToList(new SearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
                         break;
 
                     default:
-                        try {
-                            AddResultsToList(new SearchStrategy<Parcela>(), this.parcelaTree, gps);
-                        } catch (NullReferenceException) { }
-
-                        AddResultsToList(new SearchStrategy<Nehnutelnost>(), this.nehnutelnostTree, gps);
+                        AddResultsToList(new SearchStrategy<Item, GPS>(), this.itemTree, gps);
                         break;
                 }
             } catch (NullReferenceException) { }
@@ -526,8 +517,8 @@ namespace GeoGUI {
             }
         }
 
-        private void AddResultsToList<T>(IStrategy<T> strategy, KDTree<T, GPS> tree, GPS gps) where T : Item {
-            this.resultList.AddRange(strategy.Search(tree, gps));
+        private void AddResultsToList<T, U>(IStrategy<T, U> strategy, KDTree<T, U> tree, U keys) where T : Item where U : IKey<U> {
+            this.resultList.AddRange(strategy.Search(tree, keys));
         }
 
         private void UpdateFormFields() {

@@ -1,4 +1,5 @@
-﻿using GeoGUI.Classes.Utils;
+﻿using GeoGUI.Classes.Prototype;
+using GeoGUI.Classes.Utils;
 using System;
 
 namespace GeoGUI.Classes {
@@ -21,7 +22,7 @@ namespace GeoGUI.Classes {
             return $"Parcela,{this.Id},{this.cisParcely},{this.popis}";
         }
 
-        public override Item Clone() {
+        public override IPrototype Clone() {
             return new Parcela(this.cisParcely, this.popis, this.pozicia);
         }
 

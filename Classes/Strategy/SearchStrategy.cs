@@ -2,9 +2,9 @@
 using System.Linq;
 
 namespace GeoGUI.Classes.Strategy {
-    public class SearchStrategy<T> : IStrategy<T> where T : Item {
-        public List<T> Search(KDTree<T, GPS> tree, GPS position) {
-            return tree.FindNodes(position).Where(item => item.GetType() == typeof(T)).ToList();
+    public class SearchStrategy<T, U> : IStrategy<T, U> where T : Item where U : IKey<U> {
+        public List<T> Search(KDTree<T, U> tree, U position) {
+            return tree.FindNodes(position).Where(item => item is T).ToList();
         }
     }
 }
