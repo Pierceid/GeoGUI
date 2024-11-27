@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GeoGUI.Classes.Strategy {
     public class RangeSearchStrategy<T, U> : IStrategy<T, U> where T : Item where U : IKey<U> {
