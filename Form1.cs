@@ -2,7 +2,7 @@
 using GeoGUI.Classes.Factory;
 using GeoGUI.Classes.Observer;
 using GeoGUI.Classes.Strategy;
-using GeoGUI.Classes.Utils;
+using GeoGUI.Classes.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -341,7 +341,7 @@ namespace GeoGUI {
 
             UpdateTableAndCounter();
 
-            MessageBox.Show($"K-D tree has been cleared.");
+            MessageBox.Show($"Data has been cleared.");
         }
 
         private void SaveToFile() {
@@ -372,7 +372,7 @@ namespace GeoGUI {
                 }
             }
 
-            MessageBox.Show($"K-D tree saved to: {FILE_PATH}");
+            MessageBox.Show($"Data saved to: {FILE_PATH}");
         }
 
         private void LoadFromFile() {
@@ -433,7 +433,7 @@ namespace GeoGUI {
                 }
             }
 
-            MessageBox.Show($"K-D tree loaded from: {FILE_PATH}");
+            MessageBox.Show($"Data loaded from: {FILE_PATH}");
         }
 
         private void GenerateNodes() {

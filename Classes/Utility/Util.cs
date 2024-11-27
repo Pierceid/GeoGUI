@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GeoGUI.Classes.Utils {
+namespace GeoGUI.Classes.Utility {
     public static class Util {
         private static Random random = new Random();
 

@@ -68,7 +68,7 @@
     <Compile Include="Classes\Strategy\IStrategy.cs" />
     <Compile Include="Classes\Strategy\PointSearchStrategy.cs" />
     <Compile Include="Classes\Strategy\RangeSearchStrategy.cs" />
-    <Compile Include="Classes\Utils\Util.cs" />
+    <Compile Include="Classes\Utility\Util.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

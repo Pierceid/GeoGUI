@@ -1,4 +1,4 @@
-﻿using GeoGUI.Classes.Utils;
+﻿using GeoGUI.Classes.Utility;
 using System.Windows.Forms;
 
 namespace GeoGUI.Classes {
@@ -7,7 +7,7 @@ namespace GeoGUI.Classes {
         private DataGridView dataGridView;
         private ComboBox comboBox;
 
-        public DataGridViewObserver(Subject subject, DataGridView dataGridView,ComboBox comboBox) {
+        public DataGridViewObserver(Subject subject, DataGridView dataGridView, ComboBox comboBox) {
             this.subject = subject;
             this.dataGridView = dataGridView;
             this.comboBox = comboBox;

@@ -336,35 +336,6 @@ namespace GeoGUI {
             throw new NullReferenceException();
         }
 
-        private Node<T, U> FindNodeReverse(U keys, Node<T, U> startNode) {
-            if (startNode == null) return null;
-
-            Node<T, U> nodeToFind = new Node<T, U>(keys);
-
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(startNode);
-
-            while (nodesToVisit.Count > 0) {
-                Node<T, U> current = nodesToVisit.Pop();
-
-                if (nodeToFind.KeysData.Equals(current.KeysData)) {
-                    Console.WriteLine("FindNode() >>> Node found!");
-                    return current;
-                }
-
-                int comparison = nodeToFind.KeysData.Compare(current.KeysData, current.Level);
-
-                if (comparison >= 0) {
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
-                } else {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                }
-            }
-
-            Console.WriteLine("FindNode() >>> Node not found!");
-            throw new NullReferenceException();
-        }
-
         public void Clear() {
             this.Root = null;
             this.TreeSize = 0;

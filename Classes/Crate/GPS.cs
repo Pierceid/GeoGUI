@@ -1,4 +1,4 @@
-﻿using GeoGUI.Classes.Utils;
+﻿using GeoGUI.Classes.Utility;
 using System;
 
 namespace GeoGUI.Classes {
