@@ -114,7 +114,7 @@
             this.comboBox6.Items.AddRange(new object[] {
             "N",
             "S"});
-            this.comboBox6.Location = new System.Drawing.Point(354, 118);
+            this.comboBox6.Location = new System.Drawing.Point(348, 114);
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(64, 24);
             this.comboBox6.TabIndex = 19;
@@ -126,7 +126,7 @@
             this.comboBox5.Items.AddRange(new object[] {
             "W",
             "E"});
-            this.comboBox5.Location = new System.Drawing.Point(145, 116);
+            this.comboBox5.Location = new System.Drawing.Point(132, 114);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(64, 24);
             this.comboBox5.TabIndex = 18;
@@ -138,7 +138,7 @@
             this.comboBox4.Items.AddRange(new object[] {
             "N",
             "S"});
-            this.comboBox4.Location = new System.Drawing.Point(354, 56);
+            this.comboBox4.Location = new System.Drawing.Point(348, 52);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(64, 24);
             this.comboBox4.TabIndex = 17;
@@ -150,7 +150,7 @@
             this.comboBox3.Items.AddRange(new object[] {
             "W",
             "E"});
-            this.comboBox3.Location = new System.Drawing.Point(145, 54);
+            this.comboBox3.Location = new System.Drawing.Point(132, 52);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(64, 24);
             this.comboBox3.TabIndex = 16;
@@ -158,7 +158,7 @@
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox3.Location = new System.Drawing.Point(18, 116);
+            this.textBox3.Location = new System.Drawing.Point(18, 114);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(108, 24);
             this.textBox3.TabIndex = 7;
@@ -166,7 +166,7 @@
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox4.Location = new System.Drawing.Point(234, 118);
+            this.textBox4.Location = new System.Drawing.Point(234, 114);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(108, 24);
             this.textBox4.TabIndex = 6;
@@ -174,7 +174,7 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox2.Location = new System.Drawing.Point(234, 56);
+            this.textBox2.Location = new System.Drawing.Point(234, 52);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(108, 24);
             this.textBox2.TabIndex = 5;
@@ -616,7 +616,7 @@
             // textBox14
             // 
             this.textBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox14.Location = new System.Drawing.Point(119, 54);
+            this.textBox14.Location = new System.Drawing.Point(119, 49);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(148, 24);
             this.textBox14.TabIndex = 14;

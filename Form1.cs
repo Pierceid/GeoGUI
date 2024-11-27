@@ -51,6 +51,7 @@ namespace GeoGUI {
         private void ButtonClick(object sender, EventArgs e) {
             switch (sender) {
                 case Button button when button == button1:
+                    this.chosenItem = null;
                     break;
 
                 case Button button when button == button2:
@@ -92,36 +93,6 @@ namespace GeoGUI {
             SearchItems();
             UpdateFormFields();
             UpdateTableAndCounter();
-        }
-
-        private void DuplicateItem() {
-            if (this.chosenItem == null) return;
-
-            var objects = new Object[] { this.textBox1, this.textBox2, this.textBox3, this.textBox4, this.textBox5, this.textBox6, this.comboBox1, this.comboBox3, this.comboBox4, this.comboBox5, this.comboBox6 };
-
-            SetEnabled(false, objects);
-
-            DialogResult result = MessageBox.Show("Are you sure you want to duplicate this item?", "Confirm Duplicate Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes) {
-                try {
-                    var itemClone = this.chosenItem.Clone() as Item;
-
-                    if (itemClone is Parcela parcelaClone) {
-                        this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
-                        this.itemTree.InsertNode(ref itemClone, parcelaClone.Pozicia);
-                    } else if (itemClone is Nehnutelnost nehnutelnostClone) {
-                        this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
-                        this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
-                    }
-                } catch (NullReferenceException) {
-                    MessageBox.Show("Something went wrong when duplicating this item.", "Failed Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            SearchItems();
-            UpdateTableAndCounter();
-            SetEnabled(true, objects);
         }
 
         private void ComboBoxSelectionChanged(object sender, EventArgs e) {
@@ -168,40 +139,6 @@ namespace GeoGUI {
             if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
 
             PerformSearch(gps2);
-        }
-
-        private void PerformSearch(GPS gps) {
-            if (gps == null) return;
-
-            double.TryParse(this.textBox14.Text, out double factor);
-
-            try {
-                switch (this.comboBox2.SelectedIndex) {
-                    case 0:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Parcela, GPS>(factor), this.parcelaTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
-                        }
-                        break;
-
-                    case 1:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Nehnutelnost, GPS>(factor), this.nehnutelnostTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
-                        }
-                        break;
-
-                    default:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Item, GPS>(factor), this.itemTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Item, GPS>(), this.itemTree, gps);
-                        }
-                        break;
-                }
-            } catch (NullReferenceException) { }
         }
 
         private void AddItem() {
@@ -312,13 +249,18 @@ namespace GeoGUI {
 
                             this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
                             this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
+                            this.chosenItem = item;
                         } else if (this.chosenItem is Nehnutelnost n) {
                             var nehnutelnost = new Nehnutelnost(number, description, position);
                             var item = nehnutelnost as Item;
 
                             this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
                             this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
+                            this.chosenItem = item;
                         }
+
+                        UpdateFormFields();
+                        UpdateTableAndCounter();
                     } catch (NullReferenceException) {
                         MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -346,13 +288,45 @@ namespace GeoGUI {
                         this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
                         this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
                     }
+
+                    UpdateFormFields();
+                    UpdateTableAndCounter();
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when removing this item.", "Failed Remove Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            SearchItems();
-            UpdateTableAndCounter();
+            SetEnabled(true, objects);
+        }
+
+        private void DuplicateItem() {
+            if (this.chosenItem == null) return;
+
+            var objects = new Object[] { this.textBox1, this.textBox2, this.textBox3, this.textBox4, this.textBox5, this.textBox6, this.comboBox1, this.comboBox3, this.comboBox4, this.comboBox5, this.comboBox6 };
+
+            SetEnabled(false, objects);
+
+            DialogResult result = MessageBox.Show("Are you sure you want to duplicate this item?", "Confirm Duplicate Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes) {
+                try {
+                    var itemClone = this.chosenItem.Clone() as Item;
+
+                    if (itemClone is Parcela parcelaClone) {
+                        this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
+                        this.itemTree.InsertNode(ref itemClone, parcelaClone.Pozicia);
+                    } else if (itemClone is Nehnutelnost nehnutelnostClone) {
+                        this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
+                        this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
+                    }
+
+                    UpdateFormFields();
+                    UpdateTableAndCounter();
+                } catch (NullReferenceException) {
+                    MessageBox.Show("Something went wrong when duplicating this item.", "Failed Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
             SetEnabled(true, objects);
         }
 
@@ -485,6 +459,40 @@ namespace GeoGUI {
 
             GenerateItems<Parcela>(parcelaCount, intersectionProb, this.parcelaTree, this.parcelaFactory);
             GenerateItems<Nehnutelnost>(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
+        }
+
+        private void PerformSearch(GPS gps) {
+            if (gps == null) return;
+
+            double.TryParse(this.textBox14.Text, out double factor);
+
+            try {
+                switch (this.comboBox2.SelectedIndex) {
+                    case 0:
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Parcela, GPS>(factor), this.parcelaTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
+                        }
+                        break;
+
+                    case 1:
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Nehnutelnost, GPS>(factor), this.nehnutelnostTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
+                        }
+                        break;
+
+                    default:
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Item, GPS>(factor), this.itemTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Item, GPS>(), this.itemTree, gps);
+                        }
+                        break;
+                }
+            } catch (NullReferenceException) { }
         }
 
         private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory factory) where T : Item {
