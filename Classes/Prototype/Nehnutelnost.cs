@@ -4,32 +4,26 @@ using System;
 
 namespace GeoGUI.Classes {
     public class Nehnutelnost : Item {
-        private int supCislo;
-        private string popis;
-        private GPS pozicia;
+        public int SupCislo { get; set; }
+        public string Popis { get; set; }
+        public GPS Pozicia { get; set; }
 
         public Nehnutelnost(int supCislo, string popis, GPS pozicia) {
-            this.supCislo = supCislo;
-            this.popis = popis;
-            this.pozicia = pozicia;
+            this.SupCislo = supCislo;
+            this.Popis = popis;
+            this.Pozicia = pozicia;
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Nehnutelnost: {this.supCislo} - {this.popis} - [{Util.FormatDoubleForExport(this.pozicia.X)}°; {Util.FormatDoubleForExport(this.pozicia.Y)}°]");
+            Console.WriteLine($"Nehnutelnost: {this.SupCislo} - {this.Popis} - [{Util.FormatDoubleForExport(this.Pozicia.X)}°; {Util.FormatDoubleForExport(this.Pozicia.Y)}°]");
         }
 
         public override string GetInfo() {
-            return $"Nehnutelnost,{this.Id},{this.supCislo},{this.popis}";
+            return $"Nehnutelnost,{this.Id},{this.SupCislo},{this.Popis}";
         }
 
         public override IPrototype Clone() {
-            return new Nehnutelnost(this.supCislo, this.popis, this.pozicia);
+            return new Nehnutelnost(this.SupCislo, this.Popis, this.Pozicia);
         }
-
-        public int SupCislo { get => supCislo; set => supCislo = value; }
-
-        public string Popis { get => popis; set => popis = value; }
-
-        public GPS Pozicia { get => pozicia; set => pozicia = value; }
     }
 }

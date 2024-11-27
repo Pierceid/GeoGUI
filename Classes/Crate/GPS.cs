@@ -3,32 +3,32 @@ using System;
 
 namespace GeoGUI.Classes {
     public class GPS : IKey<GPS> {
-        private string sirka;
-        private double x;
-        private string dlzka;
-        private double y;
+        public double X { get; set; }
+        public double Y { get; set; }
+        public string Sirka { get; set; }
+        public string Dlzka { get; set; }
 
         public GPS(string sirka, double x, string dlzka, double y) {
-            this.sirka = sirka;
-            this.x = x;
-            this.dlzka = dlzka;
-            this.y = y;
+            this.Sirka = sirka;
+            this.X = x;
+            this.Dlzka = dlzka;
+            this.Y = y;
         }
 
         public int Compare(GPS other, int level) {
             if (level % 4 == 0) {
-                return this.CompareStrings(this.sirka, other.Sirka);
+                return this.CompareStrings(this.Sirka, other.Sirka);
             } else if (level % 4 == 1) {
-                return this.ComparePositions(this.x, other.X);
+                return this.ComparePositions(this.X, other.X);
             } else if (level % 4 == 2) {
-                return this.CompareStrings(this.dlzka, other.Dlzka);
+                return this.CompareStrings(this.Dlzka, other.Dlzka);
             } else {
-                return this.ComparePositions(this.y, other.Y);
+                return this.ComparePositions(this.Y, other.Y);
             }
         }
 
         public bool Equals(GPS other) {
-            return this.x == other.X && this.y == other.Y && this.sirka == other.Sirka && this.dlzka == other.Dlzka;
+            return this.X == other.X && this.Y == other.Y && this.Sirka == other.Sirka && this.Dlzka == other.Dlzka;
         }
 
         public bool CloseWithin(GPS other, double factor) {
@@ -39,7 +39,7 @@ namespace GeoGUI.Classes {
         }
 
         public string GetKeys() {
-            return $"GPS,{Util.FormatDoubleForExport(this.x)},{this.sirka},{Util.FormatDoubleForExport(this.y)},{this.dlzka}";
+            return $"GPS,{Util.FormatDoubleForExport(this.X)},{this.Sirka},{Util.FormatDoubleForExport(this.Y)},{this.Dlzka}";
         }
 
         private int ComparePositions(double value1, double value2) {
@@ -53,13 +53,5 @@ namespace GeoGUI.Classes {
             if (string.Compare(value1, value2) > 0) return 1;
             return 0;
         }
-
-        public double X { get => x; set => x = value; }
-
-        public double Y { get => y; set => y = value; }
-
-        public string Sirka { get => sirka; set => sirka = value; }
-
-        public string Dlzka { get => dlzka; set => dlzka = value; }
     }
 }

@@ -51,46 +51,37 @@ namespace GeoGUI {
         private void ButtonClick(object sender, EventArgs e) {
             switch (sender) {
                 case Button button when button == button1:
-                    this.comboBox2.SelectedIndex = 0;
                     break;
 
                 case Button button when button == button2:
-                    this.comboBox2.SelectedIndex = 1;
-                    break;
-
-                case Button button when button == button3:
-                    this.comboBox2.SelectedIndex = 2;
-                    break;
-
-                case Button button when button == button4:
                     AddItem();
                     break;
 
-                case Button button when button == button5:
+                case Button button when button == button3:
                     EditItem(true);
                     break;
 
-                case Button button when button == button6:
+                case Button button when button == button4:
                     RemoveItem();
                     break;
 
-                case Button button when button == button7:
+                case Button button when button == button5:
                     DuplicateItem();
                     break;
 
-                case Button button when button == button8:
+                case Button button when button == button6:
                     ClearStructures();
                     break;
 
-                case Button button when button == button9:
+                case Button button when button == button7:
                     LoadFromFile();
                     break;
 
-                case Button button when button == button10:
+                case Button button when button == button8:
                     SaveToFile();
                     break;
 
-                case Button button when button == button11:
+                case Button button when button == button9:
                     GenerateNodes();
                     break;
 

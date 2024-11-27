@@ -37,7 +37,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button10 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
@@ -47,7 +46,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.Duplicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,9 +75,9 @@
             this.label11 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBox14 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox14 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -184,7 +182,7 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox1.Location = new System.Drawing.Point(19, 54);
+            this.textBox1.Location = new System.Drawing.Point(18, 52);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(108, 24);
             this.textBox1.TabIndex = 4;
@@ -227,9 +225,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button10);
             this.groupBox3.Controls.Add(this.button5);
-            this.groupBox3.Controls.Add(this.button9);
             this.groupBox3.Controls.Add(this.button8);
             this.groupBox3.Controls.Add(this.button7);
             this.groupBox3.Controls.Add(this.button6);
@@ -239,120 +235,100 @@
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Location = new System.Drawing.Point(649, 24);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(226, 292);
+            this.groupBox3.Size = new System.Drawing.Size(226, 280);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Functions";
             // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(119, 240);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(90, 36);
-            this.button10.TabIndex = 10;
-            this.button10.Text = "Save data";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.ButtonClick);
-            // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(119, 24);
+            this.button5.Location = new System.Drawing.Point(21, 233);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(90, 36);
             this.button5.TabIndex = 4;
-            this.button5.Text = "Update";
+            this.button5.Text = "Duplicate";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(19, 240);
+            this.button9.Location = new System.Drawing.Point(18, 228);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(90, 36);
+            this.button9.Size = new System.Drawing.Size(148, 41);
             this.button9.TabIndex = 9;
-            this.button9.Text = "Load data";
+            this.button9.Text = "Generate data";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(119, 150);
+            this.button8.Location = new System.Drawing.Point(121, 135);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(90, 36);
             this.button8.TabIndex = 8;
-            this.button8.Text = "Clear";
+            this.button8.Text = "Save data";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(119, 108);
+            this.button7.Location = new System.Drawing.Point(121, 83);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(90, 36);
             this.button7.TabIndex = 7;
-            this.button7.Text = "Duplicate";
+            this.button7.Text = "Load data";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(119, 66);
+            this.button6.Location = new System.Drawing.Point(121, 29);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(90, 36);
             this.button6.TabIndex = 6;
-            this.button6.Text = "Delete";
+            this.button6.Text = "Clear data";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(19, 150);
+            this.button4.Location = new System.Drawing.Point(21, 184);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(90, 36);
             this.button4.TabIndex = 3;
-            this.button4.Text = "Insert";
+            this.button4.Text = "Delete";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(19, 108);
+            this.button3.Location = new System.Drawing.Point(21, 135);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(90, 36);
             this.button3.TabIndex = 2;
-            this.button3.Text = "Find 3";
+            this.button3.Text = "Update";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(19, 66);
+            this.button2.Location = new System.Drawing.Point(21, 83);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(90, 36);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Find 2";
+            this.button2.Text = "Insert";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.ButtonClick);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(19, 24);
+            this.button1.Location = new System.Drawing.Point(21, 29);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 36);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Find 1";
+            this.button1.Text = "Find";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.ButtonClick);
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(18, 229);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(148, 47);
-            this.button11.TabIndex = 11;
-            this.button11.Text = "Generate data";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.ButtonClick);
             // 
             // dataGridView
             // 
@@ -368,11 +344,11 @@
             this.Number,
             this.Description});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView.Location = new System.Drawing.Point(0, 334);
+            this.dataGridView.Location = new System.Drawing.Point(0, 321);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.Size = new System.Drawing.Size(1081, 341);
+            this.dataGridView.Size = new System.Drawing.Size(1081, 354);
             this.dataGridView.TabIndex = 6;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
             // 
@@ -444,7 +420,7 @@
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox2.Location = new System.Drawing.Point(459, 24);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(184, 292);
+            this.groupBox2.Size = new System.Drawing.Size(184, 280);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Additional info";
@@ -461,7 +437,7 @@
             this.textBox6.Location = new System.Drawing.Point(18, 175);
             this.textBox6.Multiline = true;
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(148, 105);
+            this.textBox6.Size = new System.Drawing.Size(148, 94);
             this.textBox6.TabIndex = 11;
             // 
             // textBox12
@@ -534,8 +510,8 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button11);
             this.groupBox4.Controls.Add(this.textBox7);
+            this.groupBox4.Controls.Add(this.button9);
             this.groupBox4.Controls.Add(this.textBox9);
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.label9);
@@ -543,7 +519,7 @@
             this.groupBox4.Controls.Add(this.textBox8);
             this.groupBox4.Location = new System.Drawing.Point(881, 24);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(184, 292);
+            this.groupBox4.Size = new System.Drawing.Size(184, 280);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Generator";
@@ -602,7 +578,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 102);
+            this.label11.Location = new System.Drawing.Point(15, 91);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(82, 16);
             this.label11.TabIndex = 14;
@@ -617,7 +593,7 @@
             "Parcela",
             "Nehnutelnost",
             "Both"});
-            this.comboBox2.Location = new System.Drawing.Point(119, 24);
+            this.comboBox2.Location = new System.Drawing.Point(119, 19);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(148, 24);
             this.comboBox2.TabIndex = 12;
@@ -632,15 +608,23 @@
             this.groupBox5.Controls.Add(this.comboBox2);
             this.groupBox5.Location = new System.Drawing.Point(17, 186);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(288, 130);
+            this.groupBox5.Size = new System.Drawing.Size(288, 118);
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Filter";
             // 
+            // textBox14
+            // 
+            this.textBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox14.Location = new System.Drawing.Point(119, 54);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(148, 24);
+            this.textBox14.TabIndex = 14;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(16, 66);
+            this.label13.Location = new System.Drawing.Point(15, 54);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(87, 16);
             this.label13.TabIndex = 16;
@@ -649,19 +633,11 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(15, 27);
+            this.label12.Location = new System.Drawing.Point(15, 22);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(68, 16);
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
-            // 
-            // textBox14
-            // 
-            this.textBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox14.Location = new System.Drawing.Point(119, 61);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(148, 24);
-            this.textBox14.TabIndex = 14;
             // 
             // Form1
             // 
@@ -726,8 +702,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.TextBox textBox11;

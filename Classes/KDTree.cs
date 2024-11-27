@@ -4,31 +4,31 @@ using System.Collections.Generic;
 
 namespace GeoGUI {
     public class KDTree<T, U> where T : Item where U : IKey<U> {
-        private Node<T, U> root;
-        private int treeSize;
-        private int dataSize;
-        private int dimensions;
+        public Node<T, U> Root { get; set; }
+        public int TreeSize { get; set; }
+        public int DataSize { get; set; }
+        public int Dimensions { get; set; }
 
         public KDTree(int dimensions) {
-            this.root = null;
-            this.treeSize = 0;
-            this.dataSize = 0;
-            this.dimensions = dimensions;
+            this.Root = null;
+            this.TreeSize = 0;
+            this.DataSize = 0;
+            this.Dimensions = dimensions;
         }
 
         public void InsertNode(ref T data, U keys) {
-            this.dataSize++;
+            this.DataSize++;
 
-            Node<T, U> current = this.root;
+            Node<T, U> current = this.Root;
             Node<T, U> parent = null;
             int level = 0;
 
             Node<T, U> nodeToInsert = new Node<T, U>(keys);
             nodeToInsert.NodeData.Add(data);
 
-            if (this.root == null) {
-                this.treeSize++;
-                this.root = nodeToInsert;
+            if (this.Root == null) {
+                this.TreeSize++;
+                this.Root = nodeToInsert;
                 return;
             }
 
@@ -57,9 +57,9 @@ namespace GeoGUI {
             }
 
             nodeToInsert.Parent = parent;
-            nodeToInsert.Level = level % this.dimensions;
+            nodeToInsert.Level = level % this.Dimensions;
 
-            this.treeSize++;
+            this.TreeSize++;
 
             Console.WriteLine("InsertNode() >>> Node inserted!");
         }
@@ -68,10 +68,10 @@ namespace GeoGUI {
             Node<T, U> nodeToFind = new Node<T, U>(keys);
             List<T> result = new List<T>();
 
-            if (this.root == null) return result;
+            if (this.Root == null) return result;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(this.root);
+            nodesToVisit.Push(this.Root);
 
             while (nodesToVisit.Count > 0) {
                 Node<T, U> current = nodesToVisit.Pop();
@@ -100,9 +100,9 @@ namespace GeoGUI {
         }
 
         public void UpdateNode(ref T oldData, U oldKeys, ref T newData, U newKeys) {
-            if (this.root == null) return;
+            if (this.Root == null) return;
 
-            Node<T, U> nodeToUpdate = this.FindNode(oldKeys, this.root);
+            Node<T, U> nodeToUpdate = this.FindNode(oldKeys, this.Root);
 
             if (nodeToUpdate == null) return;
 
@@ -125,7 +125,7 @@ namespace GeoGUI {
                     Console.WriteLine("UpdateNode() >>> Data entry updated!");
                     nodeToUpdate.NodeData.Remove(oldData);
                     InsertNode(ref newData, newKeys);
-                    this.dataSize--;
+                    this.DataSize--;
                 } else {
                     Console.WriteLine("UpdateNode() >>> Node updated!");
                     DeleteNode(ref oldData, oldKeys);
@@ -135,14 +135,14 @@ namespace GeoGUI {
         }
 
         public void DeleteNode(ref T data, U keys) {
-            if (this.root == null) return;
+            if (this.Root == null) return;
 
-            Node<T, U> nodeToDelete = this.FindNode(keys, this.root);
+            Node<T, U> nodeToDelete = this.FindNode(keys, this.Root);
 
             if (nodeToDelete == null) return;
 
             if (nodeToDelete.NodeData.Count > 1) {
-                this.dataSize--;
+                this.DataSize--;
                 Console.WriteLine("DeleteNode() >>> Data entry removed!");
                 foreach (T nodeData in nodeToDelete.NodeData) {
                     if (nodeData.EqualsByID(data)) {
@@ -191,11 +191,11 @@ namespace GeoGUI {
                             cur.Parent = null;
                             Console.WriteLine("DeleteNode() >>> Leaf node removed!");
                         } else {
-                            this.root = null;
+                            this.Root = null;
                             Console.WriteLine("DeleteNode() >>> Root node removed!");
                         }
-                        this.treeSize--;
-                        this.dataSize--;
+                        this.TreeSize--;
+                        this.DataSize--;
                         continue;
                     }
 
@@ -366,16 +366,16 @@ namespace GeoGUI {
         }
 
         public void Clear() {
-            this.root = null;
-            this.treeSize = 0;
-            this.dataSize = 0;
+            this.Root = null;
+            this.TreeSize = 0;
+            this.DataSize = 0;
         }
 
         public void PrintInOrder() {
-            if (this.root == null) return;
+            if (this.Root == null) return;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            Node<T, U> current = this.root;
+            Node<T, U> current = this.Root;
 
             int a = 0, b = 0, c = 0;
 
@@ -415,10 +415,10 @@ namespace GeoGUI {
         public List<Node<T, U>> GetAllNodes() {
             List<Node<T, U>> result = new List<Node<T, U>>();
 
-            if (this.root == null) return result;
+            if (this.Root == null) return result;
 
             Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            Node<T, U> current = this.root;
+            Node<T, U> current = this.Root;
 
             while (nodesToVisit.Count > 0 || current != null) {
                 while (current != null) {
@@ -435,11 +435,5 @@ namespace GeoGUI {
 
             return result;
         }
-
-        public Node<T, U> Root { get => root; set => root = value; }
-
-        public int TreeSize { get => treeSize; set => treeSize = value; }
-
-        public int DataSize { get => dataSize; set => dataSize = value; }
     }
 }

@@ -4,32 +4,26 @@ using System;
 
 namespace GeoGUI.Classes {
     public class Parcela : Item {
-        private int cisParcely;
-        private string popis;
-        private GPS pozicia;
+        public int CisParcely { get; set; }
+        public string Popis { get; set; }
+        public GPS Pozicia { get; set; }
 
         public Parcela(int cisParcely, string popis, GPS pozicia) {
-            this.cisParcely = cisParcely;
-            this.popis = popis;
-            this.pozicia = pozicia;
+            this.CisParcely = cisParcely;
+            this.Popis = popis;
+            this.Pozicia = pozicia;
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Parcela: {this.cisParcely} - {this.popis} - [{Util.FormatDoubleForExport(this.pozicia.X)}°; {Util.FormatDoubleForExport(this.pozicia.Y)}°]");
+            Console.WriteLine($"Parcela: {this.CisParcely} - {this.Popis} - [{Util.FormatDoubleForExport(this.Pozicia.X)}°; {Util.FormatDoubleForExport(this.Pozicia.Y)}°]");
         }
 
         public override string GetInfo() {
-            return $"Parcela,{this.Id},{this.cisParcely},{this.popis}";
+            return $"Parcela,{this.Id},{this.CisParcely},{this.Popis}";
         }
 
         public override IPrototype Clone() {
-            return new Parcela(this.cisParcely, this.popis, this.pozicia);
+            return new Parcela(this.CisParcely, this.Popis, this.Pozicia);
         }
-
-        public int CisParcely { get => cisParcely; set => cisParcely = value; }
-
-        public string Popis { get => popis; set => popis = value; }
-
-        public GPS Pozicia { get => pozicia; set => pozicia = value; }
     }
 }
