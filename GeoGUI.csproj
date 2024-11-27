@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Classes\Crate\GPS.cs" />
     <Compile Include="Classes\Crate\Node.cs" />
+    <Compile Include="Classes\Delegates\TreeTraversial.cs" />
     <Compile Include="Classes\Factory\IFactory.cs" />
     <Compile Include="Classes\Factory\NehnutelnostFactory.cs" />
     <Compile Include="Classes\Factory\ParcelaFactory.cs" />

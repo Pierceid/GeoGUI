@@ -1,4 +1,5 @@
 ﻿using GeoGUI.Classes;
+using GeoGUI.Classes.Delegates;
 using System;
 using System.Collections.Generic;
 
@@ -9,11 +10,14 @@ namespace GeoGUI {
         public int DataSize { get; set; }
         public int Dimensions { get; set; }
 
+        private readonly TreeTraversal<T, U> treeTraversal;
+
         public KDTree(int dimensions) {
             this.Root = null;
             this.TreeSize = 0;
             this.DataSize = 0;
             this.Dimensions = dimensions;
+            this.treeTraversal = new TreeTraversal<T, U>();
         }
 
         public void InsertNode(ref T data, U keys) {
@@ -231,180 +235,58 @@ namespace GeoGUI {
             }
         }
 
-        private List<Node<T, U>> FindDuplicateNodes(Node<T, U> parent) {
-            List<Node<T, U>> duplicateNodes = new List<Node<T, U>>();
-
-            if (parent == null || parent.RightSon == null) return duplicateNodes;
-
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(parent.RightSon);
-
-            while (nodesToVisit.Count > 0) {
-                Node<T, U> current = nodesToVisit.Pop();
-
-                int comparison = current.KeysData.Compare(parent.KeysData, parent.Level);
-
-                if (comparison == 0) duplicateNodes.Add(current);
-
-                if (current.Level != parent.Level) {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
-                } else {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                }
-            }
-
-            return duplicateNodes;
-        }
-
         private Node<T, U> FindMinNode(Node<T, U> parent) {
-            if (parent == null || parent.RightSon == null) return null;
-
-            Node<T, U> minNode = parent.RightSon;
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(minNode);
-
-            while (nodesToVisit.Count > 0) {
-                Node<T, U> current = nodesToVisit.Pop();
-
-                int comparison = current.KeysData.Compare(minNode.KeysData, parent.Level);
-
-                if (comparison <= 0) minNode = current;
-
-                if (current.Level != parent.Level) {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
-                } else {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                }
-            }
-
-            return minNode;
+            return this.treeTraversal.FindMinNode(parent);
         }
 
         private Node<T, U> FindMaxNode(Node<T, U> parent) {
-            if (parent == null || parent.LeftSon == null) return null;
+            return this.treeTraversal.FindMaxNode(parent);
+        }
 
-            Node<T, U> maxNode = parent.LeftSon;
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(maxNode);
-
-            while (nodesToVisit.Count > 0) {
-                Node<T, U> current = nodesToVisit.Pop();
-
-                int comparison = current.KeysData.Compare(maxNode.KeysData, parent.Level);
-
-                if (comparison >= 0) maxNode = current;
-
-                if (current.Level != parent.Level) {
-                    if (current.LeftSon != null) nodesToVisit.Push(current.LeftSon);
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
-                } else {
-                    if (current.RightSon != null) nodesToVisit.Push(current.RightSon);
-                }
-            }
-
-            return maxNode;
+        private List<Node<T, U>> FindDuplicateNodes(Node<T, U> parent) {
+            return this.treeTraversal.FindDuplicateNodes(parent);
         }
 
         private Node<T, U> FindNode(U keys, Node<T, U> startNode) {
-            if (startNode == null) return null;
+            return this.treeTraversal.FindNode(keys, startNode);
+        }
 
-            Node<T, U> nodeToFind = new Node<T, U>(keys);
+        public void PrintInOrder() {
+            if (this.Root == null) return;
 
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            nodesToVisit.Push(startNode);
+            int treeSize = 0, dataSize = 0, duplicates = 0;
+            Action<Node<T, U>> action = (node => {
+                bool isFirst = true;
+                node.NodeData.ForEach(data => {
+                    if (isFirst) {
+                        Console.ResetColor();
+                        isFirst = false;
+                        treeSize++;
+                    } else {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        duplicates++;
+                    }
+                    dataSize++;
+                    data.PrintInfo();
+                });
+                Console.ResetColor();
+            });
 
-            while (nodesToVisit.Count > 0) {
-                Node<T, U> current = nodesToVisit.Pop();
+            this.treeTraversal.InOrderActionTraversal(this.Root, action);
 
-                if (nodeToFind.KeysData.Equals(current.KeysData)) {
-                    Console.WriteLine("FindNode() >>> Node found!");
-                    return current;
-                }
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"\nTree Size: {treeSize}\nData Size: {dataSize}\nDuplicates: {duplicates}\n");
+            Console.ResetColor();
+        }
 
-                int comparison = nodeToFind.KeysData.Compare(current.KeysData, current.Level);
-
-                if (comparison <= 0 && current.LeftSon != null) {
-                    nodesToVisit.Push(current.LeftSon);
-                } else if (current.RightSon != null) {
-                    nodesToVisit.Push(current.RightSon);
-                }
-            }
-
-            Console.WriteLine("FindNode() >>> Node not found!");
-            throw new NullReferenceException();
+        public List<Node<T, U>> GetAllNodes() {
+            return this.treeTraversal.InOrderTraversal(this.Root);
         }
 
         public void Clear() {
             this.Root = null;
             this.TreeSize = 0;
             this.DataSize = 0;
-        }
-
-        public void PrintInOrder() {
-            if (this.Root == null) return;
-
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            Node<T, U> current = this.Root;
-
-            int a = 0, b = 0, c = 0;
-
-            while (nodesToVisit.Count > 0 || current != null) {
-                while (current != null) {
-                    nodesToVisit.Push(current);
-                    current = current.LeftSon;
-                }
-
-                current = nodesToVisit.Pop();
-
-                bool isFirst = true;
-                current.NodeData.ForEach(x => {
-                    if (isFirst) {
-                        Console.ResetColor();
-                        isFirst = false;
-                        a++;
-                    } else {
-                        b++;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    c++;
-                    x.PrintInfo();
-                });
-                Console.ResetColor();
-
-                current = current.RightSon;
-            }
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine();
-            Console.WriteLine("Tree Size: " + a + "\nData Size: " + c + "\nDuplicates: " + b);
-            Console.ResetColor();
-            Console.WriteLine();
-        }
-
-        public List<Node<T, U>> GetAllNodes() {
-            List<Node<T, U>> result = new List<Node<T, U>>();
-
-            if (this.Root == null) return result;
-
-            Stack<Node<T, U>> nodesToVisit = new Stack<Node<T, U>>();
-            Node<T, U> current = this.Root;
-
-            while (nodesToVisit.Count > 0 || current != null) {
-                while (current != null) {
-                    nodesToVisit.Push(current);
-                    current = current.LeftSon;
-                }
-
-                current = nodesToVisit.Pop();
-
-                result.Add(current);
-
-                current = current.RightSon;
-            }
-
-            return result;
         }
     }
 }
