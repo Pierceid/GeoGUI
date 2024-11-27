@@ -2,6 +2,6 @@
 
 namespace GeoGUI.Classes.Strategy {
     public interface IStrategy<T, U> where T : Item where U : IKey<U> {
-        List<T> Search(KDTree<T, U> tree, U position);
+        List<T> Traverse(KDTree<T, U> tree, U keys);
     }
 }

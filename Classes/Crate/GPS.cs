@@ -1,4 +1,5 @@
 ﻿using GeoGUI.Classes.Utils;
+using System;
 
 namespace GeoGUI.Classes {
     public class GPS : IKey<GPS> {
@@ -30,6 +31,17 @@ namespace GeoGUI.Classes {
             return this.x == other.X && this.y == other.Y && this.sirka == other.Sirka && this.dlzka == other.Dlzka;
         }
 
+        public bool CloseWithin(GPS other, double factor) {
+            double deltaX = this.X - other.X;
+            double deltaY = this.Y - other.Y;
+            return Math.Sqrt(deltaX * deltaX + deltaY * deltaY) <= factor;
+
+        }
+
+        public string GetKeys() {
+            return $"GPS,{Util.FormatDoubleForExport(this.x)},{this.sirka},{Util.FormatDoubleForExport(this.y)},{this.dlzka}";
+        }
+
         private int ComparePositions(double value1, double value2) {
             if (value1 < value2) return -1;
             if (value1 > value2) return 1;
@@ -40,10 +52,6 @@ namespace GeoGUI.Classes {
             if (string.Compare(value1, value2) < 0) return -1;
             if (string.Compare(value1, value2) > 0) return 1;
             return 0;
-        }
-
-        public string GetKeys() {
-            return $"GPS,{Util.FormatDoubleForExport(this.x)},{this.sirka},{Util.FormatDoubleForExport(this.y)},{this.dlzka}";
         }
 
         public double X { get => x; set => x = value; }

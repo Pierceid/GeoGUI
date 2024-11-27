@@ -172,28 +172,42 @@ namespace GeoGUI {
             GPS gps1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
             GPS gps2 = Util.ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
 
-            PerformSearch(gps1, gps1 != null);
+            PerformSearch(gps1);
 
             if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
 
-            PerformSearch(gps2, gps2 != null);
+            PerformSearch(gps2);
         }
 
-        private void PerformSearch(GPS gps, bool gpsValid) {
+        private void PerformSearch(GPS gps) {
             if (gps == null) return;
+
+            double.TryParse(this.textBox14.Text, out double factor);
 
             try {
                 switch (this.comboBox2.SelectedIndex) {
                     case 0:
-                        AddResultsToList(new SearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Parcela, GPS>(factor), this.parcelaTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
+                        }
                         break;
 
                     case 1:
-                        AddResultsToList(new SearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Nehnutelnost, GPS>(factor), this.nehnutelnostTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
+                        }
                         break;
 
                     default:
-                        AddResultsToList(new SearchStrategy<Item, GPS>(), this.itemTree, gps);
+                        if (factor > 0) {
+                            AddResultsToList(new RangeSearchStrategy<Item, GPS>(factor), this.itemTree, gps);
+                        } else {
+                            AddResultsToList(new PointSearchStrategy<Item, GPS>(), this.itemTree, gps);
+                        }
                         break;
                 }
             } catch (NullReferenceException) { }
@@ -518,7 +532,7 @@ namespace GeoGUI {
         }
 
         private void AddResultsToList<T, U>(IStrategy<T, U> strategy, KDTree<T, U> tree, U keys) where T : Item where U : IKey<U> {
-            this.resultList.AddRange(strategy.Search(tree, keys));
+            this.resultList.AddRange(strategy.Traverse(tree, keys));
         }
 
         private void UpdateFormFields() {
