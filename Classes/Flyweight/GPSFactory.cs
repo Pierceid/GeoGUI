@@ -2,15 +2,15 @@
 
 namespace GeoGUI.Classes.Flyweight {
     public class GPSFactory {
-        private readonly Dictionary<string, GPS> gpsPool = new Dictionary<string, GPS>();
+        public readonly Dictionary<string, GPS> gpsPool = new Dictionary<string, GPS>();
         private readonly object lockObj = new object();
 
-        public GPS GetGPS(double x, string latitude, double y, string longitude) {
-            string key = string.Join("_", x, latitude, y, longitude);
+        public GPS GetGPS(double latitudeValue, string latitudeDirection, double longitudeValue, string longitudeDirection) {
+            string key = string.Join("_", latitudeValue, latitudeDirection, longitudeValue, longitudeDirection);
 
             lock (this.lockObj) {
                 if (!this.gpsPool.TryGetValue(key, out GPS gps)) {
-                    gps = new GPS(latitude, x, longitude, y);
+                    gps = new GPS(latitudeValue, latitudeDirection, longitudeValue, longitudeDirection);
                     this.gpsPool[key] = gps;
                 }
 

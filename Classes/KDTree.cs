@@ -255,7 +255,7 @@ namespace GeoGUI {
             if (this.Root == null) return;
 
             int treeSize = 0, dataSize = 0, duplicates = 0;
-            Action<Node<T, U>> action = (node => {
+            Action<Node<T, U>> printAction = (node => {
                 bool isFirst = true;
                 node.NodeData.ForEach(data => {
                     if (isFirst) {
@@ -272,7 +272,7 @@ namespace GeoGUI {
                 Console.ResetColor();
             });
 
-            this.treeTraversal.InOrderActionTraversal(this.Root, action);
+            this.treeTraversal.InOrderActionTraversal(this.Root, printAction);
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"\nTree Size: {treeSize}\nData Size: {dataSize}\nDuplicates: {duplicates}\n");

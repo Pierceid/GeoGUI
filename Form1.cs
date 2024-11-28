@@ -1,4 +1,5 @@
 ﻿using GeoGUI.Classes;
+using GeoGUI.Classes.Delegates;
 using GeoGUI.Classes.Factory;
 using GeoGUI.Classes.Observer;
 using GeoGUI.Classes.Strategy;
@@ -20,11 +21,12 @@ namespace GeoGUI {
         private Random random = new Random();
         private Item chosenItem = null;
 
-        private IFactory parcelaFactory = new ParcelaFactory();
-        private IFactory nehnutelnostFactory = new NehnutelnostFactory();
-        private Subject subject = new Subject();
-
-        private string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
+        private readonly string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
+        private readonly Object[] blockableObjects = null;
+        private readonly IFactory parcelaFactory = new ParcelaFactory();
+        private readonly IFactory nehnutelnostFactory = new NehnutelnostFactory();
+        private readonly Subject subject = new Subject();
+        private readonly TreeTraversal<Item, GPS> itemTreeTraversial = new TreeTraversal<Item, GPS>();
 
         public Form1() {
             InitializeComponent();
@@ -46,6 +48,12 @@ namespace GeoGUI {
             this.subject.Attach(comboBoxObserver);
             this.subject.Attach(dataGridViewObserver);
             this.subject.Attach(counterLabelObserver);
+            this.blockableObjects = new Object[] { this.textBox3, this.textBox4, this.comboBox5, this.comboBox6 };
+        }
+
+        private void FormClick(object sender, EventArgs e) {
+            this.chosenItem = null;
+            SetBlockableObjects(true);
         }
 
         private void ButtonClick(object sender, EventArgs e) {
@@ -90,6 +98,8 @@ namespace GeoGUI {
                     break;
             }
 
+            this.chosenItem = null;
+            SetBlockableObjects(true);
             SearchItems();
             UpdateFormFields();
             UpdateTableAndCounter();
@@ -116,6 +126,7 @@ namespace GeoGUI {
             if (e.RowIndex >= 0 && e.RowIndex < this.resultList.Count) {
                 this.chosenItem = this.resultList[e.RowIndex];
 
+                SetBlockableObjects(false);
                 UpdateFormFields();
             }
         }
@@ -123,12 +134,12 @@ namespace GeoGUI {
         private void SearchItems() {
             this.resultList.Clear();
 
-            GPS gps1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
-            GPS gps2 = Util.ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
+            GPS gps1 = Util.ParseGPS(this.textBox1.Text, this.comboBox3.Text, this.textBox2.Text, this.comboBox4.Text);
+            GPS gps2 = Util.ParseGPS(this.textBox3.Text, this.comboBox5.Text, this.textBox4.Text, this.comboBox6.Text);
 
             PerformSearch(gps1);
 
-            if (gps1?.X == gps2?.X && gps1?.Y == gps2?.Y) return;
+            if (gps1?.LatitudeValue == gps2?.LatitudeValue && gps1?.LongitudeValue == gps2?.LongitudeValue) return;
 
             PerformSearch(gps2);
         }
@@ -143,13 +154,13 @@ namespace GeoGUI {
                 MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            position1 = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
+            position1 = Util.ParseGPS(this.textBox1.Text, this.comboBox3.Text, this.textBox2.Text, this.comboBox4.Text);
 
             if (string.IsNullOrEmpty(this.textBox3.Text) || string.IsNullOrEmpty(this.textBox4.Text)) {
                 MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            position2 = Util.ParseGPS(this.textBox3.Text, this.textBox4.Text, this.comboBox5.Text, this.comboBox6.Text);
+            position2 = Util.ParseGPS(this.textBox3.Text, this.comboBox5.Text, this.textBox4.Text, this.comboBox6.Text);
 
             if (string.IsNullOrEmpty(this.textBox5.Text)) {
                 MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -203,71 +214,56 @@ namespace GeoGUI {
         private void EditItem(bool confirm) {
             if (this.chosenItem == null) return;
 
-            var objects = new Object[] { this.textBox3, this.textBox4, this.comboBox5, this.comboBox6 };
+            GPS position;
+            int number;
+            string description;
+            DialogResult result;
 
-            if (!confirm) {
-                SetEnabled(false, objects);
-            } else {
-                GPS position;
-                int number;
-                string description;
-                DialogResult result;
+            if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            position = Util.ParseGPS(this.textBox1.Text, this.comboBox3.Text, this.textBox2.Text, this.comboBox4.Text);
 
-                if (string.IsNullOrEmpty(this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text)) {
-                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                position = Util.ParseGPS(this.textBox1.Text, this.textBox2.Text, this.comboBox3.Text, this.comboBox4.Text);
+            if (string.IsNullOrEmpty(this.textBox5.Text)) {
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int.TryParse(this.textBox5.Text, out number);
 
-                if (string.IsNullOrEmpty(this.textBox5.Text)) {
-                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                int.TryParse(this.textBox5.Text, out number);
+            if (string.IsNullOrEmpty(this.textBox6.Text)) {
+                MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            description = this.textBox6.Text;
 
-                if (string.IsNullOrEmpty(this.textBox6.Text)) {
-                    MessageBox.Show("Insufficient data provided. Fill up the whole form.", "Insufficient data", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                description = this.textBox6.Text;
+            result = MessageBox.Show("Are you sure you want to update this item?", "Confirm Update Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                result = MessageBox.Show("Are you sure you want to update this item?", "Confirm Update Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes) {
+                try {
+                    if (this.chosenItem is Parcela p) {
+                        var parcela = new Parcela(number, description, position);
+                        var item = parcela as Item;
 
-                if (result == DialogResult.Yes) {
-                    try {
-                        if (this.chosenItem is Parcela p) {
-                            var parcela = new Parcela(number, description, position);
-                            var item = parcela as Item;
+                        this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
+                        this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
+                        this.chosenItem = item;
+                    } else if (this.chosenItem is Nehnutelnost n) {
+                        var nehnutelnost = new Nehnutelnost(number, description, position);
+                        var item = nehnutelnost as Item;
 
-                            this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
-                            this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
-                            this.chosenItem = item;
-                        } else if (this.chosenItem is Nehnutelnost n) {
-                            var nehnutelnost = new Nehnutelnost(number, description, position);
-                            var item = nehnutelnost as Item;
-
-                            this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
-                            this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
-                            this.chosenItem = item;
-                        }
-
-                        UpdateFormFields();
-                        UpdateTableAndCounter();
-                    } catch (NullReferenceException) {
-                        MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
+                        this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
+                        this.chosenItem = item;
                     }
+                } catch (NullReferenceException) {
+                    MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                SetEnabled(true, objects);
             }
         }
 
         private void RemoveItem() {
             if (this.chosenItem == null) return;
-
-            var objects = new Object[] { this.textBox1, this.textBox2, this.textBox3, this.textBox4, this.textBox5, this.textBox6, this.comboBox1, this.comboBox3, this.comboBox4, this.comboBox5, this.comboBox6 };
-
-            SetEnabled(false, objects);
 
             DialogResult result = MessageBox.Show("Are you sure you want to remove this item?", "Confirm Remove Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -280,23 +276,14 @@ namespace GeoGUI {
                         this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
                         this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
                     }
-
-                    UpdateFormFields();
-                    UpdateTableAndCounter();
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when removing this item.", "Failed Remove Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
-            SetEnabled(true, objects);
         }
 
         private void DuplicateItem() {
             if (this.chosenItem == null) return;
-
-            var objects = new Object[] { this.textBox1, this.textBox2, this.textBox3, this.textBox4, this.textBox5, this.textBox6, this.comboBox1, this.comboBox3, this.comboBox4, this.comboBox5, this.comboBox6 };
-
-            SetEnabled(false, objects);
 
             DialogResult result = MessageBox.Show("Are you sure you want to duplicate this item?", "Confirm Duplicate Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -311,15 +298,10 @@ namespace GeoGUI {
                         this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
                         this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
                     }
-
-                    UpdateFormFields();
-                    UpdateTableAndCounter();
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when duplicating this item.", "Failed Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
-            SetEnabled(true, objects);
         }
 
         private void ClearStructures() {
@@ -338,7 +320,7 @@ namespace GeoGUI {
 
         private void SaveToFile() {
             if (this.itemTree.Root == null) {
-                MessageBox.Show("K-D tree is empty.");
+                MessageBox.Show("No data to save.");
                 return;
             }
 
@@ -347,21 +329,13 @@ namespace GeoGUI {
             using (StreamWriter writer = new StreamWriter(FILE_PATH)) {
                 writer.WriteLine("KeysData;NodeData >>>");
 
-                Queue<Node<Item, GPS>> queue = new Queue<Node<Item, GPS>>();
-                queue.Enqueue(this.itemTree.Root);
-
-                while (queue.Count > 0) {
-                    Node<Item, GPS> current = queue.Dequeue();
-
-                    string keysData = current.KeysData.GetKeys();
-                    string nodeData = string.Join(";", current.NodeData.ConvertAll(data => data.GetInfo()));
-
+                Action<Node<Item, GPS>> saveAction = (node) => {
+                    string keysData = node.KeysData.GetKeys();
+                    string nodeData = string.Join(";", node.NodeData.ConvertAll(data => data.GetInfo()));
                     writer.WriteLine($"'{keysData};'{nodeData}");
+                };
 
-                    if (current.LeftSon != null) queue.Enqueue(current.LeftSon);
-
-                    if (current.RightSon != null) queue.Enqueue(current.RightSon);
-                }
+                this.itemTreeTraversial.InOrderActionTraversal(this.itemTree.Root, saveAction);
             }
 
             MessageBox.Show($"Data saved to: {FILE_PATH}");
@@ -393,7 +367,7 @@ namespace GeoGUI {
                     string[] coordinates = parts[0].Split(',');
                     GPS keysData;
                     if (coordinates[0] == "GPS") {
-                        keysData = Util.ParseGPS(Util.FormatDoubleForImport(coordinates[1]), Util.FormatDoubleForImport(coordinates[3]), coordinates[2], coordinates[4]);
+                        keysData = Util.ParseGPS(Util.FormatDoubleForImport(coordinates[1]), coordinates[2], Util.FormatDoubleForImport(coordinates[3]), coordinates[4]);
                     } else {
                         return;
                     }
@@ -407,15 +381,13 @@ namespace GeoGUI {
                         string description = dataEntry[3];
 
                         if (type == "Parcela") {
-                            var parcela = new Parcela(number, description, keysData);
-                            parcela.Id = id;
+                            var parcela = new Parcela(number, description, keysData) { Id = id };
                             var item = parcela as Item;
 
                             this.parcelaTree.InsertNode(ref parcela, keysData);
                             this.itemTree.InsertNode(ref item, keysData);
                         } else if (type == "Nehnutelnost") {
-                            var nehnutelnost = new Nehnutelnost(number, description, keysData);
-                            nehnutelnost.Id = id;
+                            var nehnutelnost = new Nehnutelnost(number, description, keysData) { Id = id };
                             var item = nehnutelnost as Item;
 
                             this.nehnutelnostTree.InsertNode(ref nehnutelnost, keysData);
@@ -476,12 +448,15 @@ namespace GeoGUI {
                         }
                         break;
 
-                    default:
+                    case 2:
                         if (factor > 0) {
                             AddResultsToList(new RangeSearchStrategy<Item, GPS>(factor), this.itemTree, gps);
                         } else {
                             AddResultsToList(new PointSearchStrategy<Item, GPS>(), this.itemTree, gps);
                         }
+                        break;
+
+                    default:
                         break;
                 }
             } catch (NullReferenceException) { }
@@ -523,7 +498,7 @@ namespace GeoGUI {
         }
 
         private void AddResultsToList<T, U>(IStrategy<T, U> strategy, KDTree<T, U> tree, U keys) where T : Item where U : IKey<U> {
-            this.resultList.AddRange(strategy.Traverse(tree, keys));
+            this.resultList.AddRange(strategy.Traverse(tree, keys).Where(x => !this.resultList.Contains(x)));
         }
 
         private void UpdateFormFields() {
@@ -534,8 +509,8 @@ namespace GeoGUI {
             this.subject.SetResultList(this.resultList);
         }
 
-        private void SetEnabled(bool isEnabled, Object[] objects) {
-            foreach (Object obj in objects) {
+        private void SetBlockableObjects(bool isEnabled) {
+            foreach (Object obj in this.blockableObjects) {
                 if (obj is TextBox tb) {
                     tb.Enabled = isEnabled;
                 } else if (obj is ComboBox cb) {

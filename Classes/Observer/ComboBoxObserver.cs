@@ -22,8 +22,8 @@ namespace GeoGUI.Classes.Observer {
 
         private void SetFields(GPS pozicia, int itemComboBoxIndex) {
             this.comboBoxes[0].SelectedIndex = itemComboBoxIndex;
-            this.comboBoxes[1].SelectedIndex = pozicia.Sirka == "W" ? 0 : 1;
-            this.comboBoxes[2].SelectedIndex = pozicia.Dlzka == "N" ? 0 : 1;
+            this.comboBoxes[1].SelectedIndex = pozicia.LatitudeDirection == "W" ? 0 : 1;
+            this.comboBoxes[2].SelectedIndex = pozicia.LongitudeDirection == "N" ? 0 : 1;
         }
     }
 }

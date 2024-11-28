@@ -21,8 +21,8 @@ namespace GeoGUI.Classes.Observer {
         }
 
         private void SetFields(GPS pozicia, int number, string popis) {
-            this.textBoxes[0].Text = pozicia.X.ToString();
-            this.textBoxes[1].Text = pozicia.Y.ToString();
+            this.textBoxes[0].Text = pozicia.LatitudeValue.ToString();
+            this.textBoxes[1].Text = pozicia.LongitudeValue.ToString();
             this.textBoxes[2].Text = number.ToString();
             this.textBoxes[3].Text = popis.ToString();
         }

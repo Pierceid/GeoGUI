@@ -15,7 +15,7 @@ namespace GeoGUI.Classes {
         }
 
         public override void PrintInfo() {
-            Console.WriteLine($"Nehnutelnost: {this.SupCislo} - {this.Popis} - [{Util.FormatDoubleForExport(this.Pozicia.X)}°; {Util.FormatDoubleForExport(this.Pozicia.Y)}°]");
+            Console.WriteLine($"Nehnutelnost: {this.SupCislo} - {this.Popis} - [{Util.FormatDoubleForExport(this.Pozicia.LatitudeValue)}°; {Util.FormatDoubleForExport(this.Pozicia.LongitudeValue)}°]");
         }
 
         public override string GetInfo() {

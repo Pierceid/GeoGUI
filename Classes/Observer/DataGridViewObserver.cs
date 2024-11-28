@@ -25,14 +25,14 @@ namespace GeoGUI.Classes {
 
             foreach (Item item in this.subject.ResultList) {
                 if (this.comboBox.SelectedIndex == 0 && item is Parcela p) {
-                    this.dataGridView.Rows.Add("Parcela", $"{Util.FormatDoubleForExport(p.Pozicia.X)}° {p.Pozicia.Sirka}, {Util.FormatDoubleForExport(p.Pozicia.Y)}° {p.Pozicia.Dlzka}", p.CisParcely, p.Popis);
+                    this.dataGridView.Rows.Add("Parcela", $"{Util.FormatDoubleForExport(p.Pozicia.LatitudeValue)}° {p.Pozicia.LatitudeDirection}, {Util.FormatDoubleForExport(p.Pozicia.LongitudeValue)}° {p.Pozicia.LongitudeDirection}", p.CisParcely, p.Popis);
                 } else if (this.comboBox.SelectedIndex == 1 && item is Nehnutelnost n) {
-                    this.dataGridView.Rows.Add("Nehnutelnost", $"{Util.FormatDoubleForExport(n.Pozicia.X)}° {n.Pozicia.Sirka}, {Util.FormatDoubleForExport(n.Pozicia.Y)}° {n.Pozicia.Dlzka}", n.SupCislo, n.Popis);
+                    this.dataGridView.Rows.Add("Nehnutelnost", $"{Util.FormatDoubleForExport(n.Pozicia.LatitudeValue)}° {n.Pozicia.LatitudeDirection}, {Util.FormatDoubleForExport(n.Pozicia.LongitudeValue)}° {n.Pozicia.LongitudeDirection}", n.SupCislo, n.Popis);
                 } else if (this.comboBox.SelectedIndex == 2) {
                     if (item is Parcela parcela) {
-                        this.dataGridView.Rows.Add("Parcela", $"{Util.FormatDoubleForExport(parcela.Pozicia.X)}° {parcela.Pozicia.Sirka}, {Util.FormatDoubleForExport(parcela.Pozicia.Y)}° {parcela.Pozicia.Dlzka}", parcela.CisParcely, parcela.Popis);
+                        this.dataGridView.Rows.Add("Parcela", $"{Util.FormatDoubleForExport(parcela.Pozicia.LatitudeValue)}° {parcela.Pozicia.LatitudeDirection}, {Util.FormatDoubleForExport(parcela.Pozicia.LongitudeValue)}° {parcela.Pozicia.LongitudeDirection}", parcela.CisParcely, parcela.Popis);
                     } else if (item is Nehnutelnost nehnutelnost) {
-                        this.dataGridView.Rows.Add("Nehnutelnost", $"{Util.FormatDoubleForExport(nehnutelnost.Pozicia.X)}° {nehnutelnost.Pozicia.Sirka}, {Util.FormatDoubleForExport(nehnutelnost.Pozicia.Y)}° {nehnutelnost.Pozicia.Dlzka}", nehnutelnost.SupCislo, nehnutelnost.Popis);
+                        this.dataGridView.Rows.Add("Nehnutelnost", $"{Util.FormatDoubleForExport(nehnutelnost.Pozicia.LatitudeValue)}° {nehnutelnost.Pozicia.LatitudeDirection}, {Util.FormatDoubleForExport(nehnutelnost.Pozicia.LongitudeValue)}° {nehnutelnost.Pozicia.LongitudeDirection}", nehnutelnost.SupCislo, nehnutelnost.Popis);
                     }
                 }
             }

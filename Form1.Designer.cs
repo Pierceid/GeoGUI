@@ -47,6 +47,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -71,10 +75,6 @@
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -346,6 +346,39 @@
             this.dataGridView.TabIndex = 6;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
             // 
+            // Type
+            // 
+            this.Type.DividerWidth = 1;
+            this.Type.HeaderText = "Type";
+            this.Type.MinimumWidth = 100;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Position
+            // 
+            this.Position.DividerWidth = 1;
+            this.Position.HeaderText = "Position";
+            this.Position.MinimumWidth = 100;
+            this.Position.Name = "Position";
+            this.Position.ReadOnly = true;
+            // 
+            // Number
+            // 
+            this.Number.DividerWidth = 1;
+            this.Number.HeaderText = "Number";
+            this.Number.MinimumWidth = 100;
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.DividerWidth = 1;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 100;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.textBox13);
@@ -579,39 +612,6 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
-            // Type
-            // 
-            this.Type.DividerWidth = 1;
-            this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 100;
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Position
-            // 
-            this.Position.DividerWidth = 1;
-            this.Position.HeaderText = "Position";
-            this.Position.MinimumWidth = 100;
-            this.Position.Name = "Position";
-            this.Position.ReadOnly = true;
-            // 
-            // Number
-            // 
-            this.Number.DividerWidth = 1;
-            this.Number.HeaderText = "Number";
-            this.Number.MinimumWidth = 100;
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.DividerWidth = 1;
-            this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 100;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -625,6 +625,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Geo app";
+            this.Click += new System.EventHandler(this.FormClick);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);

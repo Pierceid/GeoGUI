@@ -3,55 +3,46 @@ using System;
 
 namespace GeoGUI.Classes {
     public class GPS : IKey<GPS> {
-        public double X { get; set; }
-        public double Y { get; set; }
-        public string Sirka { get; set; }
-        public string Dlzka { get; set; }
+       
+        public double LatitudeValue { get; set; }
+        public string LatitudeDirection { get; set; }
+        public double LongitudeValue { get; set; }
+        public string LongitudeDirection { get; set; }
 
-        public GPS(string sirka, double x, string dlzka, double y) {
-            this.Sirka = sirka;
-            this.X = x;
-            this.Dlzka = dlzka;
-            this.Y = y;
+        public GPS(double latitudeValue, string latitudeDirection, double longitudeValue, string longitudeDirection) {
+            this.LatitudeValue = latitudeValue;
+            this.LatitudeDirection = latitudeDirection;
+            this.LongitudeValue = longitudeValue;
+            this.LongitudeDirection = longitudeDirection;
         }
 
         public int Compare(GPS other, int level) {
             if (level % 4 == 0) {
-                return this.CompareStrings(this.Sirka, other.Sirka);
+                return Util.CompareStrings(this.LatitudeDirection, other.LatitudeDirection);
             } else if (level % 4 == 1) {
-                return this.ComparePositions(this.X, other.X);
+                return Util.CompareDoubles(this.LatitudeValue, other.LatitudeValue);
             } else if (level % 4 == 2) {
-                return this.CompareStrings(this.Dlzka, other.Dlzka);
+                return Util.CompareStrings(this.LongitudeDirection, other.LongitudeDirection);
             } else {
-                return this.ComparePositions(this.Y, other.Y);
+                return Util.CompareDoubles(this.LongitudeValue, other.LongitudeValue);
             }
         }
 
         public bool Equals(GPS other) {
-            return this.X == other.X && this.Y == other.Y && this.Sirka == other.Sirka && this.Dlzka == other.Dlzka;
+            return this.LatitudeValue == other.LatitudeValue && this.LatitudeDirection == other.LatitudeDirection && 
+                this.LongitudeValue == other.LongitudeValue && this.LongitudeDirection == other.LongitudeDirection;
         }
 
         public bool CloseWithin(GPS other, double factor) {
-            double deltaX = this.X - other.X;
-            double deltaY = this.Y - other.Y;
+            double deltaX = this.LatitudeValue - other.LatitudeValue;
+            double deltaY = this.LongitudeValue - other.LongitudeValue;
             return Math.Sqrt(deltaX * deltaX + deltaY * deltaY) <= factor;
 
         }
 
         public string GetKeys() {
-            return $"GPS,{Util.FormatDoubleForExport(this.X)},{this.Sirka},{Util.FormatDoubleForExport(this.Y)},{this.Dlzka}";
-        }
-
-        private int ComparePositions(double value1, double value2) {
-            if (value1 < value2) return -1;
-            if (value1 > value2) return 1;
-            return 0;
-        }
-
-        private int CompareStrings(string value1, string value2) {
-            if (string.Compare(value1, value2) < 0) return -1;
-            if (string.Compare(value1, value2) > 0) return 1;
-            return 0;
+            return $"GPS,{Util.FormatDoubleForExport(this.LatitudeValue)},{this.LatitudeDirection}," +
+                $"{Util.FormatDoubleForExport(this.LongitudeValue)},{this.LongitudeDirection}";
         }
     }
 }
