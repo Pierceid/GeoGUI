@@ -23,9 +23,12 @@ namespace GeoGUI {
 
         private readonly string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
         private readonly Object[] blockableObjects = null;
-        private readonly IFactory parcelaFactory = new ParcelaFactory();
-        private readonly IFactory nehnutelnostFactory = new NehnutelnostFactory();
         private readonly Subject subject = new Subject();
+        private readonly IItemFactory parcelaFactory = new ParcelaFactory();
+        private readonly IItemFactory nehnutelnostFactory = new NehnutelnostFactory();
+        private readonly IStrategyFactory<Parcela, GPS> parcelaStrategyFactory = new StrategyFactory<Parcela, GPS>();
+        private readonly IStrategyFactory<Nehnutelnost, GPS> nehnutelnostStrategyFactory = new StrategyFactory<Nehnutelnost, GPS>();
+        private readonly IStrategyFactory<Item, GPS> itemStrategyFactory = new StrategyFactory<Item, GPS>();
         private readonly TreeTraversal<Item, GPS> itemTreeTraversial = new TreeTraversal<Item, GPS>();
 
         public Form1() {
@@ -67,7 +70,7 @@ namespace GeoGUI {
                     break;
 
                 case Button button when button == button3:
-                    EditItem(true);
+                    EditItem();
                     break;
 
                 case Button button when button == button4:
@@ -211,7 +214,7 @@ namespace GeoGUI {
             }
         }
 
-        private void EditItem(bool confirm) {
+        private void EditItem() {
             if (this.chosenItem == null) return;
 
             GPS position;
@@ -335,7 +338,7 @@ namespace GeoGUI {
                     writer.WriteLine($"'{keysData};'{nodeData}");
                 };
 
-                this.itemTreeTraversial.InOrderActionTraversal(this.itemTree.Root, saveAction);
+                this.itemTreeTraversial.InOrderTraversal(this.itemTree.Root, saveAction);
             }
 
             MessageBox.Show($"Data saved to: {FILE_PATH}");
@@ -421,48 +424,38 @@ namespace GeoGUI {
                 return;
             }
 
-            GenerateItems<Parcela>(parcelaCount, intersectionProb, this.parcelaTree, this.parcelaFactory);
-            GenerateItems<Nehnutelnost>(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
+            GenerateItems(parcelaCount, intersectionProb, this.parcelaTree, this.parcelaFactory);
+            GenerateItems(nehnutelnostCount, intersectionProb, this.nehnutelnostTree, this.nehnutelnostFactory);
         }
 
         private void PerformSearch(GPS gps) {
             if (gps == null) return;
 
-            double.TryParse(this.textBox14.Text, out double factor);
-
             try {
+                double.TryParse(this.textBox14.Text, out double factor);
+
                 switch (this.comboBox2.SelectedIndex) {
                     case 0:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Parcela, GPS>(factor), this.parcelaTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Parcela, GPS>(), this.parcelaTree, gps);
-                        }
+                        AddResultsToList(this.parcelaStrategyFactory.CreateStrategy(factor), this.parcelaTree, gps);
                         break;
 
                     case 1:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Nehnutelnost, GPS>(factor), this.nehnutelnostTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Nehnutelnost, GPS>(), this.nehnutelnostTree, gps);
-                        }
+                        AddResultsToList(this.nehnutelnostStrategyFactory.CreateStrategy(factor), this.nehnutelnostTree, gps);
                         break;
 
                     case 2:
-                        if (factor > 0) {
-                            AddResultsToList(new RangeSearchStrategy<Item, GPS>(factor), this.itemTree, gps);
-                        } else {
-                            AddResultsToList(new PointSearchStrategy<Item, GPS>(), this.itemTree, gps);
-                        }
+                        AddResultsToList(this.itemStrategyFactory.CreateStrategy(factor), this.itemTree, gps);
                         break;
 
                     default:
-                        break;
+                        MessageBox.Show("Invalid selection.");
+                        return;
                 }
+
             } catch (NullReferenceException) { }
         }
 
-        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IFactory factory) where T : Item {
+        private void GenerateItems<T>(int count, double intersectionProb, KDTree<T, GPS> tree, IItemFactory factory) where T : Item {
             List<GPS> gpsList = new List<GPS>();
 
             for (int i = 0; i < count / 2; i++) {
@@ -478,8 +471,8 @@ namespace GeoGUI {
                     position2 = filteredList[this.random.Next(filteredList.Count)];
                 }
 
-                var item1 = factory.CreatePrototype(number, description, position1) as Item;
-                var item2 = factory.CreatePrototype(number, description, position2) as Item;
+                var item1 = factory.CreateItem(number, description, position1);
+                var item2 = factory.CreateItem(number, description, position2);
                 var item3 = item1 as T;
                 var item4 = item2 as T;
 

@@ -3,7 +3,7 @@ using System;
 
 namespace GeoGUI.Classes {
     public class GPS : IKey<GPS> {
-       
+       // urobt immutable
         public double LatitudeValue { get; set; }
         public string LatitudeDirection { get; set; }
         public double LongitudeValue { get; set; }

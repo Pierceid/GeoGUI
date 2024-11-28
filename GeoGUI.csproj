@@ -50,7 +50,7 @@
     <Compile Include="Classes\Crate\GPS.cs" />
     <Compile Include="Classes\Crate\Node.cs" />
     <Compile Include="Classes\Delegates\TreeTraversial.cs" />
-    <Compile Include="Classes\Factory\IFactory.cs" />
+    <Compile Include="Classes\Factory\IItemFactory.cs" />
     <Compile Include="Classes\Factory\NehnutelnostFactory.cs" />
     <Compile Include="Classes\Factory\ParcelaFactory.cs" />
     <Compile Include="Classes\Flyweight\GPSFactory.cs" />
@@ -68,8 +68,10 @@
     <Compile Include="Classes\Prototype\Nehnutelnost.cs" />
     <Compile Include="Classes\Prototype\Parcela.cs" />
     <Compile Include="Classes\Strategy\IStrategy.cs" />
+    <Compile Include="Classes\Strategy\IStrategyFactory.cs" />
     <Compile Include="Classes\Strategy\PointSearchStrategy.cs" />
     <Compile Include="Classes\Strategy\RangeSearchStrategy.cs" />
+    <Compile Include="Classes\Strategy\StrategyFactory.cs" />
     <Compile Include="Classes\Utility\Util.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

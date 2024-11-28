@@ -235,20 +235,20 @@ namespace GeoGUI {
             }
         }
 
-        private Node<T, U> FindMinNode(Node<T, U> parent) {
-            return this.treeTraversal.FindMinNode(parent);
-        }
-
-        private Node<T, U> FindMaxNode(Node<T, U> parent) {
-            return this.treeTraversal.FindMaxNode(parent);
+        private Node<T, U> FindNode(U keys, Node<T, U> startNode) {
+            return this.treeTraversal.FindNode(keys, startNode);
         }
 
         private List<Node<T, U>> FindDuplicateNodes(Node<T, U> parent) {
             return this.treeTraversal.FindDuplicateNodes(parent);
         }
 
-        private Node<T, U> FindNode(U keys, Node<T, U> startNode) {
-            return this.treeTraversal.FindNode(keys, startNode);
+        private Node<T, U> FindMinNode(Node<T, U> parent) {
+            return this.treeTraversal.FindMinNode(parent);
+        }
+
+        private Node<T, U> FindMaxNode(Node<T, U> parent) {
+            return this.treeTraversal.FindMaxNode(parent);
         }
 
         public void PrintInOrder() {
@@ -272,15 +272,11 @@ namespace GeoGUI {
                 Console.ResetColor();
             });
 
-            this.treeTraversal.InOrderActionTraversal(this.Root, printAction);
+            this.treeTraversal.InOrderTraversal(this.Root, printAction);
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"\nTree Size: {treeSize}\nData Size: {dataSize}\nDuplicates: {duplicates}\n");
             Console.ResetColor();
-        }
-
-        public List<Node<T, U>> GetAllNodes() {
-            return this.treeTraversal.InOrderTraversal(this.Root);
         }
 
         public void Clear() {

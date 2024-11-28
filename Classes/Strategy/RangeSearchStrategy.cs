@@ -2,10 +2,24 @@
 
 namespace GeoGUI.Classes.Strategy {
     public class RangeSearchStrategy<T, U> : IStrategy<T, U> where T : Item where U : IKey<U> {
-        private readonly double range;
+        private static RangeSearchStrategy<T, U> instance = null;
+        private static readonly object lockObj = new object();
+        private double range;
 
-        public RangeSearchStrategy(double range) {
+        private RangeSearchStrategy(double range) {
             this.range = range;
+        }
+
+        public static RangeSearchStrategy<T, U> GetInstance(double range) {
+            if (instance == null) {
+                lock (lockObj) {
+                    if (instance == null) {
+                        instance = new RangeSearchStrategy<T, U>(range);
+                    }
+                }
+            }
+
+            return instance;
         }
 
         public List<T> Traverse(KDTree<T, U> tree, U keys) {
