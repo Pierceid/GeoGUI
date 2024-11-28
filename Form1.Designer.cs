@@ -38,7 +38,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -46,14 +45,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.Duplicate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Edit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remove = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -78,6 +71,10 @@
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Position = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -250,16 +247,6 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.ButtonClick);
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(18, 228);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(148, 41);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "Generate data";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.ButtonClick);
-            // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(121, 135);
@@ -330,15 +317,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.ButtonClick);
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(18, 228);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(148, 41);
+            this.button9.TabIndex = 9;
+            this.button9.Text = "Generate data";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.ButtonClick);
+            // 
             // dataGridView
             // 
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Duplicate,
-            this.Edit,
-            this.Remove,
             this.Type,
             this.Position,
             this.Number,
@@ -351,60 +345,6 @@
             this.dataGridView.Size = new System.Drawing.Size(1081, 354);
             this.dataGridView.TabIndex = 6;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCellClick);
-            // 
-            // Duplicate
-            // 
-            this.Duplicate.DividerWidth = 1;
-            this.Duplicate.HeaderText = "Duplicate";
-            this.Duplicate.MinimumWidth = 70;
-            this.Duplicate.Name = "Duplicate";
-            // 
-            // Edit
-            // 
-            this.Edit.DividerWidth = 1;
-            this.Edit.HeaderText = "Edit";
-            this.Edit.MinimumWidth = 70;
-            this.Edit.Name = "Edit";
-            // 
-            // Remove
-            // 
-            this.Remove.DividerWidth = 1;
-            this.Remove.HeaderText = "Remove";
-            this.Remove.MinimumWidth = 70;
-            this.Remove.Name = "Remove";
-            // 
-            // Type
-            // 
-            this.Type.DividerWidth = 1;
-            this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 100;
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Position
-            // 
-            this.Position.DividerWidth = 1;
-            this.Position.HeaderText = "Position";
-            this.Position.MinimumWidth = 100;
-            this.Position.Name = "Position";
-            this.Position.ReadOnly = true;
-            // 
-            // Number
-            // 
-            this.Number.DividerWidth = 1;
-            this.Number.HeaderText = "Number";
-            this.Number.MinimumWidth = 100;
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.DividerWidth = 1;
-            this.Description.HeaderText = "Description";
-            this.Description.MinimumWidth = 100;
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -639,6 +579,39 @@
             this.label12.TabIndex = 15;
             this.label12.Text = "Tree type:";
             // 
+            // Type
+            // 
+            this.Type.DividerWidth = 1;
+            this.Type.HeaderText = "Type";
+            this.Type.MinimumWidth = 100;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Position
+            // 
+            this.Position.DividerWidth = 1;
+            this.Position.HeaderText = "Position";
+            this.Position.MinimumWidth = 100;
+            this.Position.Name = "Position";
+            this.Position.ReadOnly = true;
+            // 
+            // Number
+            // 
+            this.Number.DividerWidth = 1;
+            this.Number.HeaderText = "Number";
+            this.Number.MinimumWidth = 100;
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.DividerWidth = 1;
+            this.Description.HeaderText = "Description";
+            this.Description.MinimumWidth = 100;
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -714,14 +687,11 @@
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Duplicate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Edit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Remove;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textBox14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Position;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox14;
     }
 }

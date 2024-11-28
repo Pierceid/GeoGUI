@@ -117,14 +117,6 @@ namespace GeoGUI {
                 this.chosenItem = this.resultList[e.RowIndex];
 
                 UpdateFormFields();
-
-                if (e.ColumnIndex == 0) {
-                    DuplicateItem();
-                } else if (e.ColumnIndex == 1) {
-                    EditItem(false);
-                } else if (e.ColumnIndex == 2) {
-                    RemoveItem();
-                }
             }
         }
 
