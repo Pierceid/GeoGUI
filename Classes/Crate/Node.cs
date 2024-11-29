@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using GeoGUI.Classes.Prototype;
+using GeoGUI.Classes.Structure;
+using System.Collections.Generic;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Crate {
     public class Node<T, U> where T : Item where U : IKey<U> {
         public Node<T, U> Parent { get; set; }
         public Node<T, U> LeftSon { get; set; }

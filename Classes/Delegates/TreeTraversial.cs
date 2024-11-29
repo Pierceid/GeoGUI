@@ -1,10 +1,16 @@
-﻿using System;
+﻿using GeoGUI.Classes.Crate;
+using GeoGUI.Classes.Null;
+using GeoGUI.Classes.Prototype;
+using GeoGUI.Classes.Structure;
+using System;
 using System.Collections.Generic;
 
 namespace GeoGUI.Classes.Delegates {
     public class TreeTraversal<T, U> where T : Item where U : IKey<U> {
-        public void InOrderTraversal(Node<T, U> root, Action<Node<T, U>> action) {
-            if (root == null || action == null) return;
+        public void InOrderTraversal(Node<T, U> root, INodeOperation<T, U> operation) {
+            if (root == null) return;
+
+            operation = operation ?? NullNodeOperation<T, U>.GetInstance();
 
             Node<T, U> current = root;
             Stack<Node<T, U>> stack = new Stack<Node<T, U>>();
@@ -16,7 +22,7 @@ namespace GeoGUI.Classes.Delegates {
                 }
 
                 current = stack.Pop();
-                action?.Invoke(current);
+                operation.Execute(current);
                 current = current.RightSon;
             }
         }
@@ -76,11 +82,11 @@ namespace GeoGUI.Classes.Delegates {
         }
 
         public Node<T, U> FindMinNode(Node<T, U> parent) {
-            return FindExtremumNode(parent, (comparison) => comparison <= 0, (node) => node.LeftSon, (node) => node.RightSon);
+            return FindExtremumNode(parent, (comparison) => comparison <= 0, (node) => node.RightSon, (node) => node.LeftSon);
         }
 
         public Node<T, U> FindMaxNode(Node<T, U> parent) {
-            return FindExtremumNode(parent, (comparison) => comparison >= 0, (node) => node.RightSon, (node) => node.LeftSon);
+            return FindExtremumNode(parent, (comparison) => comparison >= 0, (node) => node.LeftSon, (node) => node.RightSon);
         }
 
         private Node<T, U> FindExtremumNode(Node<T, U> parent, Func<int, bool> comparisonFunction, Func<Node<T, U>, Node<T, U>> getSubtreeRootFunction, Func<Node<T, U>, Node<T, U>> getChildFunction) {

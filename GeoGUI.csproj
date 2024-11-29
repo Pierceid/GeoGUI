@@ -54,8 +54,9 @@
     <Compile Include="Classes\Factory\NehnutelnostFactory.cs" />
     <Compile Include="Classes\Factory\ParcelaFactory.cs" />
     <Compile Include="Classes\Flyweight\GPSFactory.cs" />
-    <Compile Include="Classes\IKey.cs" />
-    <Compile Include="Classes\KDTree.cs" />
+    <Compile Include="Classes\Operation\INodeOperation.cs" />
+    <Compile Include="Classes\Operation\NullNodeOperation.cs" />
+    <Compile Include="Classes\Operation\PrintNodeOperation.cs" />
     <Compile Include="Classes\Observer\ComboBoxObserver.cs" />
     <Compile Include="Classes\Observer\CounterLabelObserver.cs" />
     <Compile Include="Classes\Observer\DataGridViewObserver.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Classes\Observer\ISubject.cs" />
     <Compile Include="Classes\Observer\Subject.cs" />
     <Compile Include="Classes\Observer\TextBoxObserver.cs" />
+    <Compile Include="Classes\Operation\WriteNodeOperation.cs" />
     <Compile Include="Classes\Prototype\IPrototype.cs" />
     <Compile Include="Classes\Prototype\Item.cs" />
     <Compile Include="Classes\Prototype\Nehnutelnost.cs" />
@@ -72,6 +74,8 @@
     <Compile Include="Classes\Strategy\PointSearchStrategy.cs" />
     <Compile Include="Classes\Strategy\RangeSearchStrategy.cs" />
     <Compile Include="Classes\Strategy\StrategyFactory.cs" />
+    <Compile Include="Classes\Structure\IKey.cs" />
+    <Compile Include="Classes\Structure\KDTree.cs" />
     <Compile Include="Classes\Utility\Util.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

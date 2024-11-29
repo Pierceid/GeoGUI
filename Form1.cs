@@ -1,8 +1,11 @@
-﻿using GeoGUI.Classes;
+﻿using GeoGUI.Classes.Crate;
 using GeoGUI.Classes.Delegates;
 using GeoGUI.Classes.Factory;
 using GeoGUI.Classes.Observer;
+using GeoGUI.Classes.Operation;
+using GeoGUI.Classes.Prototype;
 using GeoGUI.Classes.Strategy;
+using GeoGUI.Classes.Structure;
 using GeoGUI.Classes.Utility;
 using System;
 using System.Collections.Generic;
@@ -178,10 +181,10 @@ namespace GeoGUI {
             description = this.textBox6.Text;
 
             if (this.comboBox1.SelectedIndex == 0) {
-                var parcela1 = new Parcela(number, description, position1);
-                var parcela2 = new Parcela(number, description, position2);
-                var item1 = parcela1 as Item;
-                var item2 = parcela2 as Item;
+                var item1 = this.parcelaFactory.CreateItem(number, description, position1);
+                var item2 = this.parcelaFactory.CreateItem(number, description, position2);
+                var parcela1 = item1 as Parcela;
+                var parcela2 = item2 as Parcela;
 
                 result = MessageBox.Show("Are you sure you want to add this item?", "Confirm Add Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -195,10 +198,10 @@ namespace GeoGUI {
                     this.idList.Add(parcela2.Id);
                 }
             } else {
-                var nehnutelnost1 = new Nehnutelnost(number, description, position1);
-                var nehnutelnost2 = new Nehnutelnost(number, description, position2);
-                var item1 = nehnutelnost1 as Item;
-                var item2 = nehnutelnost2 as Item;
+                var item1 = this.nehnutelnostFactory.CreateItem(number, description, position1);
+                var item2 = this.nehnutelnostFactory.CreateItem(number, description, position2);
+                var nehnutelnost1 = item1 as Nehnutelnost;
+                var nehnutelnost2 = item2 as Nehnutelnost;
 
                 result = MessageBox.Show("Are you sure you want to add this item?", "Confirm Add Item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -332,13 +335,7 @@ namespace GeoGUI {
             using (StreamWriter writer = new StreamWriter(FILE_PATH)) {
                 writer.WriteLine("KeysData;NodeData >>>");
 
-                Action<Node<Item, GPS>> saveAction = (node) => {
-                    string keysData = node.KeysData.GetKeys();
-                    string nodeData = string.Join(";", node.NodeData.ConvertAll(data => data.GetInfo()));
-                    writer.WriteLine($"'{keysData};'{nodeData}");
-                };
-
-                this.itemTreeTraversial.InOrderTraversal(this.itemTree.Root, saveAction);
+                this.itemTreeTraversial.InOrderTraversal(this.itemTree.Root, WriteNodeOperation<Item, GPS>.GetInstance(writer));
             }
 
             MessageBox.Show($"Data saved to: {FILE_PATH}");
@@ -448,10 +445,8 @@ namespace GeoGUI {
                         break;
 
                     default:
-                        MessageBox.Show("Invalid selection.");
-                        return;
+                        break;
                 }
-
             } catch (NullReferenceException) { }
         }
 

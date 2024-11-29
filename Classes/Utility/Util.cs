@@ -1,4 +1,5 @@
-﻿using GeoGUI.Classes.Flyweight;
+﻿using GeoGUI.Classes.Crate;
+using GeoGUI.Classes.Flyweight;
 using System;
 using System.Linq;
 

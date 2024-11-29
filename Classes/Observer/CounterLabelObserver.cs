@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using GeoGUI.Classes.Crate;
+using GeoGUI.Classes.Prototype;
+using GeoGUI.Classes.Structure;
+using System.Windows.Forms;
 
-namespace GeoGUI.Classes {
-
+namespace GeoGUI.Classes.Observer {
     public class CounterLabelObserver : IObserver {
         private Subject subject;
         private Label label;

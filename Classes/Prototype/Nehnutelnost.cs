@@ -1,8 +1,8 @@
-﻿using GeoGUI.Classes.Prototype;
+﻿using GeoGUI.Classes.Crate;
 using GeoGUI.Classes.Utility;
 using System;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Prototype {
     public class Nehnutelnost : Item {
         public int SupCislo { get; set; }
         public string Popis { get; set; }

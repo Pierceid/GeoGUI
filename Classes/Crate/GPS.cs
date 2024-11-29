@@ -1,13 +1,13 @@
-﻿using GeoGUI.Classes.Utility;
+﻿using GeoGUI.Classes.Structure;
+using GeoGUI.Classes.Utility;
 using System;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Crate {
     public class GPS : IKey<GPS> {
-       // urobt immutable
-        public double LatitudeValue { get; set; }
-        public string LatitudeDirection { get; set; }
-        public double LongitudeValue { get; set; }
-        public string LongitudeDirection { get; set; }
+        public double LatitudeValue { get; }
+        public string LatitudeDirection { get; }
+        public double LongitudeValue { get; }
+        public string LongitudeDirection { get; }
 
         public GPS(double latitudeValue, string latitudeDirection, double longitudeValue, string longitudeDirection) {
             this.LatitudeValue = latitudeValue;
@@ -29,7 +29,7 @@ namespace GeoGUI.Classes {
         }
 
         public bool Equals(GPS other) {
-            return this.LatitudeValue == other.LatitudeValue && this.LatitudeDirection == other.LatitudeDirection && 
+            return this.LatitudeValue == other.LatitudeValue && this.LatitudeDirection == other.LatitudeDirection &&
                 this.LongitudeValue == other.LongitudeValue && this.LongitudeDirection == other.LongitudeDirection;
         }
 

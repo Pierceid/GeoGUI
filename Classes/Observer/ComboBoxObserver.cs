@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using GeoGUI.Classes.Crate;
+using GeoGUI.Classes.Prototype;
+using System.Windows.Forms;
 
 namespace GeoGUI.Classes.Observer {
     public class ComboBoxObserver : IObserver {
@@ -22,8 +24,8 @@ namespace GeoGUI.Classes.Observer {
 
         private void SetFields(GPS pozicia, int itemComboBoxIndex) {
             this.comboBoxes[0].SelectedIndex = itemComboBoxIndex;
-            this.comboBoxes[1].SelectedIndex = pozicia.LatitudeDirection == "W" ? 0 : 1;
-            this.comboBoxes[2].SelectedIndex = pozicia.LongitudeDirection == "N" ? 0 : 1;
+            this.comboBoxes[1].SelectedIndex = pozicia.LatitudeDirection == "N" ? 0 : 1;
+            this.comboBoxes[2].SelectedIndex = pozicia.LongitudeDirection == "E" ? 0 : 1;
         }
     }
 }

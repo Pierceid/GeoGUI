@@ -1,9 +1,11 @@
-﻿using GeoGUI.Classes;
+﻿using GeoGUI.Classes.Crate;
 using GeoGUI.Classes.Delegates;
+using GeoGUI.Classes.Null;
+using GeoGUI.Classes.Prototype;
 using System;
 using System.Collections.Generic;
 
-namespace GeoGUI {
+namespace GeoGUI.Classes.Structure {
     public class KDTree<T, U> where T : Item where U : IKey<U> {
         public Node<T, U> Root { get; set; }
         public int TreeSize { get; set; }
@@ -254,29 +256,7 @@ namespace GeoGUI {
         public void PrintInOrder() {
             if (this.Root == null) return;
 
-            int treeSize = 0, dataSize = 0, duplicates = 0;
-            Action<Node<T, U>> printAction = (node => {
-                bool isFirst = true;
-                node.NodeData.ForEach(data => {
-                    if (isFirst) {
-                        Console.ResetColor();
-                        isFirst = false;
-                        treeSize++;
-                    } else {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        duplicates++;
-                    }
-                    dataSize++;
-                    data.PrintInfo();
-                });
-                Console.ResetColor();
-            });
-
-            this.treeTraversal.InOrderTraversal(this.Root, printAction);
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"\nTree Size: {treeSize}\nData Size: {dataSize}\nDuplicates: {duplicates}\n");
-            Console.ResetColor();
+            this.treeTraversal.InOrderTraversal(this.Root, PrintNodeOperation<T, U>.GetInstance());
         }
 
         public void Clear() {

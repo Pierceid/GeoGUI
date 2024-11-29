@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GeoGUI.Classes.Crate;
+using System.Collections.Generic;
 
 namespace GeoGUI.Classes.Flyweight {
     public class GPSFactory {

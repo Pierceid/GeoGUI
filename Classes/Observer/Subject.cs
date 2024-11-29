@@ -1,6 +1,7 @@
-﻿namespace GeoGUI.Classes {
-    using System.Collections.Generic;
+﻿using GeoGUI.Classes.Prototype;
+using System.Collections.Generic;
 
+namespace GeoGUI.Classes.Observer {
     public class Subject : ISubject {
         private List<IObserver> observers = new List<IObserver>();
         public Item ChosenItem { get; private set; } = null;

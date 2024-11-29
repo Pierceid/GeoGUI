@@ -1,7 +1,6 @@
-﻿using GeoGUI.Classes.Prototype;
-using System;
+﻿using System;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Prototype {
     public abstract class Item : IPrototype {
         private string id = Guid.NewGuid().ToString();
 

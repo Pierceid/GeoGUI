@@ -1,7 +1,8 @@
-﻿using GeoGUI.Classes.Utility;
+﻿using GeoGUI.Classes.Prototype;
+using GeoGUI.Classes.Utility;
 using System.Windows.Forms;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Observer {
     public class DataGridViewObserver : IObserver {
         private Subject subject;
         private DataGridView dataGridView;

@@ -1,8 +1,8 @@
-﻿using GeoGUI.Classes.Prototype;
+﻿using GeoGUI.Classes.Crate;
 using GeoGUI.Classes.Utility;
 using System;
 
-namespace GeoGUI.Classes {
+namespace GeoGUI.Classes.Prototype {
     public class Parcela : Item {
         public int CisParcely { get; set; }
         public string Popis { get; set; }

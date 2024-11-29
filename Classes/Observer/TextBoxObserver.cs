@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using GeoGUI.Classes.Crate;
+using GeoGUI.Classes.Prototype;
+using System.Windows.Forms;
 
 namespace GeoGUI.Classes.Observer {
     public class TextBoxObserver : IObserver {
