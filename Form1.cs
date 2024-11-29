@@ -247,20 +247,20 @@ namespace GeoGUI {
 
             if (result == DialogResult.Yes) {
                 try {
-                    if (this.chosenItem is Parcela p) {
-                        var parcela = new Parcela(number, description, position);
-                        var item = parcela as Item;
+                    var oldItem = this.chosenItem;
 
-                        this.parcelaTree.UpdateNode(ref p, p.Pozicia, ref parcela, parcela.Pozicia);
-                        this.itemTree.UpdateNode(ref this.chosenItem, p.Pozicia, ref item, parcela.Pozicia);
-                        this.chosenItem = item;
-                    } else if (this.chosenItem is Nehnutelnost n) {
-                        var nehnutelnost = new Nehnutelnost(number, description, position);
-                        var item = nehnutelnost as Item;
+                    if (oldItem is Parcela oldParcela) {
+                        var newItem = this.parcelaFactory.CreateItem(number, description, position);
+                        var newParcela = newItem as Parcela;
 
-                        this.nehnutelnostTree.UpdateNode(ref n, n.Pozicia, ref nehnutelnost, nehnutelnost.Pozicia);
-                        this.itemTree.UpdateNode(ref this.chosenItem, n.Pozicia, ref item, nehnutelnost.Pozicia);
-                        this.chosenItem = item;
+                        this.parcelaTree.UpdateNode(ref oldParcela, oldParcela.Pozicia, ref newParcela, newParcela.Pozicia);
+                        this.itemTree.UpdateNode(ref oldItem, oldParcela.Pozicia, ref newItem, newParcela.Pozicia);
+                    } else if (oldItem is Nehnutelnost oldNehnutelnost) {
+                        var newItem = this.nehnutelnostFactory.CreateItem(number, description, position);
+                        var newNehnutelnost = newItem as Nehnutelnost;
+
+                        this.nehnutelnostTree.UpdateNode(ref oldNehnutelnost, oldNehnutelnost.Pozicia, ref newNehnutelnost, newNehnutelnost.Pozicia);
+                        this.itemTree.UpdateNode(ref oldItem, oldNehnutelnost.Pozicia, ref newItem, newNehnutelnost.Pozicia);
                     }
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when updating this item.", "Failed Update Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -275,12 +275,14 @@ namespace GeoGUI {
 
             if (result == DialogResult.Yes) {
                 try {
-                    if (this.chosenItem is Parcela parcela) {
+                    var item = this.chosenItem;
+
+                    if (item is Parcela parcela) {
                         this.parcelaTree.DeleteNode(ref parcela, parcela.Pozicia);
-                        this.itemTree.DeleteNode(ref this.chosenItem, parcela.Pozicia);
-                    } else if (this.chosenItem is Nehnutelnost nehnutelnost) {
+                        this.itemTree.DeleteNode(ref item, parcela.Pozicia);
+                    } else if (item is Nehnutelnost nehnutelnost) {
                         this.nehnutelnostTree.DeleteNode(ref nehnutelnost, nehnutelnost.Pozicia);
-                        this.itemTree.DeleteNode(ref this.chosenItem, nehnutelnost.Pozicia);
+                        this.itemTree.DeleteNode(ref item, nehnutelnost.Pozicia);
                     }
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when removing this item.", "Failed Remove Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -295,14 +297,14 @@ namespace GeoGUI {
 
             if (result == DialogResult.Yes) {
                 try {
-                    var itemClone = this.chosenItem.Clone() as Item;
+                    var item = this.chosenItem.Clone() as Item;
 
-                    if (itemClone is Parcela parcelaClone) {
-                        this.parcelaTree.InsertNode(ref parcelaClone, parcelaClone.Pozicia);
-                        this.itemTree.InsertNode(ref itemClone, parcelaClone.Pozicia);
-                    } else if (itemClone is Nehnutelnost nehnutelnostClone) {
-                        this.nehnutelnostTree.InsertNode(ref nehnutelnostClone, nehnutelnostClone.Pozicia);
-                        this.itemTree.InsertNode(ref itemClone, nehnutelnostClone.Pozicia);
+                    if (item is Parcela parcela) {
+                        this.parcelaTree.InsertNode(ref parcela, parcela.Pozicia);
+                        this.itemTree.InsertNode(ref item, parcela.Pozicia);
+                    } else if (item is Nehnutelnost nehnutelnost) {
+                        this.nehnutelnostTree.InsertNode(ref nehnutelnost, nehnutelnost.Pozicia);
+                        this.itemTree.InsertNode(ref item, nehnutelnost.Pozicia);
                     }
                 } catch (NullReferenceException) {
                     MessageBox.Show("Something went wrong when duplicating this item.", "Failed Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -334,7 +336,6 @@ namespace GeoGUI {
 
             using (StreamWriter writer = new StreamWriter(FILE_PATH)) {
                 writer.WriteLine("KeysData;NodeData >>>");
-
                 this.itemTreeTraversial.InOrderTraversal(this.itemTree.Root, WriteNodeOperation<Item, GPS>.GetInstance(writer));
             }
 
