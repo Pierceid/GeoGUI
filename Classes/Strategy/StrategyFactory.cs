@@ -1,5 +1,4 @@
-﻿using GeoGUI.Classes.Factory;
-using GeoGUI.Classes.Prototype;
+﻿using GeoGUI.Classes.Prototype;
 using GeoGUI.Classes.Structure;
 
 namespace GeoGUI.Classes.Strategy {
@@ -23,9 +22,9 @@ namespace GeoGUI.Classes.Strategy {
         
         public IStrategy<T, U> CreateStrategy(double range) {
             if (range == 0) {
-                return PointSearchStrategy<T, U>.GetInstance();
+                return new PointSearchStrategy<T, U>();
             } else {
-                return RangeSearchStrategy<T, U>.GetInstance(range);
+                return new RangeSearchStrategy<T, U>(range);
             }
         }
     }

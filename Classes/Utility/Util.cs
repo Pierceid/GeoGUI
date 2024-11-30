@@ -6,7 +6,7 @@ using System.Linq;
 namespace GeoGUI.Classes.Utility {
     public static class Util {
         private static Random random = new Random();
-        private static GPSFactory gpsFactory = new GPSFactory();
+        private static GPSFactory gpsFactory = GPSFactory.GetInstance();
 
         public static int CompareDoubles(double value1, double value2) {
             if (value1 < value2) return -1;
