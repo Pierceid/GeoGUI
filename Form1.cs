@@ -27,12 +27,12 @@ namespace GeoGUI {
         private readonly string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
         private readonly Object[] blockableObjects = { };
         private readonly Subject subject = new Subject();
-        private readonly IItemFactory parcelaFactory = new ParcelaFactory();
-        private readonly IItemFactory nehnutelnostFactory = new NehnutelnostFactory();
-        private readonly IStrategyFactory<Parcela, GPS> parcelaStrategyFactory = new StrategyFactory<Parcela, GPS>();
-        private readonly IStrategyFactory<Nehnutelnost, GPS> nehnutelnostStrategyFactory = new StrategyFactory<Nehnutelnost, GPS>();
-        private readonly IStrategyFactory<Item, GPS> itemStrategyFactory = new StrategyFactory<Item, GPS>();
-        private readonly TreeTraversal<Item, GPS> itemTreeTraversial = new TreeTraversal<Item, GPS>();
+        private readonly IItemFactory parcelaFactory = ParcelaFactory.GetInstance();
+        private readonly IItemFactory nehnutelnostFactory = NehnutelnostFactory.GetInstance();
+        private readonly IStrategyFactory<Parcela, GPS> parcelaStrategyFactory = StrategyFactory<Parcela, GPS>.GetInstance();
+        private readonly IStrategyFactory<Nehnutelnost, GPS> nehnutelnostStrategyFactory = StrategyFactory<Nehnutelnost, GPS>.GetInstance();
+        private readonly IStrategyFactory<Item, GPS> itemStrategyFactory = StrategyFactory<Item, GPS>.GetInstance();
+        private readonly TreeTraversal<Item, GPS> itemTreeTraversial = TreeTraversal<Item, GPS>.GetInstance();
 
         public Form1() {
             InitializeComponent();

@@ -7,6 +7,23 @@ using System.Collections.Generic;
 
 namespace GeoGUI.Classes.Delegates {
     public class TreeTraversal<T, U> where T : Item where U : IKey<U> {
+        private static TreeTraversal<T, U> instance = null;
+        private static readonly object lockObj = new object();
+
+        private TreeTraversal() { }
+
+        public static TreeTraversal<T, U> GetInstance() {
+            if (instance == null) {
+                lock (lockObj) {
+                    if (instance == null) {
+                        instance = new TreeTraversal<T, U>();
+                    }
+                }
+            }
+
+            return instance;
+        }
+
         public void InOrderTraversal(Node<T, U> root, INodeOperation<T, U> operation) {
             if (root == null) return;
 

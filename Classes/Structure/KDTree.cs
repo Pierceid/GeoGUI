@@ -19,7 +19,7 @@ namespace GeoGUI.Classes.Structure {
             this.TreeSize = 0;
             this.DataSize = 0;
             this.Dimensions = dimensions;
-            this.treeTraversal = new TreeTraversal<T, U>();
+            this.treeTraversal = TreeTraversal<T, U>.GetInstance();
         }
 
         public void InsertNode(ref T data, U keys) {
