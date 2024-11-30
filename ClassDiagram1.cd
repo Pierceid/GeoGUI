@@ -1,88 +1,254 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="GeoGUI.Classes.GPS" BaseTypeListCollapsed="true">
-    <Position X="1.25" Y="6.5" Width="1.75" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Crate.GPS" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAACAAgAAAAAAAAAAAAAAAAABgAAAAYAA=</HashCode>
-      <FileName>Classes\GPS.cs</FileName>
+      <HashCode>AAAIAAAABAAAAAAAgAAAAAAAAAAIAAAACABAAIAAAAA=</HashCode>
+      <FileName>Classes\Crate\GPS.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="GeoGUI.Classes.Item">
-    <Position X="1.5" Y="0.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Crate.Node&lt;T, U&gt;" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAEAAAAAAAAAAEEAAAAAAAAAAAgA=</HashCode>
-      <FileName>Classes\Item.cs</FileName>
+      <HashCode>AAAAAAQAAAAAAAAAIAAAQABAAAAAAAABAAAAAAQAAAA=</HashCode>
+      <FileName>Classes\Crate\Node.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Classes.KDTree&lt;T, U&gt;">
-    <Position X="6.5" Y="0.5" Width="2" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Delegates.TreeTraversal&lt;T, U&gt;" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAEECAAQBAggAEEAAAAAAAAYCAJAABACAA=</HashCode>
-      <FileName>Classes\KDTree.cs</FileName>
+      <HashCode>AAAABAAAAAAAAAAAAAAAgAACAAAAAAAAYCAAAAAAAAA=</HashCode>
+      <FileName>Classes\Delegates\TreeTraversial.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Classes.Nehnutelnost">
-    <Position X="0.5" Y="3.25" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Factory.NehnutelnostFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAoAAAAKAAAAAAEQAAAAEAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Classes\Nehnutelnost.cs</FileName>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Factory\NehnutelnostFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Factory.ParcelaFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Factory\ParcelaFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Flyweight.GPSFactory" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQgAAAIAAAA=</HashCode>
+      <FileName>Classes\Flyweight\GPSFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Classes.Node&lt;T, U&gt;">
-    <Position X="4.25" Y="0.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Observer.ComboBoxObserver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAkAABAIAAAQABAAAEAQAABBAAAAAQAAAA=</HashCode>
-      <FileName>Classes\Node.cs</FileName>
+      <HashCode>AAQAAAgAAAAAAAAAAAAAAACAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Observer\ComboBoxObserver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Observer.CounterLabelObserver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAABAQAAAAAACAAAAAAAAAEAAAAAAEAEA=</HashCode>
+      <FileName>Classes\Observer\CounterLabelObserver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Observer.DataGridViewObserver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAEAQAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Observer\DataGridViewObserver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Observer.Subject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAIAAAAAgAAAAIAAIABgAAAAAAAAgAA=</HashCode>
+      <FileName>Classes\Observer\Subject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Observer.TextBoxObserver" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgAAAAAAAAAAAAAAACAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Classes\Observer\TextBoxObserver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Null.NullNodeOperation&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABABAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\Operation\NullNodeOperation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Null.PrintNodeOperation&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABABAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\Operation\PrintNodeOperation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Operation.WriteNodeOperation&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAABABAAAAAAQAAAAIAAAA=</HashCode>
+      <FileName>Classes\Operation\WriteNodeOperation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Prototype.Item" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAEAAAAAAAAAAEEAAAAAAAAAAAhA=</HashCode>
+      <FileName>Classes\Prototype\Item.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Prototype.Nehnutelnost" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAKAAAAAAEAAAAAEAAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>Classes\Prototype\Nehnutelnost.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Classes.Parcela">
-    <Position X="2.5" Y="3.25" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Prototype.Parcela" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAACAAAAAAEQAAAAEAAAAEEAAABAAAAAAAAA=</HashCode>
-      <FileName>Classes\Parcela.cs</FileName>
+      <HashCode>AAAAAAAAAACAAAAAAEAAAAAEAAAAEEAAAAAAAAAAABA=</HashCode>
+      <FileName>Classes\Prototype\Parcela.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Form1">
-    <Position X="9.5" Y="0.5" Width="2.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+  <Class Name="GeoGUI.Classes.Strategy.PointSearchStrategy&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>cDEAIAEkASAgKFCxUECABABCoMw7QBSmESQAQAAGUcA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAABABAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\Strategy\PointSearchStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Strategy.RangeSearchStrategy&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAIAAAAAAAAAAAAAAAABABAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\Strategy\RangeSearchStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Strategy.StrategyFactory&lt;T, U&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Classes\Strategy\StrategyFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GeoGUI.Classes.Structure.KDTree&lt;T, U&gt;" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEECAAAAAAgAMEAAAAAgAAYCABAABACAA=</HashCode>
+      <FileName>Classes\Structure\KDTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Classes.Utility.Util" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAQBAIAAAQA=</HashCode>
+      <FileName>Classes\Utility\Util.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Form1" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8DEEIAAkAyAhqFK4UECAAITDoM07VACEFSQIAAAGUMA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GeoGUI.Program">
-    <Position X="10" Y="6.25" Width="1.5" />
+  <Class Name="GeoGUI.Program" Collapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="GeoGUI.Classes.IKey&lt;U&gt;">
-    <Position X="3.75" Y="7.25" Width="1.5" />
+  <Class Name="GeoGUI.Properties.Resources" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
-      <FileName>Classes\IKey.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeoGUI.Properties.Settings" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GeoGUI.Classes.Factory.IItemFactory" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Factory\IItemFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Observer.IObserver" Collapsed="true">
+    <Position X="10.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Observer\IObserver.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Observer.ISubject" Collapsed="true">
+    <Position X="8.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAIAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Observer\ISubject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Null.INodeOperation&lt;T, U&gt;" Collapsed="true">
+    <Position X="8.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Operation\INodeOperation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Prototype.IPrototype" Collapsed="true">
+    <Position X="12.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Classes\Prototype\IPrototype.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Strategy.IStrategy&lt;T, U&gt;" Collapsed="true">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Strategy\IStrategy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Strategy.IStrategyFactory&lt;T, U&gt;" Collapsed="true">
+    <Position X="7" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Classes\Strategy\IStrategyFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeoGUI.Classes.Structure.IKey&lt;U&gt;" Collapsed="true">
+    <Position X="7" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAgAAAAAAAAAAIAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Classes\Structure\IKey.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

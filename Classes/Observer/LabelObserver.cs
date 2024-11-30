@@ -4,7 +4,7 @@ using GeoGUI.Classes.Structure;
 using System.Windows.Forms;
 
 namespace GeoGUI.Classes.Observer {
-    public class CounterLabelObserver : IObserver {
+    public class LabelObserver : IObserver {
         private Subject subject;
         private Label label;
         private ComboBox comboBox;
@@ -12,7 +12,7 @@ namespace GeoGUI.Classes.Observer {
         private KDTree<Nehnutelnost, GPS> nehnutelnostTree;
         private KDTree<Item, GPS> itemTree;
 
-        public CounterLabelObserver(Subject subject, Label label, ComboBox comboBox, KDTree<Parcela, GPS> parcelaTree, KDTree<Nehnutelnost, GPS> nehnutelnostTree, KDTree<Item, GPS> itemTree) {
+        public LabelObserver(Subject subject, Label label, ComboBox comboBox, KDTree<Parcela, GPS> parcelaTree, KDTree<Nehnutelnost, GPS> nehnutelnostTree, KDTree<Item, GPS> itemTree) {
             this.subject = subject;
             this.label = label;
             this.comboBox = comboBox;

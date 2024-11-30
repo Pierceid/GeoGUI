@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GeoGUI.Classes.Flyweight {
     public class GPSFactory {
-        public readonly Dictionary<string, GPS> gpsPool = new Dictionary<string, GPS>();
+        private readonly Dictionary<string, GPS> gpsPool = new Dictionary<string, GPS>();
         private readonly object lockObj = new object();
 
         public GPS GetGPS(double latitudeValue, string latitudeDirection, double longitudeValue, string longitudeDirection) {

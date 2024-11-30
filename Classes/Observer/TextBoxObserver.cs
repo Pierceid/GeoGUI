@@ -22,11 +22,11 @@ namespace GeoGUI.Classes.Observer {
             }
         }
 
-        private void SetFields(GPS pozicia, int number, string popis) {
-            this.textBoxes[0].Text = pozicia.LatitudeValue.ToString();
-            this.textBoxes[1].Text = pozicia.LongitudeValue.ToString();
+        private void SetFields(GPS position, int number, string description) {
+            this.textBoxes[0].Text = position.LatitudeValue.ToString();
+            this.textBoxes[1].Text = position.LongitudeValue.ToString();
             this.textBoxes[2].Text = number.ToString();
-            this.textBoxes[3].Text = popis.ToString();
+            this.textBoxes[3].Text = description.ToString();
         }
     }
 }

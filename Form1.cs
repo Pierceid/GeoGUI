@@ -25,7 +25,7 @@ namespace GeoGUI {
         private Item chosenItem = null;
 
         private readonly string FILE_PATH = Path.GetFullPath(Path.Combine("..", "..", "Files", "data.txt"));
-        private readonly Object[] blockableObjects = null;
+        private readonly Object[] blockableObjects = { };
         private readonly Subject subject = new Subject();
         private readonly IItemFactory parcelaFactory = new ParcelaFactory();
         private readonly IItemFactory nehnutelnostFactory = new NehnutelnostFactory();
@@ -42,7 +42,7 @@ namespace GeoGUI {
             var textBoxObserver = new TextBoxObserver(this.subject, formTextBoxes);
             var comboBoxObserver = new ComboBoxObserver(this.subject, formComboBoxes);
             var dataGridViewObserver = new DataGridViewObserver(this.subject, this.dataGridView, this.comboBox2);
-            var counterLabelObserver = new CounterLabelObserver(this.subject, this.label11, this.comboBox2, this.parcelaTree, this.nehnutelnostTree, this.itemTree);
+            var counterLabelObserver = new LabelObserver(this.subject, this.label11, this.comboBox2, this.parcelaTree, this.nehnutelnostTree, this.itemTree);
 
             this.comboBox1.SelectedIndex = 0;
             this.comboBox2.SelectedIndex = 2;
