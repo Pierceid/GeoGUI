@@ -41,7 +41,7 @@ namespace GeoGUI.Classes.Utility {
             return gpsFactory.GetGPS(latitudeValue, latitudeDirection, longitudeValue, longitudeDirection);
         }
 
-        public static GPS ParseGPS(string latitudeString, string latitudeDirection, string longitudeString, string longitudeDirection) {
+        public static GPS ParseGPS(string latitudeValue, string latitudeDirection, string longitudeValue, string longitudeDirection) {
             double latitudeValue = double.TryParse(latitudeString, out double latParsed) ? latParsed : double.MaxValue;
             double longitudeValue = double.TryParse(longitudeString, out double lonParsed) ? lonParsed : double.MaxValue;
             return gpsFactory.GetGPS(latitudeValue, latitudeDirection, longitudeValue, longitudeDirection);
