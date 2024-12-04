@@ -432,22 +432,13 @@ namespace GeoGUI {
             try {
                 double.TryParse(this.textBox14.Text, out double factor);
 
-                switch (this.comboBox2.SelectedIndex) {
-                    case 0:
-                        AddResultsToList(this.parcelaStrategyFactory.CreateStrategy(factor), this.parcelaTree, gps);
-                        break;
+                var strategyFactories = new Action<double>[] {
+                    (f) => AddResultsToList(this.parcelaStrategyFactory.CreateStrategy(f), this.parcelaTree, gps),
+                    (f) => AddResultsToList(this.nehnutelnostStrategyFactory.CreateStrategy(f), this.nehnutelnostTree, gps),
+                    (f) => AddResultsToList(this.itemStrategyFactory.CreateStrategy(f), this.itemTree, gps)
+                };
 
-                    case 1:
-                        AddResultsToList(this.nehnutelnostStrategyFactory.CreateStrategy(factor), this.nehnutelnostTree, gps);
-                        break;
-
-                    case 2:
-                        AddResultsToList(this.itemStrategyFactory.CreateStrategy(factor), this.itemTree, gps);
-                        break;
-
-                    default:
-                        break;
-                }
+                strategyFactories[this.comboBox2.SelectedIndex](factor);
             } catch (NullReferenceException) { }
         }
 
