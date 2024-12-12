@@ -42,9 +42,9 @@ namespace GeoGUI.Classes.Utility {
         }
 
         public static GPS ParseGPS(string latitudeValue, string latitudeDirection, string longitudeValue, string longitudeDirection) {
-            double latitudeValue = double.TryParse(latitudeString, out double latParsed) ? latParsed : double.MaxValue;
-            double longitudeValue = double.TryParse(longitudeString, out double lonParsed) ? lonParsed : double.MaxValue;
-            return gpsFactory.GetGPS(latitudeValue, latitudeDirection, longitudeValue, longitudeDirection);
+            double parsedLatitudeValue = double.TryParse(latitudeValue, out double latParsed) ? latParsed : double.MaxValue;
+            double parsedLongitudeValue = double.TryParse(longitudeValue, out double lonParsed) ? lonParsed : double.MaxValue;
+            return gpsFactory.GetGPS(parsedLatitudeValue, latitudeDirection, parsedLongitudeValue, longitudeDirection);
         }
     }
 }
